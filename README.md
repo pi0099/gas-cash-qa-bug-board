@@ -36,7 +36,7 @@ Configured for **project Pages** at:
 | --- | --- |
 | Vite `base` | `/gas-cash-qa-bug-board/` |
 | Router | `BrowserRouter` with matching `basename` |
-| SPA deep links | `dist/404.html` = copy of `index.html` (build + Actions) |
+| SPA deep links | `dist/404.html` + `overview/` `summary/` `mindmap/` index copies (build script) |
 | Deploy | [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) → `actions/upload-pages-artifact` + `actions/deploy-pages` |
 
 ### Enable once (repo owner)
