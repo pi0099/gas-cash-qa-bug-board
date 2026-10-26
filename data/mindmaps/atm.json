@@ -1,0 +1,111 @@
+{
+  "id": "atm",
+  "title": "ATM",
+  "summary": "Stake 7d/30d, claim rewards, early unlock warning, My Stakes list.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "atm",
+      "label": "ATM stake",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V", "S"],
+      "summary": "Stake $GAS; claim rewards; early unlock penalty.",
+      "tcIds": ["GC-TC-F-12", "GC-TC-V-07"]
+    },
+    {
+      "id": "atm-browse",
+      "label": "ATM browse UI",
+      "kind": "branch",
+      "position": { "x": -300, "y": -140 },
+      "tags": ["Observed"],
+      "tcTypes": ["F"],
+      "summary": "Pool/APY UI at /atm; stake gated when needed.",
+      "tcIds": ["GC-TC-F-12"],
+      "tcIdeas": ["Browse without submitting a stake"]
+    },
+    {
+      "id": "atm-lock",
+      "label": "7d / 30d lock",
+      "kind": "branch",
+      "position": { "x": 280, "y": -160 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Choose lock duration; 30d ~1.5× weight vs 7d.",
+      "tcIds": ["GC-TC-V-07"],
+      "tcIdeas": ["7d stake path UI", "30d higher weight disclosed", "Insufficient $GAS clear error"]
+    },
+    {
+      "id": "atm-7d",
+      "label": "Stake 7d",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -220 },
+      "tags": ["Documented"],
+      "tcTypes": ["F"],
+      "summary": "Stake visible; rewards accrue.",
+      "tcIdeas": ["Happy: stake recorded in My Stakes (funded)"]
+    },
+    {
+      "id": "atm-30d",
+      "label": "Stake 30d",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -100 },
+      "tags": ["Documented"],
+      "tcTypes": ["F"],
+      "summary": "Higher stake weight (~1.5×) vs 7d [Documented].",
+      "tcIdeas": ["Weight comparison shown or documented"]
+    },
+    {
+      "id": "atm-rewards",
+      "label": "Claim rewards",
+      "kind": "branch",
+      "position": { "x": 280, "y": 40 },
+      "tags": ["Documented"],
+      "tcTypes": ["F"],
+      "summary": "Claim staking rewards in $GAS; balance increases.",
+      "tcIdeas": ["Claim before early unlock", "Empty rewards → no silent success"]
+    },
+    {
+      "id": "atm-early",
+      "label": "Early unlock warning",
+      "kind": "leaf",
+      "position": { "x": 500, "y": 0 },
+      "tags": ["Documented"],
+      "tcTypes": ["V", "S"],
+      "summary": "Penalty ≤20% shrinking; all unclaimed rewards forfeited — must warn to claim first.",
+      "tcIdeas": ["Warning copy before early leave", "Penalty disclosed"]
+    },
+    {
+      "id": "atm-mystakes",
+      "label": "My Stakes",
+      "kind": "leaf",
+      "position": { "x": 500, "y": 120 },
+      "tags": ["Observed", "Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "List active stakes; empty state when none.",
+      "tcIds": ["GC-TC-V-07"],
+      "tcIdeas": ["Empty My Stakes honest", "Active stake shows lock end"]
+    },
+    {
+      "id": "atm-apy",
+      "label": "Est. APY disclaimer",
+      "kind": "leaf",
+      "position": { "x": -300, "y": 80 },
+      "tags": ["Documented"],
+      "tcTypes": ["V"],
+      "summary": "APY shown as estimate, not guarantee.",
+      "tcIdeas": ["Disclaimer visible near APY"]
+    }
+  ],
+  "edges": [
+    { "id": "e-a-br", "source": "atm", "target": "atm-browse" },
+    { "id": "e-a-lock", "source": "atm", "target": "atm-lock" },
+    { "id": "e-a-7", "source": "atm-lock", "target": "atm-7d" },
+    { "id": "e-a-30", "source": "atm-lock", "target": "atm-30d" },
+    { "id": "e-a-rew", "source": "atm", "target": "atm-rewards" },
+    { "id": "e-a-early", "source": "atm-rewards", "target": "atm-early" },
+    { "id": "e-a-my", "source": "atm-rewards", "target": "atm-mystakes" },
+    { "id": "e-a-apy", "source": "atm", "target": "atm-apy" }
+  ]
+}

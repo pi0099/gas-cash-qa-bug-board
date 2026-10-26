@@ -5,10 +5,25 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"
 cp "$DIST/index.html" "$DIST/404.html"
-for route in overview summary mindmap test-cases; do
+
+ROUTES=(overview summary mindmap test-cases)
+
+# Detail mind maps from data/mindmaps/*.json (skip hub)
+if [[ -d "$ROOT/data/mindmaps" ]]; then
+  for f in "$ROOT"/data/mindmaps/*.json; do
+    id="$(basename "$f" .json)"
+    if [[ "$id" == "hub" ]]; then
+      continue
+    fi
+    ROUTES+=("mindmap/$id")
+  done
+fi
+
+for route in "${ROUTES[@]}"; do
   mkdir -p "$DIST/$route"
   cp "$DIST/index.html" "$DIST/$route/index.html"
 done
+
 # Materialize known TC detail shells so deep links 200 on Pages
 if [[ -f "$ROOT/data/test-cases.json" ]]; then
   node -e "

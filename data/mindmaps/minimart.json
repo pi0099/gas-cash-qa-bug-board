@@ -1,0 +1,114 @@
+{
+  "id": "minimart",
+  "title": "Mini Mart",
+  "summary": "Browse keys & prices, Coming Soon honesty, SOON/OPEN/PLAY labels, purchase gate.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "minimart",
+      "label": "Mini Mart",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Shop for keys in $GAS; inventory open/boost elsewhere.",
+      "tcIds": ["GC-TC-F-09", "GC-TC-V-01", "GC-TC-V-03", "GC-TC-V-06"]
+    },
+    {
+      "id": "minimart-browse",
+      "label": "Browse shop",
+      "kind": "branch",
+      "position": { "x": -300, "y": -160 },
+      "tags": ["Observed"],
+      "tcTypes": ["F"],
+      "summary": "Mini Mart loads; items listed with availability chrome.",
+      "tcIdeas": ["Unauth can browse; purchase gated or prompts login"]
+    },
+    {
+      "id": "minimart-keys",
+      "label": "Keys SKUs",
+      "kind": "branch",
+      "position": { "x": 280, "y": -180 },
+      "tags": ["Observed", "Documented"],
+      "tcTypes": ["F"],
+      "summary": "Regular / Super / Premium keys with $GAS pricing.",
+      "tcIds": ["GC-TC-F-09"],
+      "tcIdeas": ["Names + $GAS currency assertion", "Prices visible before purchase"]
+    },
+    {
+      "id": "minimart-prices",
+      "label": "Prices in $GAS",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -240 },
+      "tags": ["Observed", "Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Key prices denominated in $GAS — not silent fiat mismatch.",
+      "tcIdeas": ["Currency label matches debit asset"]
+    },
+    {
+      "id": "minimart-gate",
+      "label": "Purchase gate",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -120 },
+      "tags": ["Observed"],
+      "tcTypes": ["F", "V", "S"],
+      "summary": "Purchase requires auth + balance; insufficient $GAS blocked clearly.",
+      "tcIdeas": ["Unauth purchase prompts login", "Insufficient $GAS → clear error"]
+    },
+    {
+      "id": "minimart-soon",
+      "label": "Coming Soon items",
+      "kind": "branch",
+      "position": { "x": 280, "y": 60 },
+      "tags": ["Coming soon", "Observed"],
+      "tcTypes": ["V"],
+      "summary": "Crowbars / insurance / Alarm-class listed — docs say not live.",
+      "tcIds": ["GC-TC-V-01", "GC-TC-V-06"],
+      "tcIdeas": ["Not casually purchasable", "No charge if not live"]
+    },
+    {
+      "id": "minimart-labels",
+      "label": "SOON / OPEN / PLAY",
+      "kind": "leaf",
+      "position": { "x": 500, "y": 20 },
+      "tags": ["Observed"],
+      "tcTypes": ["V"],
+      "summary": "Availability labels must be consistent and honest.",
+      "detail": "Known fail: Coming-soon sections mix SOON/OPEN/PLAY with live-looking controls [GC-TC-V-01/V-06].",
+      "tcIds": ["GC-TC-V-06"],
+      "tcIdeas": ["Label consistency across sections", "PLAY/OPEN not on Coming Later without live path"]
+    },
+    {
+      "id": "minimart-honesty",
+      "label": "Coming Soon honesty",
+      "kind": "leaf",
+      "position": { "x": 500, "y": 140 },
+      "tags": ["Coming soon", "Documented"],
+      "tcTypes": ["V", "S"],
+      "summary": "Coming-soon SKUs must fail safely or be blocked — no silent spend.",
+      "tcIds": ["GC-TC-V-01"],
+      "tcIdeas": ["Tap every Coming Soon SKU; record charge attempts"]
+    },
+    {
+      "id": "minimart-docs",
+      "label": "Docs /inventory honesty",
+      "kind": "leaf",
+      "position": { "x": -300, "y": 80 },
+      "tags": ["Observed"],
+      "tcTypes": ["V"],
+      "summary": "Docs path /inventory 404 while live inventory is /pitstop.",
+      "tcIds": ["GC-TC-V-03"],
+      "tcIdeas": ["Docs vs app route parity"]
+    }
+  ],
+  "edges": [
+    { "id": "e-m-br", "source": "minimart", "target": "minimart-browse" },
+    { "id": "e-m-keys", "source": "minimart", "target": "minimart-keys" },
+    { "id": "e-m-pr", "source": "minimart-keys", "target": "minimart-prices" },
+    { "id": "e-m-gate", "source": "minimart-keys", "target": "minimart-gate" },
+    { "id": "e-m-soon", "source": "minimart", "target": "minimart-soon" },
+    { "id": "e-m-lab", "source": "minimart-soon", "target": "minimart-labels" },
+    { "id": "e-m-hon", "source": "minimart-soon", "target": "minimart-honesty" },
+    { "id": "e-m-docs", "source": "minimart", "target": "minimart-docs" }
+  ]
+}

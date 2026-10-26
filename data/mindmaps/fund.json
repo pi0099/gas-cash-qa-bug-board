@@ -1,0 +1,114 @@
+{
+  "id": "fund",
+  "title": "Fund / Buy $GAS",
+  "summary": "Deposit → attestation → Gas Swap into $GAS. Cover cancel, insufficient funds, and tax disclosure.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "fund",
+      "label": "Fund / Buy $GAS",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "FAQ path: fund wallet → deposit → swap to $GAS.",
+      "tcIds": ["GC-TC-F-04", "GC-TC-V-11"]
+    },
+    {
+      "id": "fund-buy",
+      "label": "Buy $GAS entry",
+      "kind": "branch",
+      "position": { "x": -300, "y": -180 },
+      "tags": ["Observed"],
+      "tcTypes": ["F"],
+      "summary": "Buy $GAS / Deposit entry opens without requiring a completed swap.",
+      "tcIds": ["GC-TC-F-04"],
+      "tcIdeas": ["Open Buy $GAS shell", "Tabs/labels match FAQ"]
+    },
+    {
+      "id": "fund-deposit",
+      "label": "Deposit USDC/ETH",
+      "kind": "leaf",
+      "position": { "x": -520, "y": -260 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Clear deposit instructions; funds appear in Gas wallet when completed.",
+      "tcIds": ["GC-TC-F-04"],
+      "tcIdeas": ["Happy: deposit instructions visible", "Alt: cancel deposit mid-flow"]
+    },
+    {
+      "id": "fund-attest",
+      "label": "Eligibility attestation",
+      "kind": "branch",
+      "position": { "x": 280, "y": -160 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "18+ / Stock Token attestation on Buy $GAS path (Observed).",
+      "tcIds": ["GC-TC-F-05", "GC-TC-V-08"],
+      "tcIdeas": ["Attestation appears before swap can proceed", "Cancel-only path blocks spend"]
+    },
+    {
+      "id": "fund-swap",
+      "label": "Gas Swap",
+      "kind": "branch",
+      "position": { "x": 280, "y": 40 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Quote shown; outcome discloses or reflects 2% tax.",
+      "tcIdeas": ["Quote visible before confirm", "Rejected signature → balances unchanged"]
+    },
+    {
+      "id": "fund-tax",
+      "label": "2% $GAS trade tax",
+      "kind": "leaf",
+      "position": { "x": 520, "y": -40 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Buy/sell tax feeds prize pool — visible on proof / marketing.",
+      "tcIdeas": ["Tax disclosed near quote or proof-consistent"]
+    },
+    {
+      "id": "fund-insufficient",
+      "label": "Insufficient funds",
+      "kind": "leaf",
+      "position": { "x": 520, "y": 80 },
+      "tags": ["Documented"],
+      "tcTypes": ["V"],
+      "summary": "Cannot complete; clear error; no partial debit.",
+      "tcIds": ["GC-TC-V-11"],
+      "tcIdeas": ["Empty/invalid amount does not enable spend", "Insufficient balance blocks confirm"]
+    },
+    {
+      "id": "fund-cancel",
+      "label": "Cancel buy / swap",
+      "kind": "leaf",
+      "position": { "x": 520, "y": 180 },
+      "tags": ["Observed"],
+      "tcTypes": ["V"],
+      "summary": "Cancel attestation or close swap → no spend.",
+      "tcIds": ["GC-TC-F-05"],
+      "tcIdeas": ["Dismiss attestation → no swap", "Close Buy $GAS → balances unchanged"]
+    },
+    {
+      "id": "fund-sponsor",
+      "label": "Sponsorship fail mid-tx",
+      "kind": "leaf",
+      "position": { "x": -300, "y": 140 },
+      "tags": ["Documented"],
+      "tcTypes": ["S", "V"],
+      "summary": "Sponsorship unavailable → user-pays or clear failure; never silent success.",
+      "tcIdeas": ["Forced/no-sponsor path messaging"]
+    }
+  ],
+  "edges": [
+    { "id": "e-f-buy", "source": "fund", "target": "fund-buy" },
+    { "id": "e-f-dep", "source": "fund-buy", "target": "fund-deposit" },
+    { "id": "e-f-att", "source": "fund", "target": "fund-attest" },
+    { "id": "e-f-sw", "source": "fund", "target": "fund-swap" },
+    { "id": "e-f-tax", "source": "fund-swap", "target": "fund-tax" },
+    { "id": "e-f-ins", "source": "fund-swap", "target": "fund-insufficient" },
+    { "id": "e-f-can", "source": "fund-swap", "target": "fund-cancel" },
+    { "id": "e-f-sp", "source": "fund", "target": "fund-sponsor" },
+    { "id": "j-att-swap", "source": "fund-attest", "target": "fund-swap", "kind": "journey" }
+  ]
+}

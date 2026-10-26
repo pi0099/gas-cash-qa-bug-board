@@ -8,7 +8,9 @@ Also ships shareable research pages:
 | --- | --- |
 | `/` | Bug board (home) |
 | `/overview` (alias `/summary`) | Product brief grounded in QA docs |
-| `/mindmap` | Interactive React Flow mind map (zoom / pan / fit) |
+| `/mindmap` | Hub overview — click a domain to open a detail flow map |
+| `/mindmap/:domain` | Per-domain React Flow maps (auth, wallet, minimart, …) for F/V/S TC design |
+| `/test-cases` | Mind-map test case suite browser |
 
 ## Quick start
 
@@ -36,7 +38,8 @@ Configured for **project Pages** at:
 | --- | --- |
 | Vite `base` | `/gas-cash-qa-bug-board/` |
 | Router | `BrowserRouter` with matching `basename` |
-| SPA deep links | `dist/404.html` + `overview/` `summary/` `mindmap/` index copies (build script) |
+| SPA deep links | `dist/404.html` + `overview/` `summary/` `mindmap/` + `mindmap/<domain>/` + `test-cases/` index copies (`scripts/spa-pages.sh`) |
+| Mind map data | Editable JSON under [`data/mindmaps/`](data/mindmaps/) (hub + one file per domain) |
 | Deploy | [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) → `actions/upload-pages-artifact` + `actions/deploy-pages` |
 
 ### Enable once (repo owner)

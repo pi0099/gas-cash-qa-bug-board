@@ -1,0 +1,88 @@
+{
+  "id": "garage",
+  "title": "Garage",
+  "summary": "Garage shell, Starting 5, reserves, repairs; route honesty for inventory.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "garage",
+      "label": "Garage",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Garage / lineup / reserves — gated when logged out.",
+      "tcIds": ["GC-TC-F-08", "GC-TC-F-11", "GC-TC-V-10"]
+    },
+    {
+      "id": "garage-shell",
+      "label": "Garage shell /garage",
+      "kind": "branch",
+      "position": { "x": -300, "y": -140 },
+      "tags": ["Observed"],
+      "tcTypes": ["F"],
+      "summary": "Authenticated garage settles; unauth shows sign-in gate.",
+      "tcIds": ["GC-TC-F-08", "GC-TC-V-10"],
+      "tcIdeas": ["Authed: vehicle list or empty state", "Unauth: Sign In CTA"]
+    },
+    {
+      "id": "garage-lineup",
+      "label": "Starting 5",
+      "kind": "branch",
+      "position": { "x": 280, "y": -140 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F"],
+      "summary": "Save lineup; multiplier / wait / daily estimate update.",
+      "tcIdeas": ["Save updates estimates", "Heaviest slot-1 pays more (spot-check, field)"]
+    },
+    {
+      "id": "garage-reserves",
+      "label": "Reserves swap",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -200 },
+      "tags": ["Documented"],
+      "tcTypes": ["F"],
+      "summary": "Swap reserve ↔ lineup free; preview wait before save.",
+      "tcIdeas": ["Swap free; wait preview before save"]
+    },
+    {
+      "id": "garage-repair",
+      "label": "Repairs",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -60 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Repair worn car with USO; burn path via docs/proof narrative.",
+      "tcIdeas": ["Insufficient USO blocks repair", "Cost disclosed before confirm"]
+    },
+    {
+      "id": "garage-pitstop",
+      "label": "Inventory /pitstop",
+      "kind": "branch",
+      "position": { "x": 280, "y": 100 },
+      "tags": ["Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Live inventory path /pitstop; docs /inventory 404 [Observed].",
+      "tcIds": ["GC-TC-F-11", "GC-TC-V-03"],
+      "tcIdeas": ["/pitstop 200", "Docs /inventory honesty"]
+    },
+    {
+      "id": "garage-cooldown",
+      "label": "Cooldown / wait",
+      "kind": "leaf",
+      "position": { "x": -300, "y": 100 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Cooldown not elapsed → claim refused; uses unchanged correctly.",
+      "tcIdeas": ["Wait estimate matches refusal behavior"]
+    }
+  ],
+  "edges": [
+    { "id": "e-g-shell", "source": "garage", "target": "garage-shell" },
+    { "id": "e-g-line", "source": "garage", "target": "garage-lineup" },
+    { "id": "e-g-res", "source": "garage-lineup", "target": "garage-reserves" },
+    { "id": "e-g-rep", "source": "garage-lineup", "target": "garage-repair" },
+    { "id": "e-g-pit", "source": "garage", "target": "garage-pitstop" },
+    { "id": "e-g-cd", "source": "garage", "target": "garage-cooldown" }
+  ]
+}

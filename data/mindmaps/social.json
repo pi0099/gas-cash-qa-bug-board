@@ -1,0 +1,89 @@
+{
+  "id": "social",
+  "title": "Social",
+  "summary": "Mileage, leaderboard, referrals, privacy Public/Private + location hide.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "social",
+      "label": "Social",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V", "S"],
+      "summary": "Mileage, leaderboard, referrals, profiles.",
+      "tcIds": ["GC-TC-F-13", "GC-TC-F-14", "GC-TC-V-10", "GC-TC-S-01", "GC-TC-S-06"]
+    },
+    {
+      "id": "social-mileage",
+      "label": "Mileage",
+      "kind": "branch",
+      "position": { "x": -300, "y": -160 },
+      "tags": ["Observed", "Documented"],
+      "tcTypes": ["F", "S"],
+      "summary": "Mileage page loads when authenticated; gated when logged out.",
+      "tcIds": ["GC-TC-F-14", "GC-TC-S-01"],
+      "tcIdeas": ["Authed shell settles", "Unauth → sign-in", "Accrual rules: +10 per $1 claims / in-app $GAS buys [Documented]"]
+    },
+    {
+      "id": "social-leaderboard",
+      "label": "Leaderboard",
+      "kind": "branch",
+      "position": { "x": 280, "y": -160 },
+      "tags": ["Observed", "Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "24h / 7d / all filters when authed; clear retry on error.",
+      "tcIds": ["GC-TC-F-13"],
+      "tcIdeas": ["Filters populate when authed", "Unauth: data or clear error — not silent fail"]
+    },
+    {
+      "id": "social-ref",
+      "label": "Referrals",
+      "kind": "branch",
+      "position": { "x": 280, "y": 40 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V", "S"],
+      "summary": "gas.cash/r/{username}; invite cookie 30d; claim share payout off today.",
+      "tcIds": ["GC-TC-S-06"],
+      "tcIdeas": ["Referral link present", "No claim share paid (docs)", "Open-redirect smoke on next/redirect params"]
+    },
+    {
+      "id": "social-privacy",
+      "label": "Privacy",
+      "kind": "branch",
+      "position": { "x": -300, "y": 60 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V", "S"],
+      "summary": "Public/Private profile; location hide switch.",
+      "tcIdeas": ["Public→Private hides username/picture within ~1 min", "Location off → station hidden on feeds; claims still listed"]
+    },
+    {
+      "id": "social-profile",
+      "label": "Profiles",
+      "kind": "leaf",
+      "position": { "x": -520, "y": 20 },
+      "tags": ["Documented"],
+      "tcTypes": ["F"],
+      "summary": "Profile surfaces respect privacy toggles.",
+      "tcIdeas": ["Private profile not oversharing on leaderboard"]
+    },
+    {
+      "id": "social-gate",
+      "label": "Auth gates",
+      "kind": "leaf",
+      "position": { "x": -520, "y": -200 },
+      "tags": ["Observed"],
+      "tcTypes": ["S", "V"],
+      "summary": "Mileage / Garage require auth when logged out.",
+      "tcIds": ["GC-TC-S-01", "GC-TC-V-10"]
+    }
+  ],
+  "edges": [
+    { "id": "e-s-mil", "source": "social", "target": "social-mileage" },
+    { "id": "e-s-lb", "source": "social", "target": "social-leaderboard" },
+    { "id": "e-s-ref", "source": "social", "target": "social-ref" },
+    { "id": "e-s-priv", "source": "social", "target": "social-privacy" },
+    { "id": "e-s-prof", "source": "social-privacy", "target": "social-profile" },
+    { "id": "e-s-gate", "source": "social-mileage", "target": "social-gate" }
+  ]
+}

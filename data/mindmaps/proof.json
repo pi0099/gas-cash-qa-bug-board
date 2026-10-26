@@ -1,0 +1,88 @@
+{
+  "id": "proof",
+  "title": "Proof",
+  "summary": "Prize pool, prices, contracts — primary reconciliation surface for QA.",
+  "tags": ["Observed", "Documented"],
+  "nodes": [
+    {
+      "id": "proof",
+      "label": "Proof / transparency",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Public proof page at app.gas.cash/proof.",
+      "tcIds": ["GC-TC-F-15"]
+    },
+    {
+      "id": "proof-pool",
+      "label": "Prize pool",
+      "kind": "branch",
+      "position": { "x": -300, "y": -140 },
+      "tags": ["Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Live prize pool string non-empty; reconcile ≈ explorer prize wallet.",
+      "tcIds": ["GC-TC-F-15"],
+      "tcIdeas": ["Pool visible", "Matches explorer within refresh window"]
+    },
+    {
+      "id": "proof-prices",
+      "label": "USO / $GAS prices",
+      "kind": "branch",
+      "position": { "x": 280, "y": -140 },
+      "tags": ["Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Prices shown; order-of-magnitude vs swap quote.",
+      "tcIdeas": ["Prices parse", "2% tax visible on proof / marketing"]
+    },
+    {
+      "id": "proof-contracts",
+      "label": "Contract links",
+      "kind": "branch",
+      "position": { "x": 280, "y": 60 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Blockscout + Dexscreener links; correct chain 4663.",
+      "tcIdeas": ["Links open Blockscout on 4663", "USO / prize pool addresses present"]
+    },
+    {
+      "id": "proof-chain",
+      "label": "Chain 4663",
+      "kind": "leaf",
+      "position": { "x": 500, "y": 20 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F"],
+      "summary": "Robinhood Chain execution; contracts on docs + proof.",
+      "tcIdeas": ["Explorer chain id matches"]
+    },
+    {
+      "id": "proof-tax",
+      "label": "2% tax display",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -180 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["V"],
+      "summary": "Trade tax narrative feeds prize pool.",
+      "tcIdeas": ["Tax % disclosed"]
+    },
+    {
+      "id": "proof-dealership",
+      "label": "Dealership (soon)",
+      "kind": "leaf",
+      "position": { "x": -300, "y": 80 },
+      "tags": ["Coming soon", "Observed"],
+      "tcTypes": ["V"],
+      "summary": "Route exists; empty / “Could not load the market.” Docs: coming soon.",
+      "tcIds": ["GC-TC-V-09"],
+      "tcIdeas": ["No silent spend", "Empty/error recoverable"]
+    }
+  ],
+  "edges": [
+    { "id": "e-p-pool", "source": "proof", "target": "proof-pool" },
+    { "id": "e-p-pr", "source": "proof", "target": "proof-prices" },
+    { "id": "e-p-tax", "source": "proof-prices", "target": "proof-tax" },
+    { "id": "e-p-c", "source": "proof", "target": "proof-contracts" },
+    { "id": "e-p-ch", "source": "proof-contracts", "target": "proof-chain" },
+    { "id": "e-p-d", "source": "proof", "target": "proof-dealership" }
+  ]
+}

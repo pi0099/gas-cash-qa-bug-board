@@ -1,0 +1,80 @@
+{
+  "id": "vehicle",
+  "title": "Vehicle",
+  "summary": "Free bike fallback, keys → cars, open/reveal, Starting 5 lineup.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "vehicle",
+      "label": "Get vehicle",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Free bike if no car; or buy keys and open cars (NFT).",
+      "tcIds": ["GC-TC-F-08"]
+    },
+    {
+      "id": "vehicle-bike",
+      "label": "Free bike",
+      "kind": "branch",
+      "position": { "x": -320, "y": -160 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Fallback when player has no car NFT.",
+      "detail": "Limited uses, never jackpot, claim cap ~$0.50 [Documented].",
+      "tcIdeas": ["No car → bike eligibility shown", "Bike claim caps enforced (field)"]
+    },
+    {
+      "id": "vehicle-keys",
+      "label": "Buy keys",
+      "kind": "branch",
+      "position": { "x": 280, "y": -160 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F"],
+      "summary": "Regular / Super / Premium keys priced in $GAS (Mini Mart).",
+      "tcIds": ["GC-TC-F-09"],
+      "tcIdeas": ["Key SKUs listed with $GAS prices"]
+    },
+    {
+      "id": "vehicle-open",
+      "label": "Open / reveal key",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -220 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Open after reveal → stats/tier within published ranges; sealed→active.",
+      "detail": "Boost steps ≤5 before open [Documented]. Inventory live at /pitstop.",
+      "tcIdeas": ["Boost preview before open", "Open records car in garage"]
+    },
+    {
+      "id": "vehicle-lineup",
+      "label": "Starting 5 lineup",
+      "kind": "branch",
+      "position": { "x": 280, "y": 80 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F"],
+      "summary": "Save Starting 5; multiplier / wait / daily estimate update.",
+      "tcIds": ["GC-TC-F-08"],
+      "tcIdeas": ["Save lineup updates estimates", "Swap reserve ↔ lineup free with wait preview"]
+    },
+    {
+      "id": "vehicle-nft",
+      "label": "Car / Bike NFT",
+      "kind": "leaf",
+      "position": { "x": -320, "y": 80 },
+      "tags": ["Documented"],
+      "tcTypes": ["F"],
+      "summary": "Eligibility to claim tied to vehicle NFT ownership on chain 4663.",
+      "tcIdeas": ["Ownership matches explorer when reconciled"]
+    }
+  ],
+  "edges": [
+    { "id": "e-v-bike", "source": "vehicle", "target": "vehicle-bike" },
+    { "id": "e-v-keys", "source": "vehicle", "target": "vehicle-keys" },
+    { "id": "e-v-open", "source": "vehicle-keys", "target": "vehicle-open" },
+    { "id": "e-v-line", "source": "vehicle", "target": "vehicle-lineup" },
+    { "id": "e-v-nft", "source": "vehicle", "target": "vehicle-nft" },
+    { "id": "j-keys-line", "source": "vehicle-open", "target": "vehicle-lineup", "kind": "journey" }
+  ]
+}

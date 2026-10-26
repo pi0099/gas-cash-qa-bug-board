@@ -1,0 +1,99 @@
+{
+  "id": "coming-soon",
+  "title": "Coming soon",
+  "summary": "Features not live — test honesty and no-spend only. Do not invent production claim paths.",
+  "tags": ["Coming soon", "Observed"],
+  "nodes": [
+    {
+      "id": "coming-soon",
+      "label": "Coming soon",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Coming soon", "Observed"],
+      "tcTypes": ["V", "S"],
+      "summary": "UI may list items; docs say not live — purchase/claim must fail safely or be blocked.",
+      "tcIds": ["GC-TC-V-01", "GC-TC-V-06", "GC-TC-V-09"]
+    },
+    {
+      "id": "soon-dealership",
+      "label": "Dealership",
+      "kind": "branch",
+      "position": { "x": -300, "y": -140 },
+      "tags": ["Coming soon", "Observed"],
+      "tcTypes": ["V"],
+      "summary": "Route present; empty / load error; docs coming soon.",
+      "tcIds": ["GC-TC-V-09"],
+      "tcIdeas": ["No crash", "No silent spend"]
+    },
+    {
+      "id": "soon-crowbars",
+      "label": "Crowbars / insurance / theft",
+      "kind": "branch",
+      "position": { "x": 280, "y": -140 },
+      "tags": ["Coming soon", "Observed"],
+      "tcTypes": ["V", "S"],
+      "summary": "Items may appear in Mini Mart; docs not live.",
+      "tcIds": ["GC-TC-V-01"],
+      "tcIdeas": ["Purchase blocked or non-charging"]
+    },
+    {
+      "id": "soon-scratchers",
+      "label": "Scratchers",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -180 },
+      "tags": ["Coming soon", "Observed"],
+      "tcTypes": ["V"],
+      "summary": "Banner/UI Observed — confirm stub vs live.",
+      "tcIdeas": ["No production dependence"]
+    },
+    {
+      "id": "soon-mafia",
+      "label": "Mafia Men / Job Board",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -60 },
+      "tags": ["Coming soon"],
+      "tcTypes": ["V"],
+      "summary": "Docs: not live or later — no production claim paths.",
+      "tcIdeas": ["Surfaces labeled or absent"]
+    },
+    {
+      "id": "soon-chat",
+      "label": "Chat closed",
+      "kind": "leaf",
+      "position": { "x": -300, "y": 60 },
+      "tags": ["Observed"],
+      "tcTypes": ["V"],
+      "summary": "“We're Closed” — friendly closed state; no broken composer.",
+      "tcIdeas": ["Closed copy; composer disabled"]
+    },
+    {
+      "id": "soon-referral-share",
+      "label": "Referral claim share off",
+      "kind": "leaf",
+      "position": { "x": 280, "y": 80 },
+      "tags": ["Documented"],
+      "tcTypes": ["V"],
+      "summary": "Invite link + cookie only; no claim share paid today.",
+      "tcIdeas": ["UI does not promise paid share"]
+    },
+    {
+      "id": "soon-labels",
+      "label": "Label honesty",
+      "kind": "leaf",
+      "position": { "x": 280, "y": 200 },
+      "tags": ["Observed"],
+      "tcTypes": ["V"],
+      "summary": "SOON/OPEN/PLAY must not imply live purchasable when Coming Later.",
+      "tcIds": ["GC-TC-V-06"]
+    }
+  ],
+  "edges": [
+    { "id": "e-s-d", "source": "coming-soon", "target": "soon-dealership" },
+    { "id": "e-s-c", "source": "coming-soon", "target": "soon-crowbars" },
+    { "id": "e-s-sc", "source": "soon-crowbars", "target": "soon-scratchers" },
+    { "id": "e-s-m", "source": "soon-crowbars", "target": "soon-mafia" },
+    { "id": "e-s-ch", "source": "coming-soon", "target": "soon-chat" },
+    { "id": "e-s-r", "source": "coming-soon", "target": "soon-referral-share" },
+    { "id": "e-s-l", "source": "coming-soon", "target": "soon-labels" }
+  ]
+}

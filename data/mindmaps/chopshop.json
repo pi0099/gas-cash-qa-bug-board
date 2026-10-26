@@ -1,0 +1,88 @@
+{
+  "id": "chopshop",
+  "title": "Chop Shop",
+  "summary": "Merge flow, fees/tips, empty/loading states; live /chopshop vs docs /chop-shop.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "chop",
+      "label": "Chop Shop",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Merge cars: fee in $GAS; success or miss sealed car; both inputs consumed.",
+      "tcIds": ["GC-TC-F-10", "GC-TC-V-02"]
+    },
+    {
+      "id": "chop-live",
+      "label": "Live /chopshop",
+      "kind": "branch",
+      "position": { "x": -300, "y": -140 },
+      "tags": ["Observed"],
+      "tcTypes": ["F"],
+      "summary": "UI loads at /chopshop.",
+      "tcIds": ["GC-TC-F-10"],
+      "tcIdeas": ["/chopshop 200 branded shell"]
+    },
+    {
+      "id": "chop-docs",
+      "label": "Docs /chop-shop 404",
+      "kind": "leaf",
+      "position": { "x": -520, "y": -200 },
+      "tags": ["Observed"],
+      "tcTypes": ["V"],
+      "summary": "Docs hyphen path /chop-shop still 404 while product is live.",
+      "tcIds": ["GC-TC-V-02"],
+      "tcIdeas": ["Docs↔app route honesty"]
+    },
+    {
+      "id": "chop-merge",
+      "label": "Merge flow",
+      "kind": "branch",
+      "position": { "x": 280, "y": -120 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "Select two cars → fee preview → confirm → success or miss.",
+      "tcIdeas": ["Both inputs consumed on outcome", "Fee in $GAS disclosed", "Insufficient $GAS blocks"]
+    },
+    {
+      "id": "chop-tips",
+      "label": "Tips / odds copy",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -180 },
+      "tags": ["Documented"],
+      "tcTypes": ["V"],
+      "summary": "Merge odds / tip copy matches docs; no guaranteed win.",
+      "tcIdeas": ["Odds/fee preview before confirm"]
+    },
+    {
+      "id": "chop-empty",
+      "label": "Empty / loading",
+      "kind": "leaf",
+      "position": { "x": 500, "y": -40 },
+      "tags": ["Observed"],
+      "tcTypes": ["V"],
+      "summary": "Empty garage / loading merge UI — recoverable, no crash.",
+      "tcIdeas": ["Empty state CTA", "Loading does not flash success"]
+    },
+    {
+      "id": "chop-cancel",
+      "label": "Cancel merge",
+      "kind": "leaf",
+      "position": { "x": 280, "y": 80 },
+      "tags": ["Documented"],
+      "tcTypes": ["V"],
+      "summary": "Back out before confirm → cars and $GAS unchanged.",
+      "tcIdeas": ["Dismiss confirm → no fee"]
+    }
+  ],
+  "edges": [
+    { "id": "e-ch-live", "source": "chop", "target": "chop-live" },
+    { "id": "e-ch-docs", "source": "chop-live", "target": "chop-docs" },
+    { "id": "e-ch-merge", "source": "chop", "target": "chop-merge" },
+    { "id": "e-ch-tips", "source": "chop-merge", "target": "chop-tips" },
+    { "id": "e-ch-empty", "source": "chop-merge", "target": "chop-empty" },
+    { "id": "e-ch-can", "source": "chop", "target": "chop-cancel" }
+  ]
+}

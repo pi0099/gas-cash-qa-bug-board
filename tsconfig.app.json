@@ -23,5 +23,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "data/bugs.json"]
+  "include": ["src", "data/bugs.json", "data/test-cases.json", "data/mindmaps/**/*.json"]
 }

@@ -1,0 +1,115 @@
+{
+  "id": "wallet",
+  "title": "Wallet",
+  "summary": "Embedded Privy wallet — balances, deposit/withdraw surfaces, export warnings, sponsorship messaging.",
+  "tags": ["Documented", "Observed"],
+  "nodes": [
+    {
+      "id": "wallet",
+      "label": "Wallet",
+      "kind": "center",
+      "position": { "x": 0, "y": 0 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F", "V", "S"],
+      "summary": "Privy embedded non-custodial wallet.",
+      "detail": "Losing social access without export risks funds [Documented].",
+      "tcIds": ["GC-TC-F-03", "GC-TC-V-05"]
+    },
+    {
+      "id": "wallet-balances",
+      "label": "USO / $GAS balances",
+      "kind": "branch",
+      "position": { "x": -340, "y": -180 },
+      "tags": ["Observed"],
+      "tcTypes": ["F", "V"],
+      "summary": "Header balance chrome for USO and $GAS when authed.",
+      "tcIds": ["GC-TC-F-03", "GC-TC-V-05"],
+      "tcIdeas": ["Chrome present (numeric, 0, or transient ellipsis)", "Ellipsis must resolve or show failed state — not stuck forever"]
+    },
+    {
+      "id": "wallet-address",
+      "label": "Address consistency",
+      "kind": "leaf",
+      "position": { "x": -560, "y": -260 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "S"],
+      "summary": "UI address == Privy/exported == explorer on chain 4663.",
+      "tcIdeas": ["Copy address matches explorer when reconciled"]
+    },
+    {
+      "id": "wallet-deposit-tab",
+      "label": "Deposit tab",
+      "kind": "branch",
+      "position": { "x": 300, "y": -160 },
+      "tags": ["Documented", "Observed"],
+      "tcTypes": ["F"],
+      "summary": "Deposit / Buy Gas entry — fund path into Gas wallet.",
+      "tcIds": ["GC-TC-F-04"],
+      "tcIdeas": ["Open Deposit without completing a transfer"]
+    },
+    {
+      "id": "wallet-withdraw-tab",
+      "label": "Withdraw / send surface",
+      "kind": "leaf",
+      "position": { "x": 520, "y": -220 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V"],
+      "summary": "If withdraw/send UI exists, invalid amount must not enable spend.",
+      "tcIdeas": ["Empty amount disabled", "Clear error on insufficient balance"]
+    },
+    {
+      "id": "wallet-export",
+      "label": "Key export warning",
+      "kind": "branch",
+      "position": { "x": 300, "y": 40 },
+      "tags": ["Documented"],
+      "tcTypes": ["S", "V"],
+      "summary": "Export from Deposit / Buy Gas with irreversible-loss warning.",
+      "detail": "Money-safe: observe warnings only — do not display seed in evidence.",
+      "tcIds": ["GC-TC-S-02", "GC-TC-S-04"],
+      "tcIdeas": ["Export not shown casually", "Warning before reveal"]
+    },
+    {
+      "id": "wallet-no-seed-copy",
+      "label": "No seed in UI copy",
+      "kind": "leaf",
+      "position": { "x": 520, "y": 0 },
+      "tags": ["Documented"],
+      "tcTypes": ["S"],
+      "summary": "UI must not phish for seed phrase or account password.",
+      "tcIds": ["GC-TC-S-02"],
+      "tcIdeas": ["Scan deposit/export/support copy for seed/password asks"]
+    },
+    {
+      "id": "wallet-sponsor",
+      "label": "Sponsorship messaging",
+      "kind": "branch",
+      "position": { "x": -340, "y": 120 },
+      "tags": ["Documented"],
+      "tcTypes": ["F", "V", "S"],
+      "summary": "Gas sponsorship is a courtesy — may be unavailable.",
+      "detail": "UX must not silent-succeed when sponsorship fails [Documented].",
+      "tcIdeas": ["Sponsorship unavailable → user-pays or clear failure", "No silent success mid-claim"]
+    },
+    {
+      "id": "wallet-rewards-chrome",
+      "label": "Reward assets chrome",
+      "kind": "leaf",
+      "position": { "x": -560, "y": -80 },
+      "tags": ["Observed"],
+      "tcTypes": ["F"],
+      "summary": "Header / portfolio surfaces USO and $GAS reward assets.",
+      "tcIds": ["GC-TC-F-16"]
+    }
+  ],
+  "edges": [
+    { "id": "e-w-bal", "source": "wallet", "target": "wallet-balances" },
+    { "id": "e-w-addr", "source": "wallet-balances", "target": "wallet-address" },
+    { "id": "e-w-rew", "source": "wallet-balances", "target": "wallet-rewards-chrome" },
+    { "id": "e-w-dep", "source": "wallet", "target": "wallet-deposit-tab" },
+    { "id": "e-w-wd", "source": "wallet-deposit-tab", "target": "wallet-withdraw-tab" },
+    { "id": "e-w-exp", "source": "wallet", "target": "wallet-export" },
+    { "id": "e-w-seed", "source": "wallet-export", "target": "wallet-no-seed-copy" },
+    { "id": "e-w-sp", "source": "wallet", "target": "wallet-sponsor" }
+  ]
+}
