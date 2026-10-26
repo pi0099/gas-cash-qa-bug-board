@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T20:25:00+07:00",
+  "updatedAt": "2026-10-26T23:35:00+07:00",
   "source": "Seeded from audits; retested 2026-10-26 on https://app.gas.cash (see lastRetest* fields)",
   "bugs": [
     {
@@ -18,13 +18,13 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "Every first-party `app.gas.cash/api/*` call in the logged-in network audit returned HTTP 500 with a uniform `code:internal` envelope. SPA document shells still load 200. Privy auth is healthy. Soft-fail UI copy matches these 500s 1:1 across Mini Mart, Live pumps, Leaderboard, ATM, and Inventory.\n\n**Retest 2026-10-26 (Fixed):** /api/* recovered — 0×5xx in session (980×2xx / 33×4xx). Soft-fail banners gone on map/shop/pumps.",
+      "description": "Every first-party `app.gas.cash/api/*` call in the logged-in network audit returned HTTP 500 with a uniform `code:internal` envelope. SPA document shells still load 200. Privy auth is healthy. Soft-fail UI copy matches these 500s 1:1 across Mini Mart, Live pumps, Leaderboard, ATM, and Inventory.\n\n**Retest 2026-10-26 (Fixed):** /api/* recovered \u2014 0\u00d75xx in session (980\u00d72xx / 33\u00d74xx). Soft-fail banners gone on map/shop/pumps.",
       "testData": [
         "Env: Production https://app.gas.cash",
-        "Date: 2026-10-26 (~10:27–10:30 +07)",
+        "Date: 2026-10-26 (~10:27\u201310:30 +07)",
         "Account: Privy storageState session (LOG OUT / SET USERNAME visible; no login wall)",
-        "Capture: 650 XHR/fetch — 397× 5xx; app /api/* success count: 0",
-        "Uniform body: {\"ok\":false,\"kind\":\"error\",\"code\":\"internal\",\"message\":\"Something went wrong. Try again.\",\"requestId\":\"hkg1::…\"}"
+        "Capture: 650 XHR/fetch \u2014 397\u00d7 5xx; app /api/* success count: 0",
+        "Uniform body: {\"ok\":false,\"kind\":\"error\",\"code\":\"internal\",\"message\":\"Something went wrong. Try again.\",\"requestId\":\"hkg1::\u2026\"}"
       ],
       "precondition": [
         "Logged-in Privy session valid at start and end of capture",
@@ -42,47 +42,47 @@
       "evidence": [
         {
           "src": "/evidence/retest-20261026/01-api-outage-map.png",
-          "alt": "Retest — map Live pumps loaded (no soft-fail)"
+          "alt": "Retest \u2014 map Live pumps loaded (no soft-fail)"
         },
         {
           "src": "/evidence/retest-20261026/01-api-outage-minimart.png",
-          "alt": "Retest — Mini Mart loaded with prices"
+          "alt": "Retest \u2014 Mini Mart loaded with prices"
         },
         {
           "src": "/evidence/api-03-mini-mart.png",
-          "alt": "Mini Mart — Could not load the shop"
+          "alt": "Mini Mart \u2014 Could not load the shop"
         },
         {
           "src": "/evidence/api-01-map.png",
-          "alt": "Map / Live pumps — Could not load/read the pumps"
+          "alt": "Map / Live pumps \u2014 Could not load/read the pumps"
         },
         {
           "src": "/evidence/api-05-leaderboard.png",
-          "alt": "Leaderboard — Could not read the leaderboard"
+          "alt": "Leaderboard \u2014 Could not read the leaderboard"
         },
         {
           "src": "/evidence/api-04b-atm-my-stakes.png",
-          "alt": "ATM My Stakes — Could not read Robinhood Chain"
+          "alt": "ATM My Stakes \u2014 Could not read Robinhood Chain"
         },
         {
           "src": "/evidence/api-10-pitstop.png",
-          "alt": "Inventory /pitstop — Some inventory could not be read"
+          "alt": "Inventory /pitstop \u2014 Some inventory could not be read"
         }
       ],
       "apiNotes": [
-        "GET /api/mini-mart, /api/key-prices → 500 (Mini Mart)",
-        "GET /api/claims/live, /api/stations → 500 (Live pumps)",
-        "GET /api/lineup → 500 ×34 (Leaderboard)",
-        "POST /api/rpc → 500/abort dominant (ATM)",
-        "GET /api/me*, /api/me/scrolls → 500 (header + inventory)"
+        "GET /api/mini-mart, /api/key-prices \u2192 500 (Mini Mart)",
+        "GET /api/claims/live, /api/stations \u2192 500 (Live pumps)",
+        "GET /api/lineup \u2192 500 \u00d734 (Leaderboard)",
+        "POST /api/rpc \u2192 500/abort dominant (ATM)",
+        "GET /api/me*, /api/me/scrolls \u2192 500 (header + inventory)"
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
-      "lastRetestNote": "Retest 2026-10-26 +07: /api/* recovered — 0×5xx in session (980×2xx / 33×4xx). Soft-fail banners gone on map/shop/pumps.",
+      "lastRetestNote": "Retest 2026-10-26 +07: /api/* recovered \u2014 0\u00d75xx in session (980\u00d72xx / 33\u00d74xx). Soft-fail banners gone on map/shop/pumps.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Fixed",
-        "note": "Retest 2026-10-26 +07: /api/* recovered — 0×5xx in session (980×2xx / 33×4xx). Soft-fail banners gone on map/shop/pumps."
+        "note": "Retest 2026-10-26 +07: /api/* recovered \u2014 0\u00d75xx in session (980\u00d72xx / 33\u00d74xx). Soft-fail banners gone on map/shop/pumps."
       }
     },
     {
@@ -99,12 +99,12 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "`POST /api/rpc` dominates the failure volume (176 calls: 152×500 + 24 aborted) with bursts up to 12 requests / 3s on ATM / My Stakes. UI shows “Could not read Robinhood Chain” / “My stakes, could not read”.\n\n**Retest 2026-10-26 (Partial):** POST /api/rpc now 200; My Stakes shows NO STAKES YET (no Robinhood soft-fail). Still high rpc volume (19 in ATM phase; 331 session-wide).",
+      "description": "`POST /api/rpc` dominates the failure volume (176 calls: 152\u00d7500 + 24 aborted) with bursts up to 12 requests / 3s on ATM / My Stakes. UI shows \u201cCould not read Robinhood Chain\u201d / \u201cMy stakes, could not read\u201d.\n\n**Retest 2026-10-26 (Partial):** POST /api/rpc now 200; My Stakes shows NO STAKES YET (no Robinhood soft-fail). Still high rpc volume (19 in ATM phase; 331 session-wide).",
       "testData": [
         "Env: Production https://app.gas.cash",
-        "Route: /atm → My Stakes",
-        "Endpoint: POST /api/rpc — 176 calls in audit session",
-        "Burst: up to 12 requests within ≤3s",
+        "Route: /atm \u2192 My Stakes",
+        "Endpoint: POST /api/rpc \u2014 176 calls in audit session",
+        "Burst: up to 12 requests within \u22643s",
         "Account: Privy storageState (authed); no stake tx signed"
       ],
       "precondition": [
@@ -117,20 +117,20 @@
         "Watch Network for `POST /api/rpc` volume and status.",
         "Observe the ATM soft-fail copy for Robinhood Chain / My Stakes."
       ],
-      "actual": "ATM shows “Could not read Robinhood Chain” (and My Stakes could not read). `POST /api/rpc` hammers with 500s/aborts; each navigation re-issues. Failing calls still take ~300–400ms each, amplifying perceived latency.",
+      "actual": "ATM shows \u201cCould not read Robinhood Chain\u201d (and My Stakes could not read). `POST /api/rpc` hammers with 500s/aborts; each navigation re-issues. Failing calls still take ~300\u2013400ms each, amplifying perceived latency.",
       "expected": "Chain reads succeed (or fail once with clear backoff). Soft-fail distinguishes RPC proxy 500 vs empty stakes. No 10+/3s retry storm on a known failure.",
       "evidence": [
         {
           "src": "/evidence/retest-20261026/67-atm-my-stakes-no-overlay.png",
-          "alt": "Retest — ATM My Stakes healthy empty state"
+          "alt": "Retest \u2014 ATM My Stakes healthy empty state"
         },
         {
           "src": "/evidence/api-04b-atm-my-stakes.png",
-          "alt": "ATM My Stakes soft-fail — Could not read Robinhood Chain"
+          "alt": "ATM My Stakes soft-fail \u2014 Could not read Robinhood Chain"
         },
         {
           "src": "/evidence/smoke-41-atm-stake-flow.png",
-          "alt": "Week-1 smoke — ATM stake flow soft-fail"
+          "alt": "Week-1 smoke \u2014 ATM stake flow soft-fail"
         },
         {
           "src": "/evidence/api-04-atm.png",
@@ -138,7 +138,7 @@
         }
       ],
       "apiNotes": [
-        "POST /api/rpc — 176 calls (152×500 + 24 aborted)",
+        "POST /api/rpc \u2014 176 calls (152\u00d7500 + 24 aborted)",
         "Shared /api/me* also 500 during ATM phase"
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
@@ -164,12 +164,12 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "Shared layout chrome re-fetches the same endpoints on almost every client navigation even when unrelated to the page. Combined with the /api/* 500 outage, duplicates amplify load and “Try again” latency without recovering data.\n\n**Retest 2026-10-26 (Still valid):** Chrome still refetches on each nav — me/stats×7, scratch/tiers×7, claims/live×14, lineup×5 across 7 routes.",
+      "description": "Shared layout chrome re-fetches the same endpoints on almost every client navigation even when unrelated to the page. Combined with the /api/* 500 outage, duplicates amplify load and \u201cTry again\u201d latency without recovering data.\n\n**Retest 2026-10-26 (Still valid):** Chrome still refetches on each nav \u2014 me/stats\u00d77, scratch/tiers\u00d77, claims/live\u00d714, lineup\u00d75 across 7 routes.",
       "testData": [
         "Env: Production https://app.gas.cash",
-        "Observed counts (single logged-in journey): GET /api/me/stats ×38, GET /api/games/scratch/tiers ×38, GET /api/lineup ×34, GET /api/claims/live ×27",
+        "Observed counts (single logged-in journey): GET /api/me/stats \u00d738, GET /api/games/scratch/tiers \u00d738, GET /api/lineup \u00d734, GET /api/claims/live \u00d727",
         "Burst: me/stats & scratch tiers up to 3/3s; lineup up to 5/3s",
-        "Also: GET /api/me, /api/base-rate, /api/cooldown, /api/me/migration-keys ×14–16 each"
+        "Also: GET /api/me, /api/base-rate, /api/cooldown, /api/me/migration-keys \u00d714\u201316 each"
       ],
       "precondition": [
         "Authenticated session",
@@ -186,7 +186,7 @@
       "evidence": [
         {
           "src": "/evidence/retest-20261026/65-home-no-overlay.png",
-          "alt": "Retest — home chrome still re-fetching shared APIs"
+          "alt": "Retest \u2014 home chrome still re-fetching shared APIs"
         },
         {
           "src": "/evidence/api-01-map.png",
@@ -198,23 +198,23 @@
         },
         {
           "src": "/evidence/api-05-leaderboard.png",
-          "alt": "Leaderboard — lineup fetch soft-fail"
+          "alt": "Leaderboard \u2014 lineup fetch soft-fail"
         }
       ],
       "apiNotes": [
-        "GET /api/me/stats ×38",
-        "GET /api/games/scratch/tiers ×38",
-        "GET /api/lineup ×34",
-        "GET /api/claims/live ×27",
-        "Document/RSC GET /garage, /atm, / also high teens–20s"
+        "GET /api/me/stats \u00d738",
+        "GET /api/games/scratch/tiers \u00d738",
+        "GET /api/lineup \u00d734",
+        "GET /api/claims/live \u00d727",
+        "Document/RSC GET /garage, /atm, / also high teens\u201320s"
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Retest 2026-10-26 +07: Chrome still refetches on each nav — me/stats×7, scratch/tiers×7, claims/live×14, lineup×5 across 7 routes.",
+      "lastRetestNote": "Retest 2026-10-26 +07: Chrome still refetches on each nav \u2014 me/stats\u00d77, scratch/tiers\u00d77, claims/live\u00d714, lineup\u00d75 across 7 routes.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Still valid",
-        "note": "Retest 2026-10-26 +07: Chrome still refetches on each nav — me/stats×7, scratch/tiers×7, claims/live×14, lineup×5 across 7 routes."
+        "note": "Retest 2026-10-26 +07: Chrome still refetches on each nav \u2014 me/stats\u00d77, scratch/tiers\u00d77, claims/live\u00d714, lineup\u00d75 across 7 routes."
       }
     },
     {
@@ -231,11 +231,11 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "`POST /api/auth/sync` returned 500 (×13) throughout the audit while Privy (`auth.privy.io`) stayed fully 2xx. User remains Privy-logged-in (no login wall) but app auth bootstrap / data plane stays broken — suggests regional/backend or auth-context bug after Privy sync.\n\n**Retest 2026-10-26 (Fixed):** POST /api/auth/sync no longer 500 (32×200 + 9×429 rate-limit from refetch volume). Privy still healthy; app data plane recovers.",
+      "description": "`POST /api/auth/sync` returned 500 (\u00d713) throughout the audit while Privy (`auth.privy.io`) stayed fully 2xx. User remains Privy-logged-in (no login wall) but app auth bootstrap / data plane stays broken \u2014 suggests regional/backend or auth-context bug after Privy sync.\n\n**Retest 2026-10-26 (Fixed):** POST /api/auth/sync no longer 500 (32\u00d7200 + 9\u00d7429 rate-limit from refetch volume). Privy still healthy; app data plane recovers.",
       "testData": [
         "Env: Production https://app.gas.cash",
-        "POST /api/auth/sync → 500 ×13",
-        "Privy: GET apps + POST sessions + CF challenge — 27× 2xx",
+        "POST /api/auth/sync \u2192 500 \u00d713",
+        "Privy: GET apps + POST sessions + CF challenge \u2014 27\u00d7 2xx",
         "UI chrome: SET USERNAME, LOG OUT, portfolio shell present",
         "Session end: Privy token + refresh still present"
       ],
@@ -254,7 +254,7 @@
       "evidence": [
         {
           "src": "/evidence/retest-20261026/00-session-home.png",
-          "alt": "Retest — authed session with live pumps"
+          "alt": "Retest \u2014 authed session with live pumps"
         },
         {
           "src": "/evidence/api-03-mini-mart.png",
@@ -262,21 +262,21 @@
         },
         {
           "src": "/evidence/smoke-12-shell-minimart.png",
-          "alt": "Week-1 smoke Mini Mart shell — authed, shop load fail"
+          "alt": "Week-1 smoke Mini Mart shell \u2014 authed, shop load fail"
         }
       ],
       "apiNotes": [
-        "POST /api/auth/sync ×13 → 500",
-        "Privy auth.privy.io — 27× 2xx",
+        "POST /api/auth/sync \u00d713 \u2192 500",
+        "Privy auth.privy.io \u2014 27\u00d7 2xx",
         "Shared recommendation: treat as P0 with /api/* outage; requestIds hkg1::"
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
-      "lastRetestNote": "Retest 2026-10-26 +07: POST /api/auth/sync no longer 500 (32×200 + 9×429 rate-limit from refetch volume). Privy still healthy; app data plane recovers.",
+      "lastRetestNote": "Retest 2026-10-26 +07: POST /api/auth/sync no longer 500 (32\u00d7200 + 9\u00d7429 rate-limit from refetch volume). Privy still healthy; app data plane recovers.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Fixed",
-        "note": "Retest 2026-10-26 +07: POST /api/auth/sync no longer 500 (32×200 + 9×429 rate-limit from refetch volume). Privy still healthy; app data plane recovers."
+        "note": "Retest 2026-10-26 +07: POST /api/auth/sync no longer 500 (32\u00d7200 + 9\u00d7429 rate-limit from refetch volume). Privy still healthy; app data plane recovers."
       }
     },
     {
@@ -302,25 +302,25 @@
         "Cases: GC-S01-08, GC-S01-09 (week-1 smoke)"
       ],
       "precondition": [
-        "Logged-in or anonymous shell load is fine — routing issue is path naming",
+        "Logged-in or anonymous shell load is fine \u2014 routing issue is path naming",
         "Garage nav available to compare live destinations"
       ],
       "steps": [
-        "Open https://app.gas.cash/chop-shop — observe 404.",
-        "Open https://app.gas.cash/inventory — observe 404.",
+        "Open https://app.gas.cash/chop-shop \u2014 observe 404.",
+        "Open https://app.gas.cash/inventory \u2014 observe 404.",
         "From Garage, open Chop Shop and Inventory nav targets.",
         "Confirm live URLs are `/chopshop` and `/pitstop` (200)."
       ],
       "actual": "`/chop-shop` and `/inventory` return HTTP 404. Live product routes are `/chopshop` and `/pitstop`. Docs/deep-links that use hyphenated paths break.",
-      "expected": "Either redirects (`/chop-shop` → `/chopshop`, `/inventory` → `/pitstop`) or docs/external links updated to the live paths so users never hit 404 for real features.",
+      "expected": "Either redirects (`/chop-shop` \u2192 `/chopshop`, `/inventory` \u2192 `/pitstop`) or docs/external links updated to the live paths so users never hit 404 for real features.",
       "evidence": [
         {
           "src": "/evidence/retest-20261026/05-404-chop-shop.png",
-          "alt": "Retest — /chop-shop still 404"
+          "alt": "Retest \u2014 /chop-shop still 404"
         },
         {
           "src": "/evidence/retest-20261026/05-404-inventory.png",
-          "alt": "Retest — /inventory still 404"
+          "alt": "Retest \u2014 /inventory still 404"
         },
         {
           "src": "/evidence/smoke-20-404-chop-shop.png",
@@ -332,11 +332,11 @@
         },
         {
           "src": "/evidence/smoke-71-garage-nav-chop-shop.png",
-          "alt": "Live Chop Shop via Garage nav → /chopshop"
+          "alt": "Live Chop Shop via Garage nav \u2192 /chopshop"
         },
         {
           "src": "/evidence/smoke-71-garage-nav-inventory.png",
-          "alt": "Live Inventory via Garage nav → /pitstop"
+          "alt": "Live Inventory via Garage nav \u2192 /pitstop"
         }
       ],
       "apiNotes": [],
@@ -363,13 +363,13 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "When Mini Mart fails to load (`Could not load the shop`), SKU chrome still renders with blank/`-` prices and live-looking qty steppers (`− 0 +`). Keys, crowbars, insurance, scratchers, Alarm-class items list without a clear Coming Soon banner (Crowbar T3 correctly DROP ONLY). Risk of confusing purchasability during API outage.\n\n**Retest 2026-10-26 (Fixed):** Shop loads (GET /api/mini-mart 200); keys show real USD/GAS prices — blank-price-during-fail scenario no longer present.",
+      "description": "When Mini Mart fails to load (`Could not load the shop`), SKU chrome still renders with blank/`-` prices and live-looking qty steppers (`\u2212 0 +`). Keys, crowbars, insurance, scratchers, Alarm-class items list without a clear Coming Soon banner (Crowbar T3 correctly DROP ONLY). Risk of confusing purchasability during API outage.\n\n**Retest 2026-10-26 (Fixed):** Shop loads (GET /api/mini-mart 200); keys show real USD/GAS prices \u2014 blank-price-during-fail scenario no longer present.",
       "testData": [
         "Env: Production https://app.gas.cash/mini-mart",
-        "Soft-fail: “Could not load the shop”",
+        "Soft-fail: \u201cCould not load the shop\u201d",
         "Prices shown as `-` / blank; qty steppers visible",
         "Case: GC-SHELL-minimart, GC-SHOP-honesty (read-only; no purchases)",
-        "Correlated APIs: GET /api/mini-mart, /unopened, /api/key-prices, /api/key-payback → 500"
+        "Correlated APIs: GET /api/mini-mart, /unopened, /api/key-prices, /api/key-payback \u2192 500"
       ],
       "precondition": [
         "Authenticated session",
@@ -378,24 +378,24 @@
       ],
       "steps": [
         "Open https://app.gas.cash/mini-mart while authenticated.",
-        "Confirm “Could not load the shop” (or equivalent) soft-fail.",
+        "Confirm \u201cCould not load the shop\u201d (or equivalent) soft-fail.",
         "Scan SKU rows: keys, crowbars, insurance, scratchers, Alarm-class.",
         "Observe price cells and qty steppers while load is failed."
       ],
-      "actual": "Shop error banner shows, but SKUs still render with blank/`-` prices and interactive-looking `− 0 +` steppers. Purchasability is ambiguous during load fail; limited SKUs lack a clear Coming Soon treatment (except Crowbar T3 DROP ONLY).",
+      "actual": "Shop error banner shows, but SKUs still render with blank/`-` prices and interactive-looking `\u2212 0 +` steppers. Purchasability is ambiguous during load fail; limited SKUs lack a clear Coming Soon treatment (except Crowbar T3 DROP ONLY).",
       "expected": "On shop load failure, disable purchase controls and/or hide price/qty chrome until prices load. Non-purchasable / coming-soon SKUs should be explicitly labeled so they do not look buyable.",
       "evidence": [
         {
           "src": "/evidence/retest-20261026/62-minimart-insurance-no-overlay.png",
-          "alt": "Retest — Mini Mart keys with live prices"
+          "alt": "Retest \u2014 Mini Mart keys with live prices"
         },
         {
           "src": "/evidence/api-03-mini-mart.png",
-          "alt": "Mini Mart — Could not load the shop (API audit)"
+          "alt": "Mini Mart \u2014 Could not load the shop (API audit)"
         },
         {
           "src": "/evidence/smoke-12-shell-minimart.png",
-          "alt": "Mini Mart shell — prices blank"
+          "alt": "Mini Mart shell \u2014 prices blank"
         },
         {
           "src": "/evidence/smoke-30-minimart-overview.png",
@@ -403,20 +403,20 @@
         },
         {
           "src": "/evidence/smoke-72-minimart-after-retry.png",
-          "alt": "Mini Mart after retry — still failed load"
+          "alt": "Mini Mart after retry \u2014 still failed load"
         }
       ],
       "apiNotes": [
-        "GET /api/mini-mart (+ /unopened) → 500",
-        "GET /api/key-prices, /api/key-payback → 500"
+        "GET /api/mini-mart (+ /unopened) \u2192 500",
+        "GET /api/key-prices, /api/key-payback \u2192 500"
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
-      "lastRetestNote": "Retest 2026-10-26 +07: Shop loads (GET /api/mini-mart 200); keys show real USD/GAS prices — blank-price-during-fail scenario no longer present.",
+      "lastRetestNote": "Retest 2026-10-26 +07: Shop loads (GET /api/mini-mart 200); keys show real USD/GAS prices \u2014 blank-price-during-fail scenario no longer present.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Fixed",
-        "note": "Retest 2026-10-26 +07: Shop loads (GET /api/mini-mart 200); keys show real USD/GAS prices — blank-price-during-fail scenario no longer present."
+        "note": "Retest 2026-10-26 +07: Shop loads (GET /api/mini-mart 200); keys show real USD/GAS prices \u2014 blank-price-during-fail scenario no longer present."
       }
     },
     {
@@ -433,10 +433,10 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "Deep-link / docs paths such as /chop-shop and /inventory render the default white Next.js-style “404 | This page could not be found.” page with no Gas Cash branding, chrome, or home CTA. Users who mistype or follow outdated docs are stranded off-product. Independent of the /api/* outage.\n\n**Retest 2026-10-26 (Still valid):** Still white Next.js-style “404 | This page could not be found.” with no Gas Cash chrome/CTA.",
+      "description": "Deep-link / docs paths such as /chop-shop and /inventory render the default white Next.js-style \u201c404 | This page could not be found.\u201d page with no Gas Cash branding, chrome, or home CTA. Users who mistype or follow outdated docs are stranded off-product. Independent of the /api/* outage.\n\n**Retest 2026-10-26 (Still valid):** Still white Next.js-style \u201c404 | This page could not be found.\u201d with no Gas Cash chrome/CTA.",
       "testData": [
         "Env: Production https://app.gas.cash",
-        "Paths: /chop-shop → HTTP 404; /inventory → HTTP 404",
+        "Paths: /chop-shop \u2192 HTTP 404; /inventory \u2192 HTTP 404",
         "Live equivalents: /chopshop, /pitstop (Garage nav)",
         "Date: 2026-10-26 UI audit; Privy session valid"
       ],
@@ -450,12 +450,12 @@
         "Repeat for https://app.gas.cash/inventory.",
         "Compare with Garage nav destinations /chopshop and /pitstop."
       ],
-      "actual": "Blank white unbranded 404: “404 | This page could not be found.” Zero in-app links / home CTA. No map chrome.",
+      "actual": "Blank white unbranded 404: \u201c404 | This page could not be found.\u201d Zero in-app links / home CTA. No map chrome.",
       "expected": "Branded 404 with Gas Cash chrome and a clear CTA back to map / garage (or HTTP redirects from hyphenated docs paths to live routes).",
       "evidence": [
         {
           "src": "/evidence/retest-20261026/06-404-unbranded.png",
-          "alt": "Retest — unbranded 404 unchanged"
+          "alt": "Retest \u2014 unbranded 404 unchanged"
         },
         {
           "src": "/evidence/ui-11-404-chop-shop.png",
@@ -463,17 +463,17 @@
         },
         {
           "src": "/evidence/ui-59-404-ux.png",
-          "alt": "404 UX detail — no brand or nav"
+          "alt": "404 UX detail \u2014 no brand or nav"
         }
       ],
       "apiNotes": [],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Retest 2026-10-26 +07: Still white Next.js-style “404 | This page could not be found.” with no Gas Cash chrome/CTA.",
+      "lastRetestNote": "Retest 2026-10-26 +07: Still white Next.js-style \u201c404 | This page could not be found.\u201d with no Gas Cash chrome/CTA.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Still valid",
-        "note": "Retest 2026-10-26 +07: Still white Next.js-style “404 | This page could not be found.” with no Gas Cash chrome/CTA."
+        "note": "Retest 2026-10-26 +07: Still white Next.js-style \u201c404 | This page could not be found.\u201d with no Gas Cash chrome/CTA."
       }
     },
     {
@@ -490,11 +490,11 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "Header USO and $GAS pills remain on ellipsis (… / ...) indefinitely across surfaces after long waits. UI never transitions to a failed/empty marker, so balances look perpetually loading. Still a presentation bug when /api/me* fails.\n\n**Retest 2026-10-26 (Partial):** Often shows numeric 0 once /api/me succeeds; still intermittently stuck on … without a failed-state marker (observed after waits).",
+      "description": "Header USO and $GAS pills remain on ellipsis (\u2026 / ...) indefinitely across surfaces after long waits. UI never transitions to a failed/empty marker, so balances look perpetually loading. Still a presentation bug when /api/me* fails.\n\n**Retest 2026-10-26 (Partial):** Often shows numeric 0 once /api/me succeeds; still intermittently stuck on \u2026 without a failed-state marker (observed after waits).",
       "testData": [
         "Env: Production https://app.gas.cash",
-        "Wait ≥10s on map / garage / mini-mart",
-        "Header still shows … for USO and $GAS; + control remains",
+        "Wait \u226510s on map / garage / mini-mart",
+        "Header still shows \u2026 for USO and $GAS; + control remains",
         "Correlated: /api/me* 500 (already filed as API outage)"
       ],
       "precondition": [
@@ -508,15 +508,15 @@
         "Navigate to /garage and /mini-mart and re-check the same pills."
       ],
       "actual": "Pills stay on ellipsis forever; no failed/empty copy; still looks like loading. + remains inviting Buy $GAS.",
-      "expected": "After timeout or known failure, show a clear empty/failed balance state (e.g. — or error affordance), not endless loading ellipsis.",
+      "expected": "After timeout or known failure, show a clear empty/failed balance state (e.g. \u2014 or error affordance), not endless loading ellipsis.",
       "evidence": [
         {
           "src": "/evidence/retest-20261026/08-header-ellipsis.png",
-          "alt": "Retest — header showing 0 after load"
+          "alt": "Retest \u2014 header showing 0 after load"
         },
         {
           "src": "/evidence/retest-20261026/40-home-clear.png",
-          "alt": "Retest — header still … on another load"
+          "alt": "Retest \u2014 header still \u2026 on another load"
         },
         {
           "src": "/evidence/ui-50-header-balances-stuck.png",
@@ -524,19 +524,19 @@
         },
         {
           "src": "/evidence/ui-00-session-home.png",
-          "alt": "Map home — header … pills"
+          "alt": "Map home \u2014 header \u2026 pills"
         }
       ],
       "apiNotes": [
-        "GET /api/me* → 500 during outage"
+        "GET /api/me* \u2192 500 during outage"
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Partial",
-      "lastRetestNote": "Retest 2026-10-26 +07: Often shows numeric 0 once /api/me succeeds; still intermittently stuck on … without a failed-state marker (observed after waits).",
+      "lastRetestNote": "Retest 2026-10-26 +07: Often shows numeric 0 once /api/me succeeds; still intermittently stuck on \u2026 without a failed-state marker (observed after waits).",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Partial",
-        "note": "Retest 2026-10-26 +07: Often shows numeric 0 once /api/me succeeds; still intermittently stuck on … without a failed-state marker (observed after waits)."
+        "note": "Retest 2026-10-26 +07: Often shows numeric 0 once /api/me succeeds; still intermittently stuck on \u2026 without a failed-state marker (observed after waits)."
       }
     },
     {
@@ -553,7 +553,7 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "/garage shows “Reading your cars…” continuously (≥12s observed) while profile chrome and Chop Shop / Inventory nav are already interactive. No timeout or soft-fail parity with other surfaces. Chop Shop similarly shows “Reading your garage..” behind tips.\n\n**Retest 2026-10-26 (Fixed):** Garage settles (CARS 0 / claimed 0) — “Reading your cars…” no longer persists.",
+      "description": "/garage shows \u201cReading your cars\u2026\u201d continuously (\u226512s observed) while profile chrome and Chop Shop / Inventory nav are already interactive. No timeout or soft-fail parity with other surfaces. Chop Shop similarly shows \u201cReading your garage..\u201d behind tips.\n\n**Retest 2026-10-26 (Fixed):** Garage settles (CARS 0 / claimed 0) \u2014 \u201cReading your cars\u2026\u201d no longer persists.",
       "testData": [
         "Env: Production https://app.gas.cash/garage",
         "Message visible at ~2s and still at ~12s",
@@ -565,20 +565,20 @@
       ],
       "steps": [
         "Open https://app.gas.cash/garage while authenticated.",
-        "Note “Reading your cars…” at ~2 seconds.",
+        "Note \u201cReading your cars\u2026\u201d at ~2 seconds.",
         "Wait ~12 seconds without refresh.",
         "Observe whether the message clears or an error replaces it."
       ],
-      "actual": "“Reading your cars…” persists indefinitely; no error/empty fleet state. Chrome remains interactive.",
-      "expected": "Loading resolves to fleet data, empty fleet copy, or a soft-fail (“Could not read your cars”) with retry — not an endless reading message.",
+      "actual": "\u201cReading your cars\u2026\u201d persists indefinitely; no error/empty fleet state. Chrome remains interactive.",
+      "expected": "Loading resolves to fleet data, empty fleet copy, or a soft-fail (\u201cCould not read your cars\u201d) with retry \u2014 not an endless reading message.",
       "evidence": [
         {
           "src": "/evidence/retest-20261026/68-garage-no-overlay.png",
-          "alt": "Retest — garage settled empty fleet"
+          "alt": "Retest \u2014 garage settled empty fleet"
         },
         {
           "src": "/evidence/retest-20261026/09-garage-reading.png",
-          "alt": "Retest — garage after wait"
+          "alt": "Retest \u2014 garage after wait"
         },
         {
           "src": "/evidence/ui-51-garage-loading-stuck.png",
@@ -586,17 +586,17 @@
         },
         {
           "src": "/evidence/ui-67-chopshop-empty.png",
-          "alt": "Chop Shop — Reading your garage behind tips"
+          "alt": "Chop Shop \u2014 Reading your garage behind tips"
         }
       ],
       "apiNotes": [],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
-      "lastRetestNote": "Retest 2026-10-26 +07: Garage settles (CARS 0 / claimed 0) — “Reading your cars…” no longer persists.",
+      "lastRetestNote": "Retest 2026-10-26 +07: Garage settles (CARS 0 / claimed 0) \u2014 \u201cReading your cars\u2026\u201d no longer persists.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Fixed",
-        "note": "Retest 2026-10-26 +07: Garage settles (CARS 0 / claimed 0) — “Reading your cars…” no longer persists."
+        "note": "Retest 2026-10-26 +07: Garage settles (CARS 0 / claimed 0) \u2014 \u201cReading your cars\u2026\u201d no longer persists."
       }
     },
     {
@@ -613,10 +613,10 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "Portfolio chrome shows PORTFOLIO $0.00 while every asset row is an em-dash and rewards show “Could not read your rewards.” The $0.00 total reads as a real zero wallet, not a failed load — dishonest empty/error state during API outage.\n\n**Retest 2026-10-26 (Fixed):** /api/me* healthy; header/portfolio zeros are consistent with an empty wallet (no rewards soft-fail). Dishonest $0-during-outage state gone.",
+      "description": "Portfolio chrome shows PORTFOLIO $0.00 while every asset row is an em-dash and rewards show \u201cCould not read your rewards.\u201d The $0.00 total reads as a real zero wallet, not a failed load \u2014 dishonest empty/error state during API outage.\n\n**Retest 2026-10-26 (Fixed):** /api/me* healthy; header/portfolio zeros are consistent with an empty wallet (no rewards soft-fail). Dishonest $0-during-outage state gone.",
       "testData": [
         "Env: Production https://app.gas.cash",
-        "Observed: PORTFOLIO $0.00 with GAS/USO/ETH/… rows as —",
+        "Observed: PORTFOLIO $0.00 with GAS/USO/ETH/\u2026 rows as \u2014",
         "Also: Could not read your rewards",
         "Account: Privy storageState; money-safe"
       ],
@@ -629,12 +629,12 @@
         "Open the portfolio / rewards bottom sheet.",
         "Observe the PORTFOLIO total vs per-asset rows and any rewards error copy."
       ],
-      "actual": "PORTFOLIO $0.00 with all asset rows as — and rewards soft-fail. Looks like zero balance, not load failure.",
-      "expected": "When balances cannot be read, do not present a confident $0.00 total — show failed/unavailable state consistent with per-row dashes and rewards error.",
+      "actual": "PORTFOLIO $0.00 with all asset rows as \u2014 and rewards soft-fail. Looks like zero balance, not load failure.",
+      "expected": "When balances cannot be read, do not present a confident $0.00 total \u2014 show failed/unavailable state consistent with per-row dashes and rewards error.",
       "evidence": [
         {
           "src": "/evidence/retest-20261026/65-home-no-overlay.png",
-          "alt": "Retest — balances 0 with live pumps healthy"
+          "alt": "Retest \u2014 balances 0 with live pumps healthy"
         },
         {
           "src": "/evidence/ui-23-portfolio-shell.png",
@@ -646,7 +646,7 @@
         }
       ],
       "apiNotes": [
-        "GET /api/me* / rewards → 500"
+        "GET /api/me* / rewards \u2192 500"
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
@@ -671,11 +671,11 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "Under “Could not load the shop,” Mini Mart mixes availability treatments: Keys/Crowbar T1–T2 keep live-looking − 0 + steppers; Insurance shows INSURE; Scratchers show PLAY above COMING LATER / NOT ON SALE YET; five items tagged SOON; Credit Card Fraud tagged OPEN inside Coming Later. Purchasable vs coming-soon is unclear. Complements gc-minimart-blank-prices (blank prices) with label/CTA honesty.\n\n**Retest 2026-10-26 (Still valid):** Shop loads, but COMING LATER still mixes SOON×5 with OPEN on Credit Card Fraud; Scratchers still PLAY; labels remain inconsistent.",
+      "description": "Under \u201cCould not load the shop,\u201d Mini Mart mixes availability treatments: Keys/Crowbar T1\u2013T2 keep live-looking \u2212 0 + steppers; Insurance shows INSURE; Scratchers show PLAY above COMING LATER / NOT ON SALE YET; five items tagged SOON; Credit Card Fraud tagged OPEN inside Coming Later. Purchasable vs coming-soon is unclear. Complements gc-minimart-blank-prices (blank prices) with label/CTA honesty.\n\n**Retest 2026-10-26 (Still valid):** Shop loads, but COMING LATER still mixes SOON\u00d75 with OPEN on Credit Card Fraud; Scratchers still PLAY; labels remain inconsistent.",
       "testData": [
         "Env: Production https://app.gas.cash/mini-mart",
         "Shop soft-fail visible",
-        "Labels: DROP ONLY (T3 OK), SOON ×5, OPEN on Credit Card Fraud, PLAY on Scratchers, INSURE on insurance",
+        "Labels: DROP ONLY (T3 OK), SOON \u00d75, OPEN on Credit Card Fraud, PLAY on Scratchers, INSURE on insurance",
         "Date: 2026-10-26 UI audit"
       ],
       "precondition": [
@@ -685,7 +685,7 @@
       ],
       "steps": [
         "Open https://app.gas.cash/mini-mart.",
-        "Confirm “Could not load the shop.”",
+        "Confirm \u201cCould not load the shop.\u201d",
         "Scroll Keys, Crowbars, Insurance, Scratchers, Coming Later.",
         "Compare CTAs/tags: steppers, INSURE, PLAY, SOON, OPEN, DROP ONLY."
       ],
@@ -694,15 +694,15 @@
       "evidence": [
         {
           "src": "/evidence/retest-20261026/63-minimart-coming-later-no-overlay.png",
-          "alt": "Retest — COMING LATER SOON vs OPEN"
+          "alt": "Retest \u2014 COMING LATER SOON vs OPEN"
         },
         {
           "src": "/evidence/retest-20261026/64-minimart-scratchers-no-overlay.png",
-          "alt": "Retest — Scratchers PLAY"
+          "alt": "Retest \u2014 Scratchers PLAY"
         },
         {
           "src": "/evidence/ui-71-mm-crowbars-section.png",
-          "alt": "Crowbars — steppers + DROP ONLY"
+          "alt": "Crowbars \u2014 steppers + DROP ONLY"
         },
         {
           "src": "/evidence/ui-72-mm-insurance-section.png",
@@ -720,11 +720,11 @@
       "apiNotes": [],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Retest 2026-10-26 +07: Shop loads, but COMING LATER still mixes SOON×5 with OPEN on Credit Card Fraud; Scratchers still PLAY; labels remain inconsistent.",
+      "lastRetestNote": "Retest 2026-10-26 +07: Shop loads, but COMING LATER still mixes SOON\u00d75 with OPEN on Credit Card Fraud; Scratchers still PLAY; labels remain inconsistent.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Still valid",
-        "note": "Retest 2026-10-26 +07: Shop loads, but COMING LATER still mixes SOON×5 with OPEN on Credit Card Fraud; Scratchers still PLAY; labels remain inconsistent."
+        "note": "Retest 2026-10-26 +07: Shop loads, but COMING LATER still mixes SOON\u00d75 with OPEN on Credit Card Fraud; Scratchers still PLAY; labels remain inconsistent."
       }
     },
     {
@@ -741,14 +741,14 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "Decorative “24/7 MART” watermark and horizontal rule/scan lines render through Key steppers, CURRENT APR labels, Crowbar descriptions, and Insurance art — reducing legibility of controls and copy on desktop and mobile.\n\n**Retest 2026-10-26 (Partial):** 24/7 MART backdrop still present; clip-through on key steppers not clearly reproduced when shop is fully loaded.",
+      "description": "Decorative \u201c24/7 MART\u201d watermark and horizontal rule/scan lines render through Key steppers, CURRENT APR labels, Crowbar descriptions, and Insurance art \u2014 reducing legibility of controls and copy on desktop and mobile.\n\n**Retest 2026-10-26 (Partial):** 24/7 MART backdrop still present; clip-through on key steppers not clearly reproduced when shop is fully loaded.",
       "testData": [
         "Env: Production https://app.gas.cash/mini-mart",
         "Viewports: 1280 and 375",
         "Date: 2026-10-26 UI audit"
       ],
       "precondition": [
-        "Open Mini Mart (shop fail or success — layering is structural)"
+        "Open Mini Mart (shop fail or success \u2014 layering is structural)"
       ],
       "steps": [
         "Open https://app.gas.cash/mini-mart at ~1280px.",
@@ -761,11 +761,11 @@
       "evidence": [
         {
           "src": "/evidence/retest-20261026/61-minimart-crowbars-no-overlay.png",
-          "alt": "Retest — faint 24/7 MART backdrop"
+          "alt": "Retest \u2014 faint 24/7 MART backdrop"
         },
         {
           "src": "/evidence/retest-20261026/69-minimart-mobile-no-overlay.png",
-          "alt": "Retest — mobile Mini Mart"
+          "alt": "Retest \u2014 mobile Mini Mart"
         },
         {
           "src": "/evidence/ui-57-mm-after-plus-click.png",
@@ -804,9 +804,9 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "On BASIC / SILVER / GOLD insurance cards, a grey duration pill/control sits behind or peeks out from under the INSURE button — broken layering and ambiguous hit targets.\n\n**Retest 2026-10-26 (Fixed):** Insurance cards show clean “Priced by your car” + INSURE — no duration pill peeking behind the button.",
+      "description": "On BASIC / SILVER / GOLD insurance cards, a grey duration pill/control sits behind or peeks out from under the INSURE button \u2014 broken layering and ambiguous hit targets.\n\n**Retest 2026-10-26 (Fixed):** Insurance cards show clean \u201cPriced by your car\u201d + INSURE \u2014 no duration pill peeking behind the button.",
       "testData": [
-        "Env: Production https://app.gas.cash/mini-mart → Insurance section",
+        "Env: Production https://app.gas.cash/mini-mart \u2192 Insurance section",
         "Cards: BASIC, SILVER, GOLD",
         "Date: 2026-10-26 UI audit"
       ],
@@ -823,15 +823,15 @@
       "evidence": [
         {
           "src": "/evidence/retest-20261026/63-minimart-coming-later-no-overlay.png",
-          "alt": "Retest — Insurance INSURE layout clean"
+          "alt": "Retest \u2014 Insurance INSURE layout clean"
         },
         {
           "src": "/evidence/retest-20261026/62-minimart-insurance-no-overlay.png",
-          "alt": "Retest — Mini Mart product chrome"
+          "alt": "Retest \u2014 Mini Mart product chrome"
         },
         {
           "src": "/evidence/ui-72-mm-insurance-section.png",
-          "alt": "Insurance — control behind Insure"
+          "alt": "Insurance \u2014 control behind Insure"
         },
         {
           "src": "/evidence/ui-73-mm-scratchers-soon.png",
@@ -841,11 +841,11 @@
       "apiNotes": [],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
-      "lastRetestNote": "Retest 2026-10-26 +07: Insurance cards show clean “Priced by your car” + INSURE — no duration pill peeking behind the button.",
+      "lastRetestNote": "Retest 2026-10-26 +07: Insurance cards show clean \u201cPriced by your car\u201d + INSURE \u2014 no duration pill peeking behind the button.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Fixed",
-        "note": "Retest 2026-10-26 +07: Insurance cards show clean “Priced by your car” + INSURE — no duration pill peeking behind the button."
+        "note": "Retest 2026-10-26 +07: Insurance cards show clean \u201cPriced by your car\u201d + INSURE \u2014 no duration pill peeking behind the button."
       }
     },
     {
@@ -862,7 +862,7 @@
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
-      "description": "The same pumps failure is shown twice: top toast “Could not load pumps.” and LIVE PUMPS card “Could not read the pumps. Try again in a moment.” Toast also persists onto non-map routes, adding noise.\n\n**Retest 2026-10-26 (Fixed):** Live pumps feed populates; no duplicate “Could not load/read pumps” toast+card.",
+      "description": "The same pumps failure is shown twice: top toast \u201cCould not load pumps.\u201d and LIVE PUMPS card \u201cCould not read the pumps. Try again in a moment.\u201d Toast also persists onto non-map routes, adding noise.\n\n**Retest 2026-10-26 (Fixed):** Live pumps feed populates; no duplicate \u201cCould not load/read pumps\u201d toast+card.",
       "testData": [
         "Env: Production https://app.gas.cash/",
         "Both messages present simultaneously on map",
@@ -881,11 +881,11 @@
       "evidence": [
         {
           "src": "/evidence/retest-20261026/51-map-pumps.png",
-          "alt": "Retest — Live pumps healthy"
+          "alt": "Retest \u2014 Live pumps healthy"
         },
         {
           "src": "/evidence/retest-20261026/14-pumps-duplicate-map.png",
-          "alt": "Retest — map without pumps error toast"
+          "alt": "Retest \u2014 map without pumps error toast"
         },
         {
           "src": "/evidence/ui-00-session-home.png",
@@ -893,18 +893,71 @@
         },
         {
           "src": "/evidence/ui-30-mobile-map.png",
-          "alt": "Mobile map — Could not load pumps toast"
+          "alt": "Mobile map \u2014 Could not load pumps toast"
         }
       ],
       "apiNotes": [],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
-      "lastRetestNote": "Retest 2026-10-26 +07: Live pumps feed populates; no duplicate “Could not load/read pumps” toast+card.",
+      "lastRetestNote": "Retest 2026-10-26 +07: Live pumps feed populates; no duplicate \u201cCould not load/read pumps\u201d toast+card.",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Fixed",
-        "note": "Retest 2026-10-26 +07: Live pumps feed populates; no duplicate “Could not load/read pumps” toast+card."
+        "note": "Retest 2026-10-26 +07: Live pumps feed populates; no duplicate \u201cCould not load/read pumps\u201d toast+card."
       }
+    },
+    {
+      "id": "gc-bike-rest-copy-mismatch",
+      "title": "[BUG] Vehicle / Free bike - Rest period copy - Modal says 36h but garage detail says 24-hour wait",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "copy",
+        "vehicle",
+        "bike",
+        "validation",
+        "consistency"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Free-bike onboarding modal states each claim spends one use and the bike rests **36h**. After CLAIM YOUR BIKE, garage bike detail copy says **\u201cThe free bike: a 24-hour wait, and a share of the base rate per claim.\u201d** Players get conflicting rest-period guidance before field claims.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-26 (~23:29 +07)",
+        "Account: QA Privy session after authorized free-bike claim",
+        "TC: GC-TC-V-13"
+      ],
+      "precondition": [
+        "Authenticated session",
+        "Free bike claimed on account",
+        "Modal copy previously observed with 36h rest rule"
+      ],
+      "steps": [
+        "Open Mini Mart free-bike modal (pre-claim) and note rest rule: \u201cthe bike rests 36h.\u201d",
+        "Click CLAIM YOUR BIKE; dismiss LET'S GO.",
+        "Open /garage?car=bike and read the bike description under attributes."
+      ],
+      "actual": "Garage copy: \u201cThe free bike: a 24-hour wait, and a share of the base rate per claim.\u201d Modal had said 36h rest.",
+      "expected": "Rest/wait duration is consistent across modal and garage bike detail (same hours), or surfaces clearly explain why they differ.",
+      "evidence": [
+        {
+          "src": "/evidence/claim-bike-20261026/04-claim-modal-before.png",
+          "alt": "Modal \u2014 rests 36h"
+        },
+        {
+          "src": "/evidence/claim-bike-success.png",
+          "alt": "Post-claim modal success"
+        },
+        {
+          "src": "/evidence/claim-bike-garage-post.png",
+          "alt": "Garage \u2014 24-hour wait copy"
+        }
+      ],
+      "apiNotes": [],
+      "relatedTcIds": [
+        "GC-TC-V-13"
+      ]
     }
   ]
 }

@@ -1,25 +1,44 @@
 {
   "id": "hub",
-  "title": "Gas Cash — domains",
+  "title": "Gas Cash \u2014 domains",
   "summary": "High-level product domains for QA. Click a domain to open its detailed flow map for Functional / Validation / Security test-case design.",
-  "tags": ["Documented", "Observed"],
+  "tags": [
+    "Documented",
+    "Observed"
+  ],
   "nodes": [
     {
       "id": "gas",
       "label": "Gas Cash",
       "kind": "center",
-      "position": { "x": 0, "y": 0 },
-      "tags": ["Documented", "Observed"],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
       "summary": "Location-based on-chain game on Robinhood Chain (4663). Drive to a real gas station, pump, earn USO + $GAS.",
-      "detail": "Primary UX is mobile + map + Privy social login — not a classic MetaMask/WalletConnect dApp. Click a domain node to drill into flow-level detail for TC design."
+      "detail": "Primary UX is mobile + map + Privy social login \u2014 not a classic MetaMask/WalletConnect dApp. Click a domain node to drill into flow-level detail for TC design."
     },
     {
       "id": "auth",
       "label": "Auth",
       "kind": "domain",
-      "position": { "x": -420, "y": -280 },
-      "tags": ["Observed", "Documented"],
-      "tcTypes": ["F", "V", "S"],
+      "position": {
+        "x": -420,
+        "y": -280
+      },
+      "tags": [
+        "Observed",
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "V",
+        "S"
+      ],
       "href": "/mindmap/auth",
       "summary": "Privy social login (Google / X / Apple), session, logout, gated pages, auth sync.",
       "detail": "Open the Auth detail map for OAuth provider branches, cancel/deny, session expiry, and security gates."
@@ -28,64 +47,121 @@
       "id": "wallet",
       "label": "Wallet",
       "kind": "domain",
-      "position": { "x": -520, "y": -60 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V", "S"],
+      "position": {
+        "x": -520,
+        "y": -60
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V",
+        "S"
+      ],
       "href": "/mindmap/wallet",
-      "summary": "Embedded non-custodial wallet — balances, deposit/withdraw tabs, export warnings, sponsorship.",
+      "summary": "Embedded non-custodial wallet \u2014 balances, deposit/withdraw tabs, export warnings, sponsorship.",
       "detail": "No seed phishing in UI copy. Export is warnings-first; sponsorship is a courtesy."
     },
     {
       "id": "fund",
       "label": "Fund / Buy $GAS",
       "kind": "domain",
-      "position": { "x": -480, "y": 160 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V", "S"],
+      "position": {
+        "x": -480,
+        "y": 160
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V",
+        "S"
+      ],
       "href": "/mindmap/fund",
-      "summary": "Deposit → attestation → swap into $GAS; insufficient funds; cancel; 2% tax.",
+      "summary": "Deposit \u2192 attestation \u2192 swap into $GAS; insufficient funds; cancel; 2% tax.",
       "detail": "Money-safe QA: open flows and cancel; do not complete funded swaps unless intentional."
     },
     {
       "id": "vehicle",
       "label": "Vehicle",
       "kind": "domain",
-      "position": { "x": -200, "y": -340 },
-      "tags": ["Documented"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": -200,
+        "y": -340
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "href": "/mindmap/vehicle",
-      "summary": "Free bike if no car; keys → open cars; lineup Starting 5.",
-      "detail": "Bike: limited uses, never jackpot, claim cap ~$0.50 [Documented]."
+      "summary": "Free bike claimed on QA; keys \u2192 open cars; lineup Starting 5.",
+      "detail": "Bike grant + garage inventory observed 2026-10-26. Car buys still money-safe blocked."
     },
     {
       "id": "claim",
       "label": "Map / Claim",
       "kind": "domain",
-      "position": { "x": 80, "y": -340 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V", "S"],
+      "position": {
+        "x": 80,
+        "y": -340
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V",
+        "S"
+      ],
       "href": "/mindmap/claim",
-      "summary": "Map → station → hold pump → geo/photo/refuse → payout (lab vs field).",
-      "detail": "Full happy-path payout needs a real station (field). Lab covers shell, gates, and refusal UX."
+      "summary": "Map \u2192 station \u2192 hold pump \u2192 geo/photo/refuse \u2192 payout (lab vs field).",
+      "detail": "Lab shells + claimed-bike READY TO CLAIM chrome [Observed]. Full payout needs field station."
     },
     {
       "id": "garage",
       "label": "Garage",
       "kind": "domain",
-      "position": { "x": 360, "y": -200 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": 360,
+        "y": -200
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "href": "/mindmap/garage",
       "summary": "Garage shell, Starting 5, reserves, repairs; live /garage and /pitstop.",
-      "detail": "Docs /inventory 404 while /pitstop is live — honesty gap [Observed]."
+      "detail": "Post-claim STARTER Free BIKE; Starting 5 empty until cars [Observed]. Docs /inventory 404 vs /pitstop live."
     },
     {
       "id": "minimart",
       "label": "Mini Mart",
       "kind": "domain",
-      "position": { "x": 420, "y": 20 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": 420,
+        "y": 20
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "href": "/mindmap/minimart",
       "summary": "Browse keys / prices; Coming Soon honesty; SOON/OPEN/PLAY; purchase gate.",
       "detail": "Coming-soon items must not charge as if live [Documented + Observed UI]."
@@ -94,9 +170,18 @@
       "id": "chopshop",
       "label": "Chop Shop",
       "kind": "domain",
-      "position": { "x": 360, "y": 220 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": 360,
+        "y": 220
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "href": "/mindmap/chopshop",
       "summary": "Merge flow + tips + empty/loading; live /chopshop vs docs /chop-shop 404.",
       "detail": "Docs say live; path honesty is a known failure mode for TC design."
@@ -105,20 +190,40 @@
       "id": "atm",
       "label": "ATM",
       "kind": "domain",
-      "position": { "x": 80, "y": 300 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V", "S"],
+      "position": {
+        "x": 80,
+        "y": 300
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V",
+        "S"
+      ],
       "href": "/mindmap/atm",
       "summary": "Stake 7d/30d, claim rewards, early unlock warning, My Stakes.",
-      "detail": "Early unlock: penalty ≤20% shrinking; unclaimed rewards forfeited — UX must warn [Documented]."
+      "detail": "Early unlock: penalty \u226420% shrinking; unclaimed rewards forfeited \u2014 UX must warn [Documented]."
     },
     {
       "id": "social",
       "label": "Social",
       "kind": "domain",
-      "position": { "x": -200, "y": 300 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V", "S"],
+      "position": {
+        "x": -200,
+        "y": 300
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V",
+        "S"
+      ],
       "href": "/mindmap/social",
       "summary": "Mileage, leaderboard, referrals, privacy Public/Private + location hide.",
       "detail": "Referral claim share payout is off today [Documented]."
@@ -127,9 +232,18 @@
       "id": "proof",
       "label": "Proof",
       "kind": "domain",
-      "position": { "x": -420, "y": 180 },
-      "tags": ["Observed", "Documented"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": -420,
+        "y": 180
+      },
+      "tags": [
+        "Observed",
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "href": "/mindmap/proof",
       "summary": "Prize pool, prices, contracts, chain 4663 links for reconciliation.",
       "detail": "Primary QA surface for chain truth vs UI copy."
@@ -138,27 +252,84 @@
       "id": "coming-soon",
       "label": "Coming soon",
       "kind": "domain",
-      "position": { "x": -480, "y": -200 },
-      "tags": ["Coming soon", "Observed"],
-      "tcTypes": ["V", "S"],
+      "position": {
+        "x": -480,
+        "y": -200
+      },
+      "tags": [
+        "Coming soon",
+        "Observed"
+      ],
+      "tcTypes": [
+        "V",
+        "S"
+      ],
       "href": "/mindmap/coming-soon",
-      "summary": "Dealership, crowbars/insurance/theft, scratchers, chat closed, Mafia Men — honesty & no-spend.",
+      "summary": "Dealership, crowbars/insurance/theft, scratchers, chat closed, Mafia Men \u2014 honesty & no-spend.",
       "detail": "Test that UI does not allow spend/claim as if live when docs say coming soon."
     }
   ],
   "edges": [
-    { "id": "e-gas-auth", "source": "gas", "target": "auth" },
-    { "id": "e-gas-wallet", "source": "gas", "target": "wallet" },
-    { "id": "e-gas-fund", "source": "gas", "target": "fund" },
-    { "id": "e-gas-vehicle", "source": "gas", "target": "vehicle" },
-    { "id": "e-gas-claim", "source": "gas", "target": "claim" },
-    { "id": "e-gas-garage", "source": "gas", "target": "garage" },
-    { "id": "e-gas-minimart", "source": "gas", "target": "minimart" },
-    { "id": "e-gas-chop", "source": "gas", "target": "chopshop" },
-    { "id": "e-gas-atm", "source": "gas", "target": "atm" },
-    { "id": "e-gas-social", "source": "gas", "target": "social" },
-    { "id": "e-gas-proof", "source": "gas", "target": "proof" },
-    { "id": "e-gas-soon", "source": "gas", "target": "coming-soon" },
+    {
+      "id": "e-gas-auth",
+      "source": "gas",
+      "target": "auth"
+    },
+    {
+      "id": "e-gas-wallet",
+      "source": "gas",
+      "target": "wallet"
+    },
+    {
+      "id": "e-gas-fund",
+      "source": "gas",
+      "target": "fund"
+    },
+    {
+      "id": "e-gas-vehicle",
+      "source": "gas",
+      "target": "vehicle"
+    },
+    {
+      "id": "e-gas-claim",
+      "source": "gas",
+      "target": "claim"
+    },
+    {
+      "id": "e-gas-garage",
+      "source": "gas",
+      "target": "garage"
+    },
+    {
+      "id": "e-gas-minimart",
+      "source": "gas",
+      "target": "minimart"
+    },
+    {
+      "id": "e-gas-chop",
+      "source": "gas",
+      "target": "chopshop"
+    },
+    {
+      "id": "e-gas-atm",
+      "source": "gas",
+      "target": "atm"
+    },
+    {
+      "id": "e-gas-social",
+      "source": "gas",
+      "target": "social"
+    },
+    {
+      "id": "e-gas-proof",
+      "source": "gas",
+      "target": "proof"
+    },
+    {
+      "id": "e-gas-soon",
+      "source": "gas",
+      "target": "coming-soon"
+    },
     {
       "id": "j-auth-wallet",
       "source": "auth",
