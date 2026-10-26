@@ -105,23 +105,50 @@
     {
       "id": "claim-geo",
       "label": "Geo anti-cheat",
-      "kind": "leaf",
+      "kind": "branch",
       "position": {
         "x": 520,
         "y": -280
       },
       "tags": [
-        "Documented"
+        "Documented",
+        "Observed"
       ],
       "tcTypes": [
         "V",
         "S"
       ],
       "summary": "Must visit real stations; VPN/proxy likely refused. Fingerprint (anti.fillgas.xyz).",
+      "detail": "Privacy: fix inside station radius; IP country vs station country; 11m grid caps. Server trusts nothing the phone says alone [Documented].",
       "envHint": "field",
       "tcIdeas": [
         "Not at station \u2192 refuse, no use consumed",
         "VPN \u2192 refusal with actionable copy"
+      ]
+    },
+    {
+      "id": "claim-lab-spoof",
+      "label": "Lab GPS spoof",
+      "kind": "leaf",
+      "position": {
+        "x": 760,
+        "y": -340
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Playwright/CDP setGeolocation unlocks 0 m + HOLD TO PUMP UI; payout still Field-only.",
+      "detail": "2026-10-26: mock Pertashop (-7.670405, 111.228684) \u2192 0 m, no Move closer; HCMC ~147 m \u2192 Move closer copy. Fingerprint loads. Short HOLD tap: no claim POST. Guide: docs/claim-geo-testing-guide.md. Verdict: Lab-sufficient for proximity UI; Partial/Field-only for paid claim.",
+      "envHint": "lab",
+      "tcIdeas": [
+        "Mock at live station coords \u2192 0 m + HOLD TO PUMP",
+        "Mock ~150 m away \u2192 Move closer soft-gate",
+        "Deny geo \u2192 Turn on location banner",
+        "Do not complete paid hold without authorization"
       ]
     },
     {
@@ -330,6 +357,11 @@
       "id": "e-c-geo",
       "source": "claim-hold",
       "target": "claim-geo"
+    },
+    {
+      "id": "e-c-lab-spoof",
+      "source": "claim-geo",
+      "target": "claim-lab-spoof"
     },
     {
       "id": "e-c-ph",
