@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { resolveTcSummaries } from '../lib/mindmaps'
+import { COVERAGE_LEGEND, COVERAGE_STROKE, resolveTcSummaries } from '../lib/mindmaps'
 import type { EvidenceTag, MindMapNodeData, TcTypeTag } from '../types/mindmap'
 
 const tagClass: Record<EvidenceTag, string> = {
@@ -58,12 +58,27 @@ export function MindMapSidePanel({ data, onClose, onOpenDetail, emptyHint }: Pro
               </span>
             ))}
           </div>
+          <div className="mt-3 space-y-1 border-t border-[var(--border)] pt-3">
+            <p className="font-[family-name:var(--font-mono)] text-[9px] tracking-[0.12em] text-[var(--text-dim)] uppercase">
+              Edge / border coverage
+            </p>
+            {COVERAGE_LEGEND.map((row) => (
+              <div key={row.status} className="flex items-center gap-2">
+                <span className="h-0.5 w-4 rounded-full" style={{ backgroundColor: row.color }} />
+                <span className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-muted)]">
+                  {row.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </aside>
     )
   }
 
   const linked = resolveTcSummaries(data.tcIds)
+  const coverage = data.coverage ?? 'none'
+  const coverageLabel = COVERAGE_LEGEND.find((r) => r.status === coverage)?.label ?? coverage
 
   return (
     <aside className="border-t border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-panel)_85%,transparent)] lg:w-[min(340px,38%)] lg:border-t-0 lg:border-l">
@@ -78,6 +93,17 @@ export function MindMapSidePanel({ data, onClose, onOpenDetail, emptyHint }: Pro
             Close
           </button>
         </div>
+        <p
+          className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-sm border px-2 py-1 font-[family-name:var(--font-mono)] text-[10px]"
+          style={{
+            borderColor: COVERAGE_STROKE[coverage],
+            color: COVERAGE_STROKE[coverage],
+            backgroundColor: `color-mix(in srgb, ${COVERAGE_STROKE[coverage]} 12%, transparent)`,
+          }}
+        >
+          <span className="inline-block h-0.5 w-3 rounded-full" style={{ backgroundColor: COVERAGE_STROKE[coverage] }} />
+          {coverageLabel}
+        </p>
 
         <div className="mb-2 flex flex-wrap gap-1">
           {data.tags.map((tag) => (

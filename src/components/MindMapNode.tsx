@@ -1,4 +1,5 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { COVERAGE_STROKE } from '../lib/mindmaps'
 import type { MindMapNodeData, TcTypeTag } from '../types/mindmap'
 
 const tagClass: Record<string, string> = {
@@ -19,42 +20,58 @@ export function MindMapNode({ data, selected }: NodeProps) {
   const isBranch = d.kind === 'branch'
   const isDomain = d.kind === 'domain'
   const drillable = Boolean(d.href) || isDomain
+  const coverage = d.coverage ?? 'none'
+  const stroke = isCenter ? 'var(--amber)' : COVERAGE_STROKE[coverage]
 
   return (
     <div
       className={[
-        'min-w-[148px] max-w-[220px] rounded-md border px-3 py-2 shadow-sm transition-shadow',
+        'min-w-[148px] max-w-[220px] rounded-md border-2 px-3 py-2 shadow-sm transition-shadow',
         isCenter
-          ? 'border-[var(--amber)] bg-[color-mix(in_srgb,var(--amber)_18%,var(--bg-elevated))] shadow-[0_0_0_1px_color-mix(in_srgb,var(--amber)_40%,transparent)]'
+          ? 'bg-[color-mix(in_srgb,var(--amber)_18%,var(--bg-elevated))] shadow-[0_0_0_1px_color-mix(in_srgb,var(--amber)_40%,transparent)]'
           : isDomain
-            ? 'cursor-pointer border-[var(--border-strong)] bg-[var(--bg-panel)] hover:border-[var(--amber)]'
+            ? 'cursor-pointer bg-[var(--bg-panel)] hover:brightness-110'
             : isBranch
-              ? 'border-[var(--border-strong)] bg-[var(--bg-panel)]'
-              : 'border-[var(--border)] bg-[var(--bg-elevated)]',
+              ? 'bg-[var(--bg-panel)]'
+              : 'bg-[var(--bg-elevated)]',
         selected ? 'ring-2 ring-[var(--amber)] ring-offset-1 ring-offset-[var(--bg)]' : '',
       ].join(' ')}
+      style={{ borderColor: stroke }}
+      title={
+        coverage === 'pass'
+          ? 'Coverage: all linked TCs Pass'
+          : coverage === 'issue'
+            ? 'Coverage: linked TCs mixed / Fail / Blocked'
+            : coverage === 'designed'
+              ? 'Coverage: TCs designed, not executed'
+              : 'Coverage: no linked GC-TC-* (ideas alone = none)'
+      }
     >
       <Handle
         type="target"
         position={Position.Left}
-        className="!h-2 !w-2 !border-[var(--border)] !bg-[var(--text-dim)]"
+        className="!h-2.5 !w-2.5 !border-[var(--border)]"
+        style={{ backgroundColor: stroke }}
       />
       <Handle
         type="source"
         position={Position.Right}
-        className="!h-2 !w-2 !border-[var(--border)] !bg-[var(--text-dim)]"
+        className="!h-2.5 !w-2.5 !border-[var(--border)]"
+        style={{ backgroundColor: stroke }}
       />
       <Handle
         type="target"
         position={Position.Top}
         id="t"
-        className="!h-2 !w-2 !border-[var(--border)] !bg-[var(--text-dim)]"
+        className="!h-2.5 !w-2.5 !border-[var(--border)]"
+        style={{ backgroundColor: stroke }}
       />
       <Handle
         type="source"
         position={Position.Bottom}
         id="b"
-        className="!h-2 !w-2 !border-[var(--border)] !bg-[var(--text-dim)]"
+        className="!h-2.5 !w-2.5 !border-[var(--border)]"
+        style={{ backgroundColor: stroke }}
       />
 
       <div className="flex items-start justify-between gap-2">
@@ -68,7 +85,12 @@ export function MindMapNode({ data, selected }: NodeProps) {
         </div>
         {typeof d.linkedTcCount === 'number' ? (
           <span
-            className="shrink-0 rounded-sm border border-[var(--amber)]/40 bg-[color-mix(in_srgb,var(--amber)_12%,transparent)] px-1.5 py-0.5 font-[family-name:var(--font-mono)] text-[10px] text-[var(--amber)]"
+            className="shrink-0 rounded-sm border px-1.5 py-0.5 font-[family-name:var(--font-mono)] text-[10px]"
+            style={{
+              borderColor: COVERAGE_STROKE[coverage],
+              color: COVERAGE_STROKE[coverage],
+              backgroundColor: `color-mix(in srgb, ${COVERAGE_STROKE[coverage]} 14%, transparent)`,
+            }}
             title="Linked test cases"
           >
             {d.linkedTcCount} TC

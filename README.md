@@ -10,8 +10,8 @@ Also ships shareable research pages:
 | --- | --- |
 | `/` | Bug board (home) |
 | `/overview` (alias `/summary`) | Product brief grounded in QA docs |
-| `/mindmap` | Hub overview — click a domain to open a detail flow map |
-| `/mindmap/:domain` | Per-domain React Flow maps (auth, wallet, minimart, …) for F/V/S TC design |
+| `/mindmap` | Hub overview — edges/borders colored by suite TC coverage |
+| `/mindmap/:domain` | Per-domain React Flow maps; green/amber/blue/gray = Pass / mixed-Fail / designed / none |
 | `/test-cases` | TC spreadsheet (native grid from `data/test-cases.json`; optional Sheets iframe) |
 | `/claim-gps` | Claim / GPS QA guide |
 

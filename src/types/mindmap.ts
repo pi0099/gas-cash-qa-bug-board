@@ -42,6 +42,9 @@ export type MindMapJson = {
   edges: MindMapEdgeJson[]
 }
 
+/** Derived from linked GC-TC-* + execution results (not from tcIdeas alone). */
+export type TcCoverageStatus = 'pass' | 'issue' | 'designed' | 'none'
+
 export type MindMapNodeData = {
   label: string
   kind: MindMapNodeKind
@@ -55,4 +58,6 @@ export type MindMapNodeData = {
   envHint?: 'lab' | 'field' | 'lab+field'
   /** Resolved linked TC count (hub domains) */
   linkedTcCount?: number
+  /** Suite-backed coverage for borders / edges */
+  coverage?: TcCoverageStatus
 }

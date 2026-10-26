@@ -12,8 +12,24 @@ import proof from '../../data/mindmaps/proof.json'
 import social from '../../data/mindmaps/social.json'
 import vehicle from '../../data/mindmaps/vehicle.json'
 import wallet from '../../data/mindmaps/wallet.json'
-import type { MindMapJson, MindMapNodeData } from '../types/mindmap'
+import type { MindMapJson, MindMapNodeData, TcCoverageStatus } from '../types/mindmap'
+import type { TestCaseResult } from '../types/testCase'
 import { getTestCaseById, testCaseSuite } from './testCases'
+
+/** Stroke / border colors for TC coverage (readable when zoomed). */
+export const COVERAGE_STROKE: Record<TcCoverageStatus, string> = {
+  pass: '#3d9a6a',
+  issue: '#ffb020',
+  designed: '#6b7cff',
+  none: '#5c6d82',
+}
+
+export const COVERAGE_LEGEND: { status: TcCoverageStatus; label: string; color: string }[] = [
+  { status: 'pass', label: 'TCs all Pass', color: COVERAGE_STROKE.pass },
+  { status: 'issue', label: 'TCs mixed / Fail / Blocked', color: COVERAGE_STROKE.issue },
+  { status: 'designed', label: 'TCs designed, not executed', color: COVERAGE_STROKE.designed },
+  { status: 'none', label: 'No TC coverage', color: COVERAGE_STROKE.none },
+]
 
 export const DOMAIN_MAPS = {
   auth: auth as MindMapJson,
@@ -78,8 +94,19 @@ export function domainForMindmapNode(mindmapNode: string): DomainId | null {
   return null
 }
 
-/** Count suite TCs that map to this domain (exact, prefix, or listed on domain nodes). */
-export function countLinkedTcsForDomain(domainId: string): number {
+function tcMatchesDomain(tcMindmapNode: string, domainId: string, nodeIds: Set<string>): boolean {
+  const mn = tcMindmapNode
+  return (
+    mn === domainId ||
+    mn.startsWith(`${domainId}-`) ||
+    nodeIds.has(mn) ||
+    (domainId === 'chopshop' && (mn === 'chop' || mn.startsWith('chop-'))) ||
+    (domainId === 'coming-soon' && (mn === 'minimart-soon' || mn === 'proof-dealership'))
+  )
+}
+
+/** Suite-backed GC-TC-* ids for a domain (ignores tcIdeas-only). */
+export function linkedTcIdsForDomain(domainId: string): string[] {
   const map = getMindMap(domainId)
   const nodeIds = new Set(map?.nodes.map((n) => n.id) ?? [])
   const explicit = new Set<string>()
@@ -89,23 +116,72 @@ export function countLinkedTcsForDomain(domainId: string): number {
 
   const matched = new Set<string>()
   for (const tc of testCaseSuite.testCases) {
-    if (explicit.has(tc.id)) {
-      matched.add(tc.id)
-      continue
-    }
-    const mn = tc.mindmapNode
-    if (
-      mn === domainId ||
-      mn.startsWith(`${domainId}-`) ||
-      nodeIds.has(mn) ||
-      // legacy hub ids that live under renamed domains
-      (domainId === 'chopshop' && (mn === 'chop' || mn.startsWith('chop-'))) ||
-      (domainId === 'coming-soon' && (mn === 'minimart-soon' || mn === 'proof-dealership'))
-    ) {
+    if (explicit.has(tc.id) || tcMatchesDomain(tc.mindmapNode, domainId, nodeIds)) {
       matched.add(tc.id)
     }
   }
-  return matched.size
+  return [...matched].sort()
+}
+
+/** Count suite TCs that map to this domain (exact, prefix, or listed on domain nodes). */
+export function countLinkedTcsForDomain(domainId: string): number {
+  return linkedTcIdsForDomain(domainId).length
+}
+
+/**
+ * Linked GC-TC-* for a mind-map node.
+ * Explicit `tcIds` + suite rows whose `mindmapNode` equals this node id.
+ * Domain hub nodes aggregate the whole domain. tcIdeas alone → empty (no coverage).
+ */
+export function linkedTcIdsForNode(map: MindMapJson, nodeId: string): string[] {
+  const node = map.nodes.find((n) => n.id === nodeId)
+  if (!node) return []
+
+  if (map.id === 'hub' && (node.kind === 'domain' || node.href)) {
+    const domainKey = node.href?.replace(/^\/mindmap\//, '') ?? node.id
+    if (isDomainId(domainKey)) return linkedTcIdsForDomain(domainKey)
+  }
+
+  const ids = new Set<string>(node.tcIds ?? [])
+  for (const tc of testCaseSuite.testCases) {
+    if (tc.mindmapNode === nodeId) ids.add(tc.id)
+  }
+  return [...ids].sort()
+}
+
+export function coverageFromResults(results: Array<TestCaseResult | null | undefined>): TcCoverageStatus {
+  if (results.length === 0) return 'none'
+
+  const executedFail = results.some((r) => r === 'Fail' || r === 'Blocked')
+  const allPass = results.every((r) => r === 'Pass')
+  const noneExecuted = results.every((r) => r == null || r === 'Skip')
+
+  if (allPass) return 'pass'
+  if (executedFail) return 'issue'
+  if (noneExecuted) return 'designed'
+  // Mix of Pass + unexecuted (or other) → treat as mixed
+  return 'issue'
+}
+
+export function coverageForTcIds(tcIds: string[]): TcCoverageStatus {
+  if (tcIds.length === 0) return 'none'
+  const results = tcIds.map((id) => getTestCaseById(id)?.result ?? null)
+  return coverageFromResults(results)
+}
+
+export function coverageForNode(map: MindMapJson, nodeId: string): TcCoverageStatus {
+  return coverageForTcIds(linkedTcIdsForNode(map, nodeId))
+}
+
+/** Worst coverage wins (for edge = source∪target). */
+export function mergeCoverage(a: TcCoverageStatus, b: TcCoverageStatus): TcCoverageStatus {
+  const rank: Record<TcCoverageStatus, number> = {
+    issue: 0,
+    designed: 1,
+    pass: 2,
+    none: 3,
+  }
+  return rank[a] <= rank[b] ? a : b
 }
 
 export function resolveTcSummaries(tcIds: string[]) {
@@ -120,6 +196,8 @@ export function resolveTcSummaries(tcIds: string[]) {
 
 export function toFlowNodes(map: MindMapJson, opts?: { withTcCounts?: boolean }): Node<MindMapNodeData>[] {
   return map.nodes.map((n) => {
+    const linkedIds = linkedTcIdsForNode(map, n.id)
+    const coverage = coverageForTcIds(linkedIds)
     const data: MindMapNodeData = {
       label: n.label,
       kind: n.kind,
@@ -128,13 +206,17 @@ export function toFlowNodes(map: MindMapJson, opts?: { withTcCounts?: boolean })
       summary: n.summary,
       detail: n.detail,
       tcIdeas: n.tcIdeas ?? [],
-      tcIds: n.tcIds ?? [],
+      // Prefer resolved suite links so the side panel matches coverage coloring
+      tcIds: linkedIds.length ? linkedIds : (n.tcIds ?? []),
       href: n.href,
       envHint: n.envHint,
+      coverage,
     }
     if (opts?.withTcCounts && (n.kind === 'domain' || n.href)) {
       const domainKey = n.href?.replace(/^\/mindmap\//, '') ?? n.id
       data.linkedTcCount = countLinkedTcsForDomain(domainKey)
+    } else if (linkedIds.length > 0 && n.kind !== 'center') {
+      data.linkedTcCount = linkedIds.length
     }
     return {
       id: n.id,
@@ -146,20 +228,34 @@ export function toFlowNodes(map: MindMapJson, opts?: { withTcCounts?: boolean })
 }
 
 export function toFlowEdges(map: MindMapJson): Edge[] {
+  const nodeCoverage = new Map<string, TcCoverageStatus>()
+  for (const n of map.nodes) {
+    nodeCoverage.set(n.id, coverageForNode(map, n.id))
+  }
+
   return map.edges.map((e) => {
-    if (e.kind === 'journey') {
-      return {
-        id: e.id,
-        source: e.source,
-        target: e.target,
-        type: 'smoothstep',
-        style: { strokeDasharray: '6 4', stroke: 'var(--text-dim)', opacity: 0.45 },
-      }
-    }
+    // Color the flow by the step being entered (target), blending source if both have coverage
+    const src = nodeCoverage.get(e.source) ?? 'none'
+    const tgt = nodeCoverage.get(e.target) ?? 'none'
+    const status =
+      tgt !== 'none' ? (src !== 'none' ? mergeCoverage(src, tgt) : tgt) : src !== 'none' ? src : 'none'
+    const stroke = COVERAGE_STROKE[status]
+    const strokeWidth = status === 'none' ? 1.5 : 2.75
+    const isJourney = e.kind === 'journey'
+
     return {
       id: e.id,
       source: e.source,
       target: e.target,
+      type: isJourney ? 'smoothstep' : 'default',
+      style: {
+        stroke,
+        strokeWidth,
+        ...(isJourney
+          ? { strokeDasharray: '7 5', opacity: status === 'none' ? 0.45 : 0.9 }
+          : { opacity: status === 'none' ? 0.55 : 0.95 }),
+      },
+      data: { coverage: status },
     }
   })
 }

@@ -12,7 +12,8 @@ import '@xyflow/react/dist/style.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { MindMapJson, MindMapNodeData } from '../types/mindmap'
-import { toFlowEdges, toFlowNodes } from '../lib/mindmaps'
+import { COVERAGE_STROKE, toFlowEdges, toFlowNodes } from '../lib/mindmaps'
+import { MindMapCoverageLegend } from './MindMapCoverageLegend'
 import { MindMapNode } from './MindMapNode'
 import { MindMapSidePanel } from './MindMapSidePanel'
 
@@ -95,7 +96,7 @@ export function MindMapCanvas({ map, mode, emptyHint }: Props) {
 
   const defaultEdgeOptions = useMemo(
     () => ({
-      style: { stroke: 'var(--border-strong)', strokeWidth: 1.5 },
+      style: { stroke: COVERAGE_STROKE.none, strokeWidth: 1.5 },
     }),
     [],
   )
@@ -138,15 +139,14 @@ export function MindMapCanvas({ map, mode, emptyHint }: Props) {
             nodeColor={(n) => {
               const d = n.data as MindMapNodeData
               if (d?.kind === 'center') return '#f0a020'
+              if (d?.coverage) return COVERAGE_STROKE[d.coverage]
               if (d?.kind === 'domain') return '#c88820'
-              if (d?.tags?.includes('Coming soon')) return '#8a5a10'
-              if (d?.kind === 'branch') return '#4a8fd4'
-              return '#3a4a5c'
+              return COVERAGE_STROKE.none
             }}
           />
         </ReactFlow>
 
-        <div className="pointer-events-none absolute top-3 left-3 z-10 flex flex-wrap gap-1.5 sm:left-4">
+        <div className="pointer-events-none absolute top-3 left-3 z-10 flex max-w-[calc(100%-1.5rem)] flex-col gap-2 sm:left-4">
           <div className="pointer-events-auto flex flex-wrap gap-1 rounded-md border border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] p-1 backdrop-blur-sm">
             <button
               type="button"
@@ -177,12 +177,13 @@ export function MindMapCanvas({ map, mode, emptyHint }: Props) {
               Reset
             </button>
           </div>
+          <MindMapCoverageLegend />
         </div>
 
-        <p className="pointer-events-none absolute right-3 bottom-3 z-10 hidden max-w-[220px] text-right font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-dim)] sm:block">
+        <p className="pointer-events-none absolute right-3 bottom-3 z-10 hidden max-w-[240px] text-right font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-dim)] sm:block">
           {mode === 'hub'
-            ? 'Click a domain · double-click or use panel to open detail · scroll/pinch zoom'
-            : 'Scroll / pinch zoom · drag canvas to pan · click a leaf for TC ideas'}
+            ? 'Colored edges = TC coverage · click domain · double-click to open'
+            : 'Edge + border color = suite coverage · click a leaf for TC detail'}
         </p>
       </div>
 
