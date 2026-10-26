@@ -2,6 +2,14 @@
 
 Local triage board for Gas Cash production QA findings. **Not Linear** — bugs live on disk as JSON and render in a Vite + React UI with STSS sections and inline evidence screenshots.
 
+Also ships shareable research pages:
+
+| Path | Page |
+| --- | --- |
+| `/` | Bug board (home) |
+| `/overview` (alias `/summary`) | Product brief grounded in QA docs |
+| `/mindmap` | Interactive React Flow mind map (zoom / pan / fit) |
+
 ## Quick start
 
 ```bash
@@ -95,7 +103,8 @@ Title format follows the STSS playbook: `[BUG] Page - Function/Section - Issue`.
 
 - Vite + React 19 + TypeScript
 - Tailwind CSS v4
-- React Router (list + detail, BrowserRouter + basename)
+- React Router (board, overview, mind map — BrowserRouter + basename)
+- `@xyflow/react` for the mind-map canvas
 - IBM Plex Sans / Mono — industrial QA palette (slate / amber / red)
 
 ## Safety

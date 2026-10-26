@@ -3,7 +3,10 @@ import { Link, Route, Routes, useParams } from 'react-router-dom'
 import { BugDetail, BugDetailEmpty } from './components/BugDetail'
 import { BugFilters } from './components/BugFilters'
 import { BugList } from './components/BugList'
+import { SiteNav } from './components/SiteNav'
 import { bugBoard, filterBugs, getBugById } from './lib/bugs'
+import { MindMapPage } from './pages/MindMapPage'
+import { OverviewPage } from './pages/OverviewPage'
 import type { BugPriority, BugStatus } from './types/bug'
 
 function BoardShell() {
@@ -22,8 +25,8 @@ function BoardShell() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3 backdrop-blur-md sm:px-5">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
             <Link to="/" className="group inline-flex flex-col gap-0.5 no-underline">
               <span className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
                 Gas Cash · Local QA
@@ -32,6 +35,7 @@ function BoardShell() {
                 Bug Board
               </span>
             </Link>
+            <SiteNav />
           </div>
           <div className="text-right font-[family-name:var(--font-mono)] text-[10px] leading-relaxed text-[var(--text-dim)]">
             <div>{bugBoard.bugs.length} seeded · disk SoT</div>
@@ -84,6 +88,9 @@ export default function App() {
     <Routes>
       <Route path="/" element={<BoardShell />} />
       <Route path="/bugs/:bugId" element={<BoardShell />} />
+      <Route path="/overview" element={<OverviewPage />} />
+      <Route path="/summary" element={<OverviewPage />} />
+      <Route path="/mindmap" element={<MindMapPage />} />
     </Routes>
   )
 }
