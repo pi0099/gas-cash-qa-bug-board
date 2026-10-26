@@ -1,133 +1,381 @@
 {
   "id": "claim",
   "title": "Map / Claim",
-  "summary": "Map → station → hold pump → geo/photo checks → pay or refuse. Mark lab vs field on each leaf.",
-  "tags": ["Documented", "Observed"],
+  "summary": "Map \u2192 station \u2192 hold pump \u2192 geo/photo checks \u2192 pay or refuse. Mark lab vs field on each leaf.",
+  "tags": [
+    "Documented",
+    "Observed"
+  ],
   "nodes": [
     {
       "id": "claim",
       "label": "Map / Claim",
       "kind": "center",
-      "position": { "x": 0, "y": 0 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V", "S"],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V",
+        "S"
+      ],
       "summary": "Hold-to-pump at real stations; server validates presence; pays USO + $GAS.",
-      "detail": "≤3 claims/day account cap; 6 pumps/station. Refusals cost nothing [Documented].",
-      "tcIds": ["GC-TC-F-06", "GC-TC-F-07"],
+      "detail": "\u22643 claims/day account cap; 6 pumps/station. Refusals cost nothing [Documented]. QA now owns free bike (READY TO CLAIM) \u2014 field hold-to-pump still blocked [Observed].",
+      "tcIds": [
+        "GC-TC-F-06",
+        "GC-TC-F-07",
+        "GC-TC-F-21"
+      ],
       "envHint": "lab+field"
     },
     {
       "id": "claim-map",
       "label": "Map shell",
       "kind": "branch",
-      "position": { "x": -320, "y": -180 },
-      "tags": ["Observed"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": -320,
+        "y": -180
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Map loads with station/pump chrome.",
-      "tcIds": ["GC-TC-F-06"],
+      "tcIds": [
+        "GC-TC-F-06"
+      ],
       "envHint": "lab",
-      "tcIdeas": ["Tiles + markers settle", "Location deny → map fallback"]
+      "tcIdeas": [
+        "Tiles + markers settle",
+        "Location deny \u2192 map fallback"
+      ]
     },
     {
       "id": "claim-station",
       "label": "Select station",
       "kind": "leaf",
-      "position": { "x": -540, "y": -260 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": -540,
+        "y": -260
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Real gas station markers; open station detail / pumps.",
       "envHint": "lab",
-      "tcIdeas": ["Station detail shows pumps"]
+      "tcIdeas": [
+        "Station detail shows pumps"
+      ]
     },
     {
       "id": "claim-hold",
       "label": "Hold to pump",
       "kind": "branch",
-      "position": { "x": 280, "y": -160 },
-      "tags": ["Documented"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": 280,
+        "y": -160
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Long-press / hold CTA starts claim checks.",
-      "tcIds": ["GC-TC-F-07"],
+      "tcIds": [
+        "GC-TC-F-07"
+      ],
       "envHint": "field",
-      "tcIdeas": ["Cancel mid-hold safe", "Gesture reliable on phone"]
+      "tcIdeas": [
+        "Cancel mid-hold safe",
+        "Gesture reliable on phone"
+      ]
     },
     {
       "id": "claim-geo",
       "label": "Geo anti-cheat",
       "kind": "leaf",
-      "position": { "x": 520, "y": -280 },
-      "tags": ["Documented"],
-      "tcTypes": ["V", "S"],
+      "position": {
+        "x": 520,
+        "y": -280
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "V",
+        "S"
+      ],
       "summary": "Must visit real stations; VPN/proxy likely refused. Fingerprint (anti.fillgas.xyz).",
       "envHint": "field",
-      "tcIdeas": ["Not at station → refuse, no use consumed", "VPN → refusal with actionable copy"]
+      "tcIdeas": [
+        "Not at station \u2192 refuse, no use consumed",
+        "VPN \u2192 refusal with actionable copy"
+      ]
     },
     {
       "id": "claim-photo",
       "label": "Photo challenge",
       "kind": "leaf",
-      "position": { "x": 520, "y": -160 },
-      "tags": ["Documented"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": 520,
+        "y": -160
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "summary": "Accept real pump photo; reject reuse/fake.",
       "envHint": "field",
-      "tcIdeas": ["Valid photo proceeds", "Reject reuse without burning uses incorrectly"]
+      "tcIdeas": [
+        "Valid photo proceeds",
+        "Reject reuse without burning uses incorrectly"
+      ]
     },
     {
       "id": "claim-refuse",
       "label": "Refuse paths",
       "kind": "branch",
-      "position": { "x": 280, "y": 60 },
-      "tags": ["Documented"],
-      "tcTypes": ["F", "V"],
-      "summary": "Busy pumps, cooldown, daily cap, not-at-station — reason shown; free.",
+      "position": {
+        "x": 280,
+        "y": 60
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Busy pumps, cooldown, daily cap, not-at-station \u2014 reason shown; free.",
       "envHint": "lab+field",
-      "tcIdeas": ["6 busy pumps → refuse + clock", "4th claim/day refused", "Refusal never consumes lineup use"]
+      "tcIdeas": [
+        "6 busy pumps \u2192 refuse + clock",
+        "4th claim/day refused",
+        "Refusal never consumes lineup use"
+      ]
     },
     {
       "id": "claim-payout",
       "label": "Payout USO + $GAS",
       "kind": "leaf",
-      "position": { "x": 520, "y": 40 },
-      "tags": ["Documented"],
-      "tcTypes": ["F", "S"],
+      "position": {
+        "x": 520,
+        "y": 40
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "S"
+      ],
       "summary": "Successful claim pays to wallet on-chain; reconcile with proof/explorer.",
       "envHint": "field",
-      "tcIdeas": ["Paid amounts match explorer", "Share claim card optional"]
+      "tcIdeas": [
+        "Paid amounts match explorer",
+        "Share claim card optional"
+      ]
     },
     {
       "id": "claim-caps",
       "label": "Pumps & daily caps",
       "kind": "leaf",
-      "position": { "x": 520, "y": 160 },
-      "tags": ["Documented"],
-      "tcTypes": ["V"],
-      "summary": "6 pumps/station; ≤3 claims/day account.",
+      "position": {
+        "x": 520,
+        "y": 160
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "V"
+      ],
+      "summary": "6 pumps/station; \u22643 claims/day account.",
       "envHint": "lab+field",
-      "tcIdeas": ["Cap messaging clear when blocked"]
+      "tcIdeas": [
+        "Cap messaging clear when blocked"
+      ]
     },
     {
       "id": "claim-location-deny",
       "label": "Location denied",
       "kind": "leaf",
-      "position": { "x": -320, "y": 80 },
-      "tags": ["Documented"],
-      "tcTypes": ["V"],
-      "summary": "Deny geolocation → map fallback; claims unavailable with clear copy.",
+      "position": {
+        "x": -320,
+        "y": 80
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "V"
+      ],
+      "summary": "Deny geolocation \u2192 map fallback; claims unavailable with clear copy.",
       "envHint": "lab",
-      "tcIdeas": ["No blank crash; CTA explains location need"]
+      "tcIdeas": [
+        "No blank crash; CTA explains location need"
+      ]
+    },
+    {
+      "id": "claim-with-bike",
+      "label": "Claim UI with bike",
+      "kind": "branch",
+      "position": {
+        "x": -320,
+        "y": 200
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "After free-bike grant, home/garage show READY TO CLAIM with bike equipped.",
+      "detail": "Home READY TO CLAIM + COOLDOWN READY [Observed]. Field payout not executed.",
+      "tcIds": [
+        "GC-TC-F-21"
+      ],
+      "envHint": "lab",
+      "tcIdeas": [
+        "Equipped bike reflected in claim chrome",
+        "Daily claim rate / cooldown labels present"
+      ]
+    },
+    {
+      "id": "claim-bike-rate",
+      "label": "Bike rate 4\u201320%",
+      "kind": "leaf",
+      "position": {
+        "x": -540,
+        "y": 260
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Bike claims pay 4\u201320% of rate (fresh draw); never jackpot / low cap.",
+      "detail": "Modal copy [Observed]. Actual payout needs field station \u2014 Blocked.",
+      "tcIds": [
+        "GC-TC-F-07"
+      ],
+      "envHint": "field",
+      "tcIdeas": [
+        "Payout within 4\u201320%",
+        "Uses decrement by 1"
+      ]
+    },
+    {
+      "id": "claim-bike-rest",
+      "label": "Bike rest / uses",
+      "kind": "leaf",
+      "position": {
+        "x": -100,
+        "y": 260
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "V"
+      ],
+      "summary": "1 use/claim; rest between uses; 7 claims remaining pool.",
+      "detail": "Modal 36h vs garage \u201c24-hour wait\u201d conflict [Observed].",
+      "tcIds": [
+        "GC-TC-V-13"
+      ],
+      "tcIdeas": [
+        "Rest period consistent in UI",
+        "Uses remaining displayed"
+      ]
     }
   ],
   "edges": [
-    { "id": "e-c-map", "source": "claim", "target": "claim-map" },
-    { "id": "e-c-st", "source": "claim-map", "target": "claim-station" },
-    { "id": "e-c-hold", "source": "claim", "target": "claim-hold" },
-    { "id": "e-c-geo", "source": "claim-hold", "target": "claim-geo" },
-    { "id": "e-c-ph", "source": "claim-hold", "target": "claim-photo" },
-    { "id": "e-c-ref", "source": "claim", "target": "claim-refuse" },
-    { "id": "e-c-pay", "source": "claim-hold", "target": "claim-payout" },
-    { "id": "e-c-cap", "source": "claim-refuse", "target": "claim-caps" },
-    { "id": "e-c-loc", "source": "claim", "target": "claim-location-deny" },
-    { "id": "j-map-hold", "source": "claim-station", "target": "claim-hold", "kind": "journey" }
+    {
+      "id": "e-c-map",
+      "source": "claim",
+      "target": "claim-map"
+    },
+    {
+      "id": "e-c-st",
+      "source": "claim-map",
+      "target": "claim-station"
+    },
+    {
+      "id": "e-c-hold",
+      "source": "claim",
+      "target": "claim-hold"
+    },
+    {
+      "id": "e-c-geo",
+      "source": "claim-hold",
+      "target": "claim-geo"
+    },
+    {
+      "id": "e-c-ph",
+      "source": "claim-hold",
+      "target": "claim-photo"
+    },
+    {
+      "id": "e-c-ref",
+      "source": "claim",
+      "target": "claim-refuse"
+    },
+    {
+      "id": "e-c-pay",
+      "source": "claim-hold",
+      "target": "claim-payout"
+    },
+    {
+      "id": "e-c-cap",
+      "source": "claim-refuse",
+      "target": "claim-caps"
+    },
+    {
+      "id": "e-c-loc",
+      "source": "claim",
+      "target": "claim-location-deny"
+    },
+    {
+      "id": "j-map-hold",
+      "source": "claim-station",
+      "target": "claim-hold",
+      "kind": "journey"
+    },
+    {
+      "id": "e-c-bike",
+      "source": "claim",
+      "target": "claim-with-bike"
+    },
+    {
+      "id": "e-c-rate",
+      "source": "claim-with-bike",
+      "target": "claim-bike-rate"
+    },
+    {
+      "id": "e-c-rest",
+      "source": "claim-with-bike",
+      "target": "claim-bike-rest"
+    }
   ]
 }

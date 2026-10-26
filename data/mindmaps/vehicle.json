@@ -1,86 +1,357 @@
 {
   "id": "vehicle",
   "title": "Vehicle",
-  "summary": "Free bike onboarding modal, keys → cars, open/reveal, Starting 5 lineup.",
-  "tags": ["Documented", "Observed"],
+  "summary": "Free bike claim (done on QA), keys \u2192 cars, open/reveal, Starting 5 lineup.",
+  "tags": [
+    "Documented",
+    "Observed"
+  ],
   "nodes": [
     {
       "id": "vehicle",
       "label": "Get vehicle",
       "kind": "center",
-      "position": { "x": 0, "y": 0 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "summary": "Free bike if no car; or buy keys and open cars (NFT).",
-      "detail": "Onboarding modal “A BIKE, ON THE HOUSE.” observed on Mini Mart [Observed]. Claim not taken on QA account (money-safe).",
-      "tcIds": ["GC-TC-F-08"]
+      "detail": "Onboarding modal \u201cA BIKE, ON THE HOUSE.\u201d observed on Mini Mart [Observed]. Free bike CLAIMED on QA account 2026-10-26 [Observed].",
+      "tcIds": [
+        "GC-TC-F-08",
+        "GC-TC-F-17",
+        "GC-TC-F-18",
+        "GC-TC-F-19"
+      ]
     },
     {
       "id": "vehicle-bike",
       "label": "Free bike",
       "kind": "branch",
-      "position": { "x": -320, "y": -160 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V"],
-      "summary": "Modal: “A BIKE, ON THE HOUSE.” → CLAIM YOUR BIKE.",
-      "detail": "Observed rules: 7 claims; each pays 4–20% of rate (fresh draw); 1 use per claim; 36h rest; cannot repair; buy a car and the bike parks for good. CTA: CLAIM YOUR BIKE. Docs also: never jackpot / low claim cap. QA has not claimed on the test account.",
+      "position": {
+        "x": -320,
+        "y": -160
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Modal \u2192 CLAIM YOUR BIKE \u2192 LET'S GO; bike in garage as STARTER Free.",
+      "detail": "Claimed on QA 2026-10-26 [Observed]. Modal rules: 7 claims; 4\u201320% of rate; 1 use/claim; rests 36h; cannot repair; car parks bike for good. Post-claim: CTA becomes LET'S GO + \u201cThe bike is in your wallet.\u201d Garage: OVR 5; OCTANE 1.0; SPEED 19.2; DURABILITY/SECURITY/LUCK 1.0; copy \u201cThe free bike: a 24-hour wait\u2026\u201d (conflicts with modal 36h) [Observed]. No reclaim CTA after grant.",
       "tcIdeas": [
         "Claim modal appears when eligible (no car)",
-        "Modal rules match live copy (7 / 4–20% / 36h / no repair / car parks bike)",
+        "Modal rules match live copy (7 / 4\u201320% / 36h / no repair / car parks bike)",
         "CLAIM YOUR BIKE grants bike ownership / garage entry",
+        "Post-claim LET'S GO dismisses and leaves bike equipped",
+        "Garage rest copy matches modal rest period",
         "Decline or dismiss path (if any) leaves account without bike and re-offers later"
+      ],
+      "tcIds": [
+        "GC-TC-F-17",
+        "GC-TC-F-18",
+        "GC-TC-F-19",
+        "GC-TC-F-22",
+        "GC-TC-V-12",
+        "GC-TC-V-13",
+        "GC-TC-V-15",
+        "GC-TC-S-12"
       ]
     },
     {
       "id": "vehicle-keys",
       "label": "Buy keys",
       "kind": "branch",
-      "position": { "x": 280, "y": -160 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": 280,
+        "y": -160
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Regular / Super / Premium keys priced in $GAS (Mini Mart).",
-      "tcIds": ["GC-TC-F-09"],
-      "tcIdeas": ["Key SKUs listed with $GAS prices"]
+      "tcIds": [
+        "GC-TC-F-09"
+      ],
+      "tcIdeas": [
+        "Key SKUs listed with $GAS prices"
+      ]
     },
     {
       "id": "vehicle-open",
       "label": "Open / reveal key",
       "kind": "leaf",
-      "position": { "x": 500, "y": -220 },
-      "tags": ["Documented"],
-      "tcTypes": ["F", "V"],
-      "summary": "Open after reveal → stats/tier within published ranges; sealed→active.",
-      "detail": "Boost steps ≤5 before open [Documented]. Inventory live at /pitstop. Buying/owning a car parks the free bike for good [Observed].",
-      "tcIdeas": ["Boost preview before open", "Open records car in garage", "After first car, free bike no longer claimable"]
+      "position": {
+        "x": 500,
+        "y": -220
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Open after reveal \u2192 stats/tier within published ranges; sealed\u2192active.",
+      "detail": "Boost steps \u22645 before open [Documented]. Inventory live at /pitstop. Buying/owning a car parks the free bike for good [Observed].",
+      "tcIdeas": [
+        "Boost preview before open",
+        "Open records car in garage",
+        "After first car, free bike no longer claimable"
+      ]
     },
     {
       "id": "vehicle-lineup",
       "label": "Starting 5 lineup",
       "kind": "branch",
-      "position": { "x": 280, "y": 80 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": 280,
+        "y": 80
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Save Starting 5; multiplier / wait / daily estimate update.",
-      "tcIds": ["GC-TC-F-08"],
-      "tcIdeas": ["Save lineup updates estimates", "Swap reserve ↔ lineup free with wait preview"]
+      "tcIds": [
+        "GC-TC-F-08"
+      ],
+      "tcIdeas": [
+        "Save lineup updates estimates",
+        "Swap reserve \u2194 lineup free with wait preview"
+      ]
     },
     {
       "id": "vehicle-nft",
       "label": "Car / Bike NFT",
       "kind": "leaf",
-      "position": { "x": -320, "y": 80 },
-      "tags": ["Documented"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": -320,
+        "y": 80
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Eligibility to claim tied to vehicle NFT ownership on chain 4663.",
-      "tcIdeas": ["Ownership matches explorer when reconciled"]
+      "tcIdeas": [
+        "Ownership matches explorer when reconciled"
+      ]
+    },
+    {
+      "id": "vehicle-bike-grant",
+      "label": "Claim grant",
+      "kind": "leaf",
+      "position": {
+        "x": -540,
+        "y": -240
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "CLAIM YOUR BIKE \u2192 wallet/garage ownership; CTA flips to LET'S GO.",
+      "detail": "Observed 2026-10-26 on QA account. Modal remains briefly with \u201cThe bike is in your wallet.\u201d",
+      "tcIds": [
+        "GC-TC-F-18",
+        "GC-TC-F-19",
+        "GC-TC-V-15"
+      ],
+      "tcIdeas": [
+        "Grant is one-shot",
+        "Success copy accurate"
+      ]
+    },
+    {
+      "id": "vehicle-bike-stats",
+      "label": "Bike inventory / stats",
+      "kind": "leaf",
+      "position": {
+        "x": -540,
+        "y": -80
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "STARTER Free BIKE; OVR 5; attrs; garage?car=bike.",
+      "detail": "OVR 5; OCTANE 1.0; SPEED 19.2; DURABILITY 1.0; SECURITY 1.0; LUCK 1.0 [Observed].",
+      "tcIds": [
+        "GC-TC-F-20",
+        "GC-TC-F-23",
+        "GC-TC-V-14"
+      ],
+      "tcIdeas": [
+        "Attrs render",
+        "Deep link opens bike"
+      ]
+    },
+    {
+      "id": "vehicle-bike-economics",
+      "label": "Bike claim economics",
+      "kind": "leaf",
+      "position": {
+        "x": -320,
+        "y": -320
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "7 claims; 4\u201320% rate; rest period; never jackpot / low cap.",
+      "detail": "Modal: 36h rest [Observed]. Garage detail: \u201c24-hour wait\u201d [Observed] \u2014 copy conflict. Field payout still blocked (money-safe / geo).",
+      "tcIds": [
+        "GC-TC-V-12",
+        "GC-TC-V-13",
+        "GC-TC-F-07"
+      ],
+      "tcIdeas": [
+        "Rest copy consistent across surfaces",
+        "Field claim pays within 4\u201320%"
+      ],
+      "envHint": "lab+field"
+    },
+    {
+      "id": "vehicle-bike-nonrepair",
+      "label": "Non-repairable",
+      "kind": "leaf",
+      "position": {
+        "x": -100,
+        "y": -280
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Cannot be repaired; no repair CTA on free bike.",
+      "detail": "Modal states cannot repair [Observed]. Garage bike view showed no REPAIR CTA [Observed].",
+      "tcIds": [
+        "GC-TC-F-25"
+      ],
+      "tcIdeas": [
+        "Repair control absent or disabled for bike"
+      ]
+    },
+    {
+      "id": "vehicle-bike-park",
+      "label": "Car parks bike",
+      "kind": "leaf",
+      "position": {
+        "x": -100,
+        "y": -160
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Buying/owning a car parks the free bike for good.",
+      "detail": "Modal rule [Observed]. Not executed on QA (money-safe \u2014 no key/car buy).",
+      "tcIdeas": [
+        "After first car, bike removed/parked and not reclaimable"
+      ],
+      "envHint": "funded"
     }
   ],
   "edges": [
-    { "id": "e-v-bike", "source": "vehicle", "target": "vehicle-bike" },
-    { "id": "e-v-keys", "source": "vehicle", "target": "vehicle-keys" },
-    { "id": "e-v-open", "source": "vehicle-keys", "target": "vehicle-open" },
-    { "id": "e-v-line", "source": "vehicle", "target": "vehicle-lineup" },
-    { "id": "e-v-nft", "source": "vehicle", "target": "vehicle-nft" },
-    { "id": "j-keys-line", "source": "vehicle-open", "target": "vehicle-lineup", "kind": "journey" }
+    {
+      "id": "e-v-bike",
+      "source": "vehicle",
+      "target": "vehicle-bike"
+    },
+    {
+      "id": "e-v-keys",
+      "source": "vehicle",
+      "target": "vehicle-keys"
+    },
+    {
+      "id": "e-v-open",
+      "source": "vehicle-keys",
+      "target": "vehicle-open"
+    },
+    {
+      "id": "e-v-line",
+      "source": "vehicle",
+      "target": "vehicle-lineup"
+    },
+    {
+      "id": "e-v-nft",
+      "source": "vehicle",
+      "target": "vehicle-nft"
+    },
+    {
+      "id": "j-keys-line",
+      "source": "vehicle-open",
+      "target": "vehicle-lineup",
+      "kind": "journey"
+    },
+    {
+      "id": "e-v-grant",
+      "source": "vehicle-bike",
+      "target": "vehicle-bike-grant"
+    },
+    {
+      "id": "e-v-stats",
+      "source": "vehicle-bike",
+      "target": "vehicle-bike-stats"
+    },
+    {
+      "id": "e-v-econ",
+      "source": "vehicle-bike",
+      "target": "vehicle-bike-economics"
+    },
+    {
+      "id": "e-v-nr",
+      "source": "vehicle-bike",
+      "target": "vehicle-bike-nonrepair"
+    },
+    {
+      "id": "e-v-park",
+      "source": "vehicle-bike",
+      "target": "vehicle-bike-park"
+    },
+    {
+      "id": "j-grant-stats",
+      "source": "vehicle-bike-grant",
+      "target": "vehicle-bike-stats",
+      "kind": "journey"
+    }
   ]
 }

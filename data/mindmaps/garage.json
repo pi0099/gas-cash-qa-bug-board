@@ -2,87 +2,243 @@
   "id": "garage",
   "title": "Garage",
   "summary": "Garage shell, Starting 5, reserves, repairs; route honesty for inventory.",
-  "tags": ["Documented", "Observed"],
+  "tags": [
+    "Documented",
+    "Observed"
+  ],
   "nodes": [
     {
       "id": "garage",
       "label": "Garage",
       "kind": "center",
-      "position": { "x": 0, "y": 0 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F", "V"],
-      "summary": "Garage / lineup / reserves — gated when logged out.",
-      "tcIds": ["GC-TC-F-08", "GC-TC-F-11", "GC-TC-V-10"]
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Garage / lineup / reserves \u2014 gated when logged out.",
+      "tcIds": [
+        "GC-TC-F-08",
+        "GC-TC-F-11",
+        "GC-TC-F-20",
+        "GC-TC-F-23",
+        "GC-TC-F-24",
+        "GC-TC-V-10"
+      ],
+      "detail": "Post free-bike claim: STARTER Free BIKE visible; Starting 5 still 0/5 (bike not auto-lined) [Observed]."
     },
     {
       "id": "garage-shell",
       "label": "Garage shell /garage",
       "kind": "branch",
-      "position": { "x": -300, "y": -140 },
-      "tags": ["Observed"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": -300,
+        "y": -140
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Authenticated garage settles; unauth shows sign-in gate.",
-      "tcIds": ["GC-TC-F-08", "GC-TC-V-10"],
-      "tcIdeas": ["Authed: vehicle list or empty state", "Unauth: Sign In CTA"]
+      "tcIds": [
+        "GC-TC-F-08",
+        "GC-TC-F-20",
+        "GC-TC-V-10"
+      ],
+      "tcIdeas": [
+        "Authed: vehicle list or empty state",
+        "Unauth: Sign In CTA"
+      ],
+      "detail": "Authed garage shows claimed bike card (STARTER / Free / BIKE) and may still spin \u201cReading your garage\u2026\u201d [Observed]."
     },
     {
       "id": "garage-lineup",
       "label": "Starting 5",
       "kind": "branch",
-      "position": { "x": 280, "y": -140 },
-      "tags": ["Documented", "Observed"],
-      "tcTypes": ["F"],
+      "position": {
+        "x": 280,
+        "y": -140
+      },
+      "tags": [
+        "Documented",
+        "Observed"
+      ],
+      "tcTypes": [
+        "F"
+      ],
       "summary": "Save lineup; multiplier / wait / daily estimate update.",
-      "tcIdeas": ["Save updates estimates", "Heaviest slot-1 pays more (spot-check, field)"]
+      "tcIdeas": [
+        "Save updates estimates",
+        "Heaviest slot-1 pays more (spot-check, field)"
+      ],
+      "detail": "Starting 5 after bike claim: \u201c0 OF 5 SLOTS FILLED\u201d / \u201cNo V2 lineup yet: your five strongest active cars.\u201d Bike not auto-added [Observed].",
+      "tcIds": [
+        "GC-TC-F-24",
+        "GC-TC-V-16"
+      ]
     },
     {
       "id": "garage-reserves",
       "label": "Reserves swap",
       "kind": "leaf",
-      "position": { "x": 500, "y": -200 },
-      "tags": ["Documented"],
-      "tcTypes": ["F"],
-      "summary": "Swap reserve ↔ lineup free; preview wait before save.",
-      "tcIdeas": ["Swap free; wait preview before save"]
+      "position": {
+        "x": 500,
+        "y": -200
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F"
+      ],
+      "summary": "Swap reserve \u2194 lineup free; preview wait before save.",
+      "tcIdeas": [
+        "Swap free; wait preview before save"
+      ]
     },
     {
       "id": "garage-repair",
       "label": "Repairs",
       "kind": "leaf",
-      "position": { "x": 500, "y": -60 },
-      "tags": ["Documented"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": 500,
+        "y": -60
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "summary": "Repair worn car with USO; burn path via docs/proof narrative.",
-      "tcIdeas": ["Insufficient USO blocks repair", "Cost disclosed before confirm"]
+      "tcIdeas": [
+        "Insufficient USO blocks repair",
+        "Cost disclosed before confirm"
+      ],
+      "detail": "Free bike cannot be repaired [Documented + Observed \u2014 no REPAIR CTA on bike].",
+      "tcIds": [
+        "GC-TC-F-25"
+      ]
     },
     {
       "id": "garage-pitstop",
       "label": "Inventory /pitstop",
       "kind": "branch",
-      "position": { "x": 280, "y": 100 },
-      "tags": ["Observed"],
-      "tcTypes": ["F", "V"],
+      "position": {
+        "x": 280,
+        "y": 100
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
       "summary": "Live inventory path /pitstop; docs /inventory 404 [Observed].",
-      "tcIds": ["GC-TC-F-11", "GC-TC-V-03"],
-      "tcIdeas": ["/pitstop 200", "Docs /inventory honesty"]
+      "tcIds": [
+        "GC-TC-F-11",
+        "GC-TC-V-03"
+      ],
+      "tcIdeas": [
+        "/pitstop 200",
+        "Docs /inventory honesty"
+      ]
     },
     {
       "id": "garage-cooldown",
       "label": "Cooldown / wait",
       "kind": "leaf",
-      "position": { "x": -300, "y": 100 },
-      "tags": ["Documented"],
-      "tcTypes": ["F", "V"],
-      "summary": "Cooldown not elapsed → claim refused; uses unchanged correctly.",
-      "tcIdeas": ["Wait estimate matches refusal behavior"]
+      "position": {
+        "x": -300,
+        "y": 100
+      },
+      "tags": [
+        "Documented"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Cooldown not elapsed \u2192 claim refused; uses unchanged correctly.",
+      "tcIdeas": [
+        "Wait estimate matches refusal behavior"
+      ]
+    },
+    {
+      "id": "garage-bike-after-claim",
+      "label": "Garage after claim",
+      "kind": "branch",
+      "position": {
+        "x": -300,
+        "y": -280
+      },
+      "tags": [
+        "Observed"
+      ],
+      "tcTypes": [
+        "F",
+        "V"
+      ],
+      "summary": "Bike appears as STARTER Free; ?car=bike details; READY TO CLAIM.",
+      "detail": "URL /garage?car=bike; OVR/attrs; cooldown READY [Observed 2026-10-26].",
+      "tcIds": [
+        "GC-TC-F-20",
+        "GC-TC-F-23",
+        "GC-TC-V-14"
+      ],
+      "tcIdeas": [
+        "Bike card present",
+        "Deep link works",
+        "READY TO CLAIM badge"
+      ]
     }
   ],
   "edges": [
-    { "id": "e-g-shell", "source": "garage", "target": "garage-shell" },
-    { "id": "e-g-line", "source": "garage", "target": "garage-lineup" },
-    { "id": "e-g-res", "source": "garage-lineup", "target": "garage-reserves" },
-    { "id": "e-g-rep", "source": "garage-lineup", "target": "garage-repair" },
-    { "id": "e-g-pit", "source": "garage", "target": "garage-pitstop" },
-    { "id": "e-g-cd", "source": "garage", "target": "garage-cooldown" }
+    {
+      "id": "e-g-shell",
+      "source": "garage",
+      "target": "garage-shell"
+    },
+    {
+      "id": "e-g-line",
+      "source": "garage",
+      "target": "garage-lineup"
+    },
+    {
+      "id": "e-g-res",
+      "source": "garage-lineup",
+      "target": "garage-reserves"
+    },
+    {
+      "id": "e-g-rep",
+      "source": "garage-lineup",
+      "target": "garage-repair"
+    },
+    {
+      "id": "e-g-pit",
+      "source": "garage",
+      "target": "garage-pitstop"
+    },
+    {
+      "id": "e-g-cd",
+      "source": "garage",
+      "target": "garage-cooldown"
+    },
+    {
+      "id": "e-g-bike",
+      "source": "garage",
+      "target": "garage-bike-after-claim"
+    }
   ]
 }

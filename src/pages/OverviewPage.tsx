@@ -141,11 +141,23 @@ export function OverviewPage() {
                 Evidence · app.gas.cash/mini-mart · free-bike modal · [Observed]
               </figcaption>
             </figure>
-            <p className="rounded-md border border-[var(--amber)]/35 bg-[color-mix(in_srgb,var(--amber)_8%,transparent)] px-3 py-2.5 text-sm text-[var(--text-muted)]">
-              <strong className="text-[var(--text)]">Money-safe note:</strong> QA has{' '}
-              <strong className="text-[var(--text)]">not</strong> claimed the bike on the test account. Modal copy and CTA
-              were observed only — claim grant path remains unexecuted.
+            <p className="rounded-md border border-[var(--green)]/35 bg-[color-mix(in_srgb,var(--green)_8%,transparent)] px-3 py-2.5 text-sm text-[var(--text-muted)]">
+              <strong className="text-[var(--text)]">Claim status:</strong> Free bike{' '}
+              <strong className="text-[var(--text)]">Claimed [Observed]</strong> on the QA test account (2026-10-26,
+              authorized). Garage shows STARTER Free BIKE (OVR 5); home READY TO CLAIM. Funded car buys / field pump still
+              money-safe blocked.
             </p>
+            <figure className="overflow-hidden rounded-md border border-[var(--border)] bg-[var(--bg-panel)]">
+              <img
+                src={publicUrl('/evidence/claim-bike-garage-post.png')}
+                alt="Garage after claim: STARTER Free BIKE OVR 5 attributes"
+                className="block w-full"
+                loading="lazy"
+              />
+              <figcaption className="border-t border-[var(--border)] px-3 py-2 font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-dim)]">
+                Evidence · app.gas.cash/garage?car=bike · post-claim · [Observed]
+              </figcaption>
+            </figure>
           </Section>
 
           <Section id="coverage" title="Exploration coverage">
@@ -171,9 +183,9 @@ export function OverviewPage() {
                     <td className="px-3 py-2.5">UI + API audits; stake UI observed</td>
                   </tr>
                   <tr className="border-b border-[var(--border)]">
-                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Free bike modal</td>
-                    <td className="px-3 py-2.5">Partial</td>
-                    <td className="px-3 py-2.5">Copy + CTA observed; claim not taken (money-safe)</td>
+                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Free bike modal + claim grant</td>
+                    <td className="px-3 py-2.5">Claimed [Observed]</td>
+                    <td className="px-3 py-2.5">CLAIM YOUR BIKE → LET&apos;S GO; STARTER Free BIKE in garage</td>
                   </tr>
                   <tr className="border-b border-[var(--border)]">
                     <td className="px-3 py-2.5 font-medium text-[var(--text)]">Field hold-to-pump claim</td>
@@ -187,8 +199,8 @@ export function OverviewPage() {
                   </tr>
                   <tr>
                     <td className="px-3 py-2.5 font-medium text-[var(--text)]">Claimed-bike → claim economics</td>
-                    <td className="px-3 py-2.5">Not done</td>
-                    <td className="px-3 py-2.5">Blocked on free-bike claim decision</td>
+                    <td className="px-3 py-2.5">Lab partial</td>
+                    <td className="px-3 py-2.5">READY TO CLAIM chrome; field payout + 4–20% still blocked</td>
                   </tr>
                 </tbody>
               </table>
