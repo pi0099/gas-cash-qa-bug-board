@@ -219,15 +219,20 @@ function MindMapCanvas() {
 export function MindMapPage() {
   return (
     <div className="flex h-[100dvh] min-h-screen flex-col overflow-hidden">
-      <header className="z-20 shrink-0 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3 backdrop-blur-md sm:px-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
+      <header className="z-20 shrink-0 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 backdrop-blur-md sm:px-5">
+        <div className="relative flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div className="z-10 shrink-0 text-center sm:min-w-[10rem] sm:text-left">
             <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
               Gas Cash · Local QA
             </p>
             <h1 className="text-lg font-bold tracking-tight text-[var(--text)]">Product mind map</h1>
           </div>
-          <SiteNav />
+          <div className="z-10 flex justify-center sm:absolute sm:inset-x-0 sm:top-1/2 sm:-translate-y-1/2 sm:pointer-events-none">
+            <div className="sm:pointer-events-auto">
+              <SiteNav />
+            </div>
+          </div>
+          <div className="pointer-events-none hidden sm:block sm:min-w-[10rem]" aria-hidden />
         </div>
       </header>
       <ReactFlowProvider>

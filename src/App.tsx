@@ -24,22 +24,27 @@ function BoardShell() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3 backdrop-blur-md sm:px-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-            <Link to="/" className="group inline-flex flex-col gap-0.5 no-underline">
-              <span className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
-                Gas Cash · Local QA
-              </span>
-              <span className="text-lg font-bold tracking-tight text-[var(--text)] group-hover:text-[var(--amber)]">
-                Bug Board
-              </span>
-            </Link>
-            <SiteNav />
+      <header className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 backdrop-blur-md sm:px-5">
+        <div className="relative flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <Link
+            to="/"
+            className="group z-10 inline-flex shrink-0 flex-col gap-0.5 no-underline sm:min-w-[9.5rem]"
+          >
+            <span className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
+              Gas Cash · Local QA
+            </span>
+            <span className="text-lg font-bold tracking-tight text-[var(--text)] group-hover:text-[var(--amber)]">
+              Bug Board
+            </span>
+          </Link>
+          <div className="z-10 flex justify-center sm:absolute sm:inset-x-0 sm:top-1/2 sm:-translate-y-1/2 sm:pointer-events-none">
+            <div className="sm:pointer-events-auto">
+              <SiteNav />
+            </div>
           </div>
-          <div className="text-right font-[family-name:var(--font-mono)] text-[10px] leading-relaxed text-[var(--text-dim)]">
+          <div className="z-10 hidden text-right font-[family-name:var(--font-mono)] text-[10px] leading-relaxed text-[var(--text-dim)] sm:block sm:min-w-[9.5rem]">
             <div>{bugBoard.bugs.length} seeded · disk SoT</div>
-            <div className="max-w-[280px] truncate sm:max-w-none" title={bugBoard.source}>
+            <div className="max-w-[280px] truncate sm:ml-auto sm:max-w-[11rem]" title={bugBoard.source}>
               {bugBoard.updatedAt}
             </div>
           </div>

@@ -41,15 +41,20 @@ function Section({
 export function OverviewPage() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3 backdrop-blur-md sm:px-6">
-        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
-          <div>
+      <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 backdrop-blur-md sm:px-6">
+        <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div className="z-10 shrink-0 text-center sm:min-w-[10rem] sm:text-left">
             <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
               Gas Cash · Local QA
             </p>
             <h1 className="text-lg font-bold tracking-tight text-[var(--text)]">Product overview</h1>
           </div>
-          <SiteNav />
+          <div className="z-10 flex justify-center sm:absolute sm:inset-x-0 sm:top-1/2 sm:-translate-y-1/2 sm:pointer-events-none">
+            <div className="sm:pointer-events-auto">
+              <SiteNav />
+            </div>
+          </div>
+          <div className="pointer-events-none hidden sm:block sm:min-w-[10rem]" aria-hidden />
         </div>
       </header>
 
