@@ -5,6 +5,7 @@ const links = [
   { to: '/overview', label: 'Overview', end: false },
   { to: '/mindmap', label: 'Mind map', end: false },
   { to: '/test-cases', label: 'Test Cases', end: false },
+  { to: '/claim-gps', label: 'Claim / GPS', end: false },
 ] as const
 
 export function SiteNav() {

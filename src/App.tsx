@@ -6,6 +6,7 @@ import { BugList } from './components/BugList'
 import { SiteNav } from './components/SiteNav'
 import { bugBoard, filterBugs, getBugById } from './lib/bugs'
 import { MindMapDetailPage, MindMapPage } from './pages/MindMapPage'
+import { ClaimGeoPage } from './pages/ClaimGeoPage'
 import { OverviewPage } from './pages/OverviewPage'
 import { TestCasesPage } from './pages/TestCasesPage'
 import type { BugPriority, BugStatus } from './types/bug'
@@ -100,6 +101,7 @@ export default function App() {
       <Route path="/mindmap/:domain" element={<MindMapDetailPage />} />
       <Route path="/test-cases" element={<TestCasesPage />} />
       <Route path="/test-cases/:tcId" element={<TestCasesPage />} />
+      <Route path="/claim-gps" element={<ClaimGeoPage />} />
     </Routes>
   )
 }

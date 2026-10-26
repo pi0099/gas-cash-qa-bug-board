@@ -215,6 +215,10 @@ export function OverviewPage() {
                 Map / Claim
               </a>
               {' · '}
+              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}claim-gps`}>
+                Claim / GPS
+              </a>
+              {' · '}
               <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap`}>
                 Hub mind map
               </a>
@@ -438,6 +442,10 @@ export function OverviewPage() {
               <li>
                 <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap/claim`}>
                   Claim detail map
+                </a>
+                {' · '}
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}claim-gps`}>
+                  Claim / GPS guide
                 </a>
               </li>
             </ul>
