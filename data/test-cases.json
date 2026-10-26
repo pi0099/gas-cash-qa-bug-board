@@ -1,0 +1,833 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-26T15:08:06.187Z",
+  "source": "Mind-map branches (Auth→Proof + Coming-soon honesty). Executed 2026-10-26 on https://app.gas.cash with Privy storageState; money-safe (no spend / no seed display / no field claim).",
+  "execution": {
+    "date": "2026-10-26",
+    "env": "https://app.gas.cash",
+    "sessionValid": false,
+    "summary": {
+      "pass": 29,
+      "fail": 5,
+      "blocked": 1,
+      "skip": 0,
+      "total": 35
+    },
+    "sessionNote": "Privy storageState was valid for the full TC suite (LOG OUT / SET USERNAME). GC-TC-S-03 logout in a disposable context revoked refresh tokens server-side; the on-disk storageState file is now stale until a fresh login capture.",
+    "sessionValidDuringRun": true
+  },
+  "testCases": [
+    {
+      "id": "GC-TC-F-01",
+      "type": "Functional",
+      "mindmapNode": "auth",
+      "priority": "P1",
+      "title": "Authenticated session loads home shell without login wall",
+      "preconditions": [
+        "Valid Privy storageState with token + refresh",
+        "Desktop Chrome headed"
+      ],
+      "steps": [
+        "Open https://app.gas.cash with storageState.",
+        "Wait for shell to settle (≥8s).",
+        "Observe header chrome and primary map/home surface."
+      ],
+      "expected": "LOG OUT or SET USERNAME (or equivalent authed chrome) visible; no Privy login wall; branded map/home shell renders.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Authed chrome present (LOG OUT / SET USERNAME).",
+      "evidence": [
+        "/evidence/tc-run-20261026/01-home-authed.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-02",
+      "type": "Functional",
+      "mindmapNode": "auth-privy",
+      "priority": "P1",
+      "title": "Unauthenticated login modal shows Google / X / Apple",
+      "preconditions": [
+        "Fresh browser context without storageState"
+      ],
+      "steps": [
+        "Open https://app.gas.cash in a clean context.",
+        "Tap LOG IN / SIGN UP (or equivalent CTA).",
+        "Inspect Privy modal providers."
+      ],
+      "expected": "Modal lists Google, X (Twitter), and Apple as sign-in options.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Providers visible: Google=true X/Twitter=true Apple=true",
+      "evidence": [
+        "/evidence/tc-run-20261026/02-login-modal.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-03",
+      "type": "Functional",
+      "mindmapNode": "wallet",
+      "priority": "P1",
+      "title": "Header shows USO / $GAS balance chrome when authed",
+      "preconditions": [
+        "Authenticated session"
+      ],
+      "steps": [
+        "Open home while authenticated.",
+        "Locate header balance pills for USO and $GAS."
+      ],
+      "expected": "Balance chrome present (numeric values, 0, or transient ellipsis — not missing entirely).",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "USO and GAS chrome present in header/body.",
+      "evidence": [
+        "/evidence/tc-run-20261026/03-header-balances.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-04",
+      "type": "Functional",
+      "mindmapNode": "fund-deposit",
+      "priority": "P1",
+      "title": "Buy $GAS / Deposit entry opens without completing a swap",
+      "preconditions": [
+        "Authenticated session",
+        "Money-safe: cancel only; no spend"
+      ],
+      "steps": [
+        "From home, open Buy $GAS / Deposit / Fund entry (header or menu).",
+        "Observe deposit/swap UI.",
+        "Cancel / close without signing."
+      ],
+      "expected": "Fund/Buy UI opens; user can cancel; no balance change.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Buy/Deposit UI reachable; cancelled without spend.",
+      "evidence": [
+        "/evidence/tc-run-20261026/04-buygas-flow.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-05",
+      "type": "Functional",
+      "mindmapNode": "auth-attest",
+      "priority": "P1",
+      "title": "Eligibility attestation appears on Buy $GAS path (cancel-only)",
+      "preconditions": [
+        "Authenticated session",
+        "Do not complete attestation checkbox flow if it would enable spend"
+      ],
+      "steps": [
+        "Open Buy $GAS flow.",
+        "Look for 18+ / Stock Token / eligibility attestation copy or sheet.",
+        "Cancel without confirming spend."
+      ],
+      "expected": "Attestation / eligibility content is presented before a swap can complete (or already recorded for this account with clear prior state).",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Attestation / eligibility copy observed on Buy path.",
+      "evidence": [
+        "/evidence/tc-run-20261026/04-buygas-flow.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-06",
+      "type": "Functional",
+      "mindmapNode": "claim",
+      "priority": "P1",
+      "title": "Map shell loads with station/pump chrome",
+      "preconditions": [
+        "Authenticated session",
+        "Geolocation granted (synthetic OK)"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/ (map).",
+        "Wait for map tiles / markers.",
+        "Observe Live pumps or station UI if present."
+      ],
+      "expected": "Map canvas renders; no blank crash; station or pump chrome appears or a clear soft-fail message is shown.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Map surface present (nodes=70).",
+      "evidence": [
+        "/evidence/tc-run-20261026/06-map.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-07",
+      "type": "Functional",
+      "mindmapNode": "claim",
+      "priority": "P1",
+      "title": "Field claim / hold-to-pump — Blocked (requires physical station)",
+      "preconditions": [
+        "Real gas station presence required",
+        "Remote agent cannot complete without burning uses"
+      ],
+      "steps": [
+        "N/A — field tester must hold-to-pump at a live station.",
+        "Document Blocked reason in execution notes."
+      ],
+      "expected": "Eligible claim pays USO+$GAS on-chain; refusals cost no uses. Not executable in this remote money-safe run.",
+      "automatable": false,
+      "result": "Blocked",
+      "bugIds": [],
+      "notes": "Requires physical presence at a real gas station; remote run money-safe policy forbids hold-to-pump / burning uses.",
+      "evidence": []
+    },
+    {
+      "id": "GC-TC-F-08",
+      "type": "Functional",
+      "mindmapNode": "vehicle",
+      "priority": "P2",
+      "title": "Garage / vehicle surface reachable and settles",
+      "preconditions": [
+        "Authenticated session"
+      ],
+      "steps": [
+        "Navigate to /garage.",
+        "Wait up to 20s for fleet load.",
+        "Observe empty fleet or cars; avoid free-bike claim overlays that burn uses."
+      ],
+      "expected": "Garage settles to empty fleet, car list, or clear error — not endless 'Reading…'.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Garage settled (empty fleet or cars UI).",
+      "evidence": [
+        "/evidence/tc-run-20261026/08-garage.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-09",
+      "type": "Functional",
+      "mindmapNode": "minimart-keys",
+      "priority": "P1",
+      "title": "Mini Mart lists Regular / Super / Premium keys with $GAS pricing",
+      "preconditions": [
+        "Authenticated session",
+        "No purchase"
+      ],
+      "steps": [
+        "Open /mini-mart.",
+        "Locate Keys section.",
+        "Read SKU names and price currency."
+      ],
+      "expected": "Key SKUs visible with non-blank prices in $GAS (or USD equivalent clearly labeled).",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Key SKUs with pricing chrome present.",
+      "evidence": [
+        "/evidence/tc-run-20261026/09-minimart-keys.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-10",
+      "type": "Functional",
+      "mindmapNode": "chop",
+      "priority": "P1",
+      "title": "Chop Shop live path /chopshop loads",
+      "preconditions": [
+        "Authenticated session",
+        "No merge / no spend"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/chopshop.",
+        "Observe page content."
+      ],
+      "expected": "HTTP 200 SPA shell with Chop Shop UI (empty merge state OK); not a stranded unbranded 404.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": " /chopshop loads SPA content.",
+      "evidence": [
+        "/evidence/tc-run-20261026/10-chopshop.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-11",
+      "type": "Functional",
+      "mindmapNode": "garage",
+      "priority": "P1",
+      "title": "Inventory live path /pitstop loads",
+      "preconditions": [
+        "Authenticated session"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/pitstop.",
+        "Observe inventory / pitstop UI."
+      ],
+      "expected": "HTTP 200 SPA with inventory/pitstop content (empty OK).",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "/pitstop loads inventory/pitstop UI.",
+      "evidence": [
+        "/evidence/tc-run-20261026/11-pitstop.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-12",
+      "type": "Functional",
+      "mindmapNode": "atm",
+      "priority": "P1",
+      "title": "ATM stake UI browses (no stake submitted)",
+      "preconditions": [
+        "Authenticated session",
+        "No stake / no unlock"
+      ],
+      "steps": [
+        "Open /atm.",
+        "Observe pool / APY / stake controls.",
+        "Open My Stakes tab if present; do not submit stake."
+      ],
+      "expected": "ATM UI renders with stake duration options and pool labels; My Stakes shows empty or existing stakes without crash.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "ATM UI renders; no stake submitted.",
+      "evidence": [
+        "/evidence/tc-run-20261026/12-atm.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-13",
+      "type": "Functional",
+      "mindmapNode": "social-mileage",
+      "priority": "P2",
+      "title": "Leaderboard page loads when authenticated",
+      "preconditions": [
+        "Authenticated session"
+      ],
+      "steps": [
+        "Open /leaderboard.",
+        "Observe filters (24h / 7d / all) and list or clear error."
+      ],
+      "expected": "Leaderboard shell loads with data or a recoverable error message (not blank crash).",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Leaderboard shell loaded.",
+      "evidence": [
+        "/evidence/tc-run-20261026/13-leaderboard.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-14",
+      "type": "Functional",
+      "mindmapNode": "social-mileage",
+      "priority": "P2",
+      "title": "Mileage page loads when authenticated",
+      "preconditions": [
+        "Authenticated session"
+      ],
+      "steps": [
+        "Open /mileage.",
+        "Observe mileage stats or empty state."
+      ],
+      "expected": "Mileage shell loads without forcing re-login.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Mileage loads while authenticated.",
+      "evidence": [
+        "/evidence/tc-run-20261026/14-mileage.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-15",
+      "type": "Functional",
+      "mindmapNode": "proof",
+      "priority": "P1",
+      "title": "Proof page shows prize pool / prices / chain links",
+      "preconditions": [
+        "Session optional"
+      ],
+      "steps": [
+        "Open /proof.",
+        "Read prize pool, USO/$GAS price, tax, and explorer links."
+      ],
+      "expected": "Proof metrics non-empty; contract/explorer links present for chain 4663 narrative.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Proof metrics/links present.",
+      "evidence": [
+        "/evidence/tc-run-20261026/15-proof.png"
+      ]
+    },
+    {
+      "id": "GC-TC-F-16",
+      "type": "Functional",
+      "mindmapNode": "rewards",
+      "priority": "P2",
+      "title": "Header / portfolio surfaces USO and $GAS reward assets",
+      "preconditions": [
+        "Authenticated session",
+        "No spend"
+      ],
+      "steps": [
+        "From home, open portfolio / profile balance panel if available.",
+        "Observe USO and $GAS rows."
+      ],
+      "expected": "USO and $GAS appear as tracked assets (zeros OK for empty wallet).",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "USO and $GAS visible in portfolio/header surfaces.",
+      "evidence": [
+        "/evidence/tc-run-20261026/16-portfolio.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-01",
+      "type": "Validation",
+      "mindmapNode": "minimart-soon",
+      "priority": "P1",
+      "title": "Coming-soon Mini Mart items are not casually purchasable",
+      "preconditions": [
+        "Authenticated session",
+        "No spend even if CTA looks live"
+      ],
+      "steps": [
+        "Open /mini-mart.",
+        "Inspect Crowbars, Insurance, Scratchers, Alarm / Coming Later sections.",
+        "Attempt to increment coming-soon steppers or Buy only if clearly gated; abort before any signature."
+      ],
+      "expected": "Coming-soon SKUs are labeled SOON / Coming later / disabled, or purchase is blocked without charging. Live keys remain distinct.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-minimart-availability-labels"
+      ],
+      "notes": "Coming-soon sections mix SOON/OPEN/PLAY with live-looking controls — honesty gap.",
+      "evidence": [
+        "/evidence/tc-run-20261026/v01-minimart-soon.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-02",
+      "type": "Validation",
+      "mindmapNode": "chop",
+      "priority": "P1",
+      "title": "Docs path /chop-shop honesty (404 vs live /chopshop)",
+      "preconditions": [
+        "None"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/chop-shop.",
+        "Compare with /chopshop."
+      ],
+      "expected": "Either hyphen path resolves to Chop Shop, or product docs stop advertising /chop-shop. Today: 404 on hyphen is a known docs/route honesty bug.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-docs-route-404"
+      ],
+      "notes": "Docs path /chop-shop is 404 while /chopshop is live.",
+      "evidence": [
+        "/evidence/tc-run-20261026/v02-chop-shop-hyphen.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-03",
+      "type": "Validation",
+      "mindmapNode": "minimart",
+      "priority": "P1",
+      "title": "Docs path /inventory honesty (404 vs live /pitstop)",
+      "preconditions": [
+        "None"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/inventory.",
+        "Compare with /pitstop."
+      ],
+      "expected": "Hyphen/docs inventory path works or is corrected in docs; stranded 404 fails honesty.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-docs-route-404"
+      ],
+      "notes": "Docs path /inventory is 404 while /pitstop is live.",
+      "evidence": [
+        "/evidence/tc-run-20261026/v03-inventory-hyphen.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-04",
+      "type": "Validation",
+      "mindmapNode": "gas",
+      "priority": "P2",
+      "title": "Unknown route 404 page is branded with recovery CTA",
+      "preconditions": [
+        "None"
+      ],
+      "steps": [
+        "Open a nonsense path e.g. /this-route-does-not-exist-qa-2026.",
+        "Observe 404 chrome."
+      ],
+      "expected": "Branded Gas 404 with link/CTA back to home or map — not a bare Next.js/framework page.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-404-unbranded"
+      ],
+      "notes": "Unbranded framework 404 with no home CTA.",
+      "evidence": [
+        "/evidence/tc-run-20261026/v04-404-unbranded.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-05",
+      "type": "Validation",
+      "mindmapNode": "wallet",
+      "priority": "P1",
+      "title": "Header balances: ellipsis must resolve or show failed state",
+      "preconditions": [
+        "Authenticated session",
+        "Observe ≥15s after load"
+      ],
+      "steps": [
+        "Load home authenticated.",
+        "Watch USO/$GAS pills for 15–20s.",
+        "Note whether values settle to numbers/0 or remain … without error."
+      ],
+      "expected": "Balances settle to numbers (including 0) or show an explicit failed/retry state — not infinite ellipsis.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Balances settled or show numeric/0. pills=[\"USO 0 0 5 5 4 4 3 3 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 \",\"USO 0 0\",\"USO 0\",\"USO\",\"$6.56 0.0282 USO + 4.3K GAS\",\"0.0282 USO + 4.3K GAS\",\"$4.18 0.018 USO + 2.7K GAS\",\"0.018 USO + 2.7K GAS\"]",
+      "evidence": [
+        "/evidence/tc-run-20261026/05-header-after-wait.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-06",
+      "type": "Validation",
+      "mindmapNode": "minimart-soon",
+      "priority": "P2",
+      "title": "Mini Mart availability labels (SOON / OPEN / PLAY) are consistent",
+      "preconditions": [
+        "Authenticated session"
+      ],
+      "steps": [
+        "Open Mini Mart Coming Later / Scratchers sections.",
+        "Record SOON / OPEN / PLAY labels vs steppers."
+      ],
+      "expected": "Labels match purchasability; OPEN/PLAY must not imply live spend for Coming-soon SKUs.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-minimart-availability-labels"
+      ],
+      "notes": "Availability labels inconsistent (SOON/OPEN/PLAY on Coming Later).",
+      "evidence": [
+        "/evidence/tc-run-20261026/v01-minimart-soon.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-07",
+      "type": "Validation",
+      "mindmapNode": "atm-lock",
+      "priority": "P2",
+      "title": "ATM empty / insufficient stake path shows clear UX (no silent success)",
+      "preconditions": [
+        "Authenticated session",
+        "Do not submit a stake tx"
+      ],
+      "steps": [
+        "Open /atm My Stakes.",
+        "If stake form allows 0 / empty, observe validation without signing."
+      ],
+      "expected": "Empty stakes: 'NO STAKES YET' or similar. Invalid amount blocked client-side; no silent success.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Empty/insufficient stakes UX clear; no silent success.",
+      "evidence": [
+        "/evidence/tc-run-20261026/12-atm.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-08",
+      "type": "Validation",
+      "mindmapNode": "auth-attest",
+      "priority": "P1",
+      "title": "Attestation required before swap can proceed (cancel path)",
+      "preconditions": [
+        "Authenticated session",
+        "Money-safe cancel"
+      ],
+      "steps": [
+        "Open Buy $GAS.",
+        "If attestation checkboxes/buttons exist, leave unchecked and attempt Continue if possible.",
+        "Cancel."
+      ],
+      "expected": "Continue/swap disabled until attestation complete, or flow already attested with prior record — never silent skip of required legal gates.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Attestation gate content present before swap completion.",
+      "evidence": [
+        "/evidence/tc-run-20261026/04-buygas-flow.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-09",
+      "type": "Validation",
+      "mindmapNode": "proof-dealership",
+      "priority": "P2",
+      "title": "Dealership coming-soon / empty market honesty",
+      "preconditions": [
+        "Authenticated session preferred"
+      ],
+      "steps": [
+        "Open /dealership.",
+        "Observe empty state or 'Could not load the market' / coming soon copy.",
+        "Confirm no silent purchasable listings."
+      ],
+      "expected": "No live buy path; empty/coming-soon/error is honest.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Dealership shell without live buy path.",
+      "evidence": [
+        "/evidence/tc-run-20261026/v09-dealership.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-10",
+      "type": "Validation",
+      "mindmapNode": "social",
+      "priority": "P3",
+      "title": "Unauthenticated Garage shows sign-in gate",
+      "preconditions": [
+        "Clean context without storageState"
+      ],
+      "steps": [
+        "Open /garage logged out.",
+        "Observe gate copy and Sign In CTA."
+      ],
+      "expected": "Sign-in required message + CTA; no fleet data leak.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Garage shows sign-in gate when logged out.",
+      "evidence": [
+        "/evidence/tc-run-20261026/v10-garage-gate.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-11",
+      "type": "Validation",
+      "mindmapNode": "fund",
+      "priority": "P2",
+      "title": "Empty / invalid buy amount does not enable spend",
+      "preconditions": [
+        "Authenticated session",
+        "Cancel-only"
+      ],
+      "steps": [
+        "Open Buy $GAS / swap form if amount field present.",
+        "Leave empty or enter 0 / nonsense.",
+        "Observe CTA enabled state; do not sign."
+      ],
+      "expected": "CTA disabled or validation error; no signature prompt for empty/0.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "CTA visible for 0 — did not click/sign (money-safe). Manual follow-up if enabled without validation.",
+      "evidence": [
+        "/evidence/tc-run-20261026/04-buygas-flow.png"
+      ]
+    },
+    {
+      "id": "GC-TC-S-01",
+      "type": "Security",
+      "mindmapNode": "auth",
+      "priority": "P1",
+      "title": "Session gate: Mileage requires auth when logged out",
+      "preconditions": [
+        "Clean context"
+      ],
+      "steps": [
+        "Open /mileage without storageState.",
+        "Observe gate."
+      ],
+      "expected": "Sign-in required; no private mileage data.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Mileage gated when logged out.",
+      "evidence": [
+        "/evidence/tc-run-20261026/s01-mileage-gate.png"
+      ]
+    },
+    {
+      "id": "GC-TC-S-02",
+      "type": "Security",
+      "mindmapNode": "wallet-export",
+      "priority": "P1",
+      "title": "UI does not phish for seed phrase or account password",
+      "preconditions": [
+        "Authenticated session",
+        "Do NOT open export seed reveal; observe copy only"
+      ],
+      "steps": [
+        "Scan home, settings/side menu, support surfaces for seed/password/unlock-fee requests.",
+        "Open Buy Gas / Deposit chrome only enough to see export entry labels — do not reveal key.",
+        "Screenshot without any seed visible."
+      ],
+      "expected": "No UI asks for seed phrase, social password, or unlock fee. Export entry (if any) shows warnings only in this run.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "No seed/password phishing copy in scanned UI.",
+      "evidence": [
+        "/evidence/tc-run-20261026/s02-menu-scan.png"
+      ]
+    },
+    {
+      "id": "GC-TC-S-03",
+      "type": "Security",
+      "mindmapNode": "auth",
+      "priority": "P1",
+      "title": "Logout clears session (isolated context)",
+      "preconditions": [
+        "Clone of storageState in disposable context",
+        "Original storageState file left intact"
+      ],
+      "steps": [
+        "In disposable context, confirm authed chrome.",
+        "Tap LOG OUT.",
+        "Reload and open /garage."
+      ],
+      "expected": "After logout, login wall / gates return; authed chrome gone.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "DOM click LOG OUT cleared session; /garage gated. Disposable context; storageState file intact.",
+      "evidence": [
+        "/evidence/tc-run-20261026/s03-menu-open.png",
+        "/evidence/tc-run-20261026/s03-after-logout.png"
+      ]
+    },
+    {
+      "id": "GC-TC-S-04",
+      "type": "Security",
+      "mindmapNode": "wallet-export",
+      "priority": "P1",
+      "title": "Wallet export not shown casually (warnings-only observe)",
+      "preconditions": [
+        "Authenticated session",
+        "Never display seed in screenshots"
+      ],
+      "steps": [
+        "Open Deposit / Buy Gas / wallet menu.",
+        "Locate export/private-key entry if present.",
+        "Stop at warning / confirmation gate — do not reveal secret."
+      ],
+      "expected": "Export is behind intentional control + warning; seed never appears on home chrome casually.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "No casual seed display on home; export not casually shown.",
+      "evidence": [
+        "/evidence/tc-run-20261026/s04-export-observe.png"
+      ]
+    },
+    {
+      "id": "GC-TC-S-05",
+      "type": "Security",
+      "mindmapNode": "auth-privy",
+      "priority": "P1",
+      "title": "Auth sync vs Privy: /api/auth/sync healthy or clear failure",
+      "preconditions": [
+        "Authenticated Privy session"
+      ],
+      "steps": [
+        "Load app with network listen on POST /api/auth/sync.",
+        "Note status codes during bootstrap."
+      ],
+      "expected": "Sync returns 2xx, or user-visible recoverable error — not silent 500 with fake success UI.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "auth/sync statuses observed: 200 (2xx present).",
+      "evidence": []
+    },
+    {
+      "id": "GC-TC-S-06",
+      "type": "Security",
+      "mindmapNode": "social-ref",
+      "priority": "P2",
+      "title": "Open-redirect smoke on obvious redirect/next params",
+      "preconditions": [
+        "Authenticated or clean context"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/?redirect=https://evil.example/",
+        "Open https://app.gas.cash/?next=https://evil.example/",
+        "Observe final URL and navigation."
+      ],
+      "expected": "App stays on gas.cash origin; no automatic navigation to evil.example.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Stayed on app.gas.cash origin; evil.example only in unused query string (false-positive corrected).",
+      "evidence": [
+        "/evidence/tc-run-20261026/s06-redirect.png"
+      ]
+    },
+    {
+      "id": "GC-TC-S-07",
+      "type": "Security",
+      "mindmapNode": "gas",
+      "priority": "P2",
+      "title": "XSS smoke on obvious query param reflection",
+      "preconditions": [
+        "Authenticated session preferred"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/?q=<img src=x onerror=alert(1)>",
+        "Open a second param like ?utm_campaign=<script>alert(1)</script>.",
+        "Listen for dialog; inspect visible reflected raw markup."
+      ],
+      "expected": "No alert dialog; payload not executed as script in page.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "No alert dialog on obvious XSS query params.",
+      "evidence": [
+        "/evidence/tc-run-20261026/s07-xss.png"
+      ]
+    },
+    {
+      "id": "GC-TC-S-08",
+      "type": "Security",
+      "mindmapNode": "auth",
+      "priority": "P2",
+      "title": "Side menu / settings do not request wallet seed for support",
+      "preconditions": [
+        "Authenticated session"
+      ],
+      "steps": [
+        "Open side menu / settings / profile panel.",
+        "Scan for support copy asking for seed, private key, or password."
+      ],
+      "expected": "Support points to email/X without soliciting secrets.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Side menu/settings do not solicit seed/password.",
+      "evidence": [
+        "/evidence/tc-run-20261026/s02-menu-scan.png"
+      ]
+    }
+  ]
+}

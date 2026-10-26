@@ -4,6 +4,7 @@ const links = [
   { to: '/', label: 'Bugs board', end: true },
   { to: '/overview', label: 'Overview', end: false },
   { to: '/mindmap', label: 'Mind map', end: false },
+  { to: '/test-cases', label: 'Test Cases', end: false },
 ] as const
 
 export function SiteNav() {

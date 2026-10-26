@@ -7,6 +7,7 @@ import { SiteNav } from './components/SiteNav'
 import { bugBoard, filterBugs, getBugById } from './lib/bugs'
 import { MindMapPage } from './pages/MindMapPage'
 import { OverviewPage } from './pages/OverviewPage'
+import { TestCasesPage } from './pages/TestCasesPage'
 import type { BugPriority, BugStatus } from './types/bug'
 
 function BoardShell() {
@@ -96,6 +97,8 @@ export default function App() {
       <Route path="/overview" element={<OverviewPage />} />
       <Route path="/summary" element={<OverviewPage />} />
       <Route path="/mindmap" element={<MindMapPage />} />
+      <Route path="/test-cases" element={<TestCasesPage />} />
+      <Route path="/test-cases/:tcId" element={<TestCasesPage />} />
     </Routes>
   )
 }
