@@ -1,5 +1,6 @@
 import { ExternalLink, ImageOff } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
+import { publicUrl } from '../lib/publicUrl'
 import type { Bug } from '../types/bug'
 import { PriorityChip } from './PriorityChip'
 import { StatusChip } from './StatusChip'
@@ -40,6 +41,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 
 function EvidenceImage({ src, alt }: { src: string; alt: string }) {
   const [failed, setFailed] = useState(false)
+  const href = publicUrl(src)
 
   if (failed) {
     return (
@@ -52,9 +54,9 @@ function EvidenceImage({ src, alt }: { src: string; alt: string }) {
 
   return (
     <figure className="overflow-hidden rounded border border-[var(--border)] bg-[var(--bg)]">
-      <a href={src} target="_blank" rel="noreferrer" className="block">
+      <a href={href} target="_blank" rel="noreferrer" className="block">
         <img
-          src={src}
+          src={href}
           alt={alt}
           loading="lazy"
           onError={() => setFailed(true)}

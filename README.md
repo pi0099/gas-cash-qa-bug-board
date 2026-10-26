@@ -11,19 +11,50 @@ npm run dev
 
 Dev server binds **`0.0.0.0:43127`**.
 
-Open [http://127.0.0.1:43127](http://127.0.0.1:43127).
+Open [http://127.0.0.1:43127/gas-cash-qa-bug-board/](http://127.0.0.1:43127/gas-cash-qa-bug-board/).
 
 ```bash
-npm run build   # production build
-npm run preview # preview build (also port 43127 via vite config if you point preview there)
+npm run build   # production build (+ copies index.html → 404.html for SPA)
+npm run preview # preview build on port 43127
 ```
+
+## GitHub Pages
+
+Configured for **project Pages** at:
+
+`https://<your-github-user>.github.io/gas-cash-qa-bug-board/`
+
+| Piece | Setting |
+| --- | --- |
+| Vite `base` | `/gas-cash-qa-bug-board/` |
+| Router | `BrowserRouter` with matching `basename` |
+| SPA deep links | `dist/404.html` = copy of `index.html` (build + Actions) |
+| Deploy | [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) → `actions/upload-pages-artifact` + `actions/deploy-pages` |
+
+### Enable once (repo owner)
+
+1. Create a **public** GitHub repo named `gas-cash-qa-bug-board` and push `main`.
+2. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. Push to `main` (or run **Actions → Deploy GitHub Pages → Run workflow**).
+4. After the workflow is green, open the Pages URL above (replace `<your-github-user>`).
+
+CLI (needs `gh` auth):
+
+```bash
+gh auth login   # or: export GH_TOKEN=<PAT with repo + pages:write>
+gh repo create gas-cash-qa-bug-board --public --source=. --remote=github --push
+gh api -X POST "repos/$(gh api user -q .login)/gas-cash-qa-bug-board/pages" \
+  -f build_type=workflow -f source[branch]=main -f source[path]=/
+```
+
+If the Pages API rejects `source` when using Actions, set Source to **GitHub Actions** in the UI instead — the workflow still deploys.
 
 ## Where bugs live
 
 | Path | Role |
 | --- | --- |
 | [`data/bugs.json`](data/bugs.json) | **Source of truth** — all bugs, STSS fields, evidence paths |
-| [`public/evidence/`](public/evidence/) | PNG screenshots referenced as `/evidence/…` |
+| [`public/evidence/`](public/evidence/) | PNG screenshots referenced as `/evidence/…` (resolved via Vite `base` at runtime) |
 
 Seeded from the project audits (`api-network-audit`, `week-1-smoke`). Session secrets / HAR cookies are **not** included.
 
@@ -53,7 +84,7 @@ Seeded from the project audits (`api-network-audit`, `week-1-smoke`). Session se
 }
 ```
 
-3. Save — Vite HMR reloads the board. Open `/bugs/<id>`.
+3. Save — Vite HMR reloads the board. Open `/bugs/<id>` (under the Pages base path when deployed).
 
 **Priorities:** `P0` | `High` | `Medium` | `Low`  
 **Statuses:** `Triage` | `Open` | `In Progress` | `Blocked` | `Resolved` | `Closed`
@@ -64,11 +95,11 @@ Title format follows the STSS playbook: `[BUG] Page - Function/Section - Issue`.
 
 - Vite + React 19 + TypeScript
 - Tailwind CSS v4
-- React Router (list + detail)
+- React Router (list + detail, BrowserRouter + basename)
 - IBM Plex Sans / Mono — industrial QA palette (slate / amber / red)
 
 ## Safety
 
-- Local only — no Linear, no auth, no wallet.
+- Local / static Pages — no Linear, no auth, no wallet.
 - Do not commit Privy `storageState`, HAR cookies, or key material.
 - Evidence images are UI soft-fail captures only.
