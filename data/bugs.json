@@ -1,14 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T03:30:00+07:00",
-  "source": "Seeded from docs/api-network-audit.md and docs/week-1-smoke-results.md",
+  "updatedAt": "2026-10-26T12:15:00+07:00",
+  "source": "Seeded from docs/api-network-audit.md, docs/week-1-smoke-results.md, docs/ui-bug-audit.md",
   "bugs": [
     {
       "id": "gc-api-500-outage",
       "title": "[BUG] App API - /api/* data plane - All endpoints return HTTP 500 while SPA shells 200",
       "priority": "P0",
       "status": "Triage",
-      "tags": ["api", "outage", "production", "soft-fail", "hkg1"],
+      "tags": [
+        "api",
+        "outage",
+        "production",
+        "soft-fail",
+        "hkg1"
+      ],
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
@@ -68,7 +74,12 @@
       "title": "[BUG] ATM - Robinhood Chain / POST /api/rpc - Storm of 500s and Could not read Robinhood Chain",
       "priority": "High",
       "status": "Triage",
-      "tags": ["atm", "rpc", "network", "retry-storm"],
+      "tags": [
+        "atm",
+        "rpc",
+        "network",
+        "retry-storm"
+      ],
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
@@ -116,7 +127,12 @@
       "title": "[BUG] Layout chrome - Global fetches - me/stats, scratch tiers, claims/live, lineup refetch on every route",
       "priority": "High",
       "status": "Triage",
-      "tags": ["performance", "layout", "refetch", "api"],
+      "tags": [
+        "performance",
+        "layout",
+        "refetch",
+        "api"
+      ],
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
@@ -166,7 +182,12 @@
       "title": "[BUG] Auth bootstrap - POST /api/auth/sync - Returns 500 while Privy session is healthy",
       "priority": "High",
       "status": "Triage",
-      "tags": ["auth", "privy", "api", "sync"],
+      "tags": [
+        "auth",
+        "privy",
+        "api",
+        "sync"
+      ],
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
@@ -211,7 +232,13 @@
       "title": "[BUG] Docs / deep links - /chop-shop and /inventory - HTTP 404 vs live /chopshop and /pitstop",
       "priority": "Medium",
       "status": "Triage",
-      "tags": ["routing", "docs", "404", "chopshop", "pitstop"],
+      "tags": [
+        "routing",
+        "docs",
+        "404",
+        "chopshop",
+        "pitstop"
+      ],
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
@@ -259,7 +286,12 @@
       "title": "[BUG] Mini Mart - SKU chrome - Items look purchasable with blank prices while shop load fails",
       "priority": "Medium",
       "status": "Triage",
-      "tags": ["mini-mart", "ux", "shop", "honesty"],
+      "tags": [
+        "mini-mart",
+        "ux",
+        "shop",
+        "honesty"
+      ],
       "createdAt": "2026-10-26",
       "updatedAt": "2026-10-26",
       "env": "https://app.gas.cash",
@@ -306,6 +338,373 @@
         "GET /api/mini-mart (+ /unopened) → 500",
         "GET /api/key-prices, /api/key-payback → 500"
       ]
+    },
+    {
+      "id": "gc-404-unbranded",
+      "title": "[BUG] 404 - Error page - Unbranded stranded page with no home or nav CTA",
+      "priority": "High",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "404",
+        "navigation",
+        "empty-state"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Deep-link / docs paths such as /chop-shop and /inventory render the default white Next.js-style “404 | This page could not be found.” page with no Gas Cash branding, chrome, or home CTA. Users who mistype or follow outdated docs are stranded off-product. Independent of the /api/* outage.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Paths: /chop-shop → HTTP 404; /inventory → HTTP 404",
+        "Live equivalents: /chopshop, /pitstop (Garage nav)",
+        "Date: 2026-10-26 UI audit; Privy session valid"
+      ],
+      "precondition": [
+        "Any browser (authed or not)",
+        "Open a hyphenated / outdated path that does not match live routes"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/chop-shop.",
+        "Observe the page content and available links/buttons.",
+        "Repeat for https://app.gas.cash/inventory.",
+        "Compare with Garage nav destinations /chopshop and /pitstop."
+      ],
+      "actual": "Blank white unbranded 404: “404 | This page could not be found.” Zero in-app links / home CTA. No map chrome.",
+      "expected": "Branded 404 with Gas Cash chrome and a clear CTA back to map / garage (or HTTP redirects from hyphenated docs paths to live routes).",
+      "evidence": [
+        {
+          "src": "/evidence/ui-11-404-chop-shop.png",
+          "alt": "Unbranded 404 on /chop-shop"
+        },
+        {
+          "src": "/evidence/ui-59-404-ux.png",
+          "alt": "404 UX detail — no brand or nav"
+        }
+      ],
+      "apiNotes": []
+    },
+    {
+      "id": "gc-header-ellipsis-forever",
+      "title": "[BUG] Header - USO/$GAS pills - Balances stuck on ellipsis with no failed state",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "header",
+        "empty-state",
+        "loading"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Header USO and $GAS pills remain on ellipsis (… / ...) indefinitely across surfaces after long waits. UI never transitions to a failed/empty marker, so balances look perpetually loading. Still a presentation bug when /api/me* fails.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Wait ≥10s on map / garage / mini-mart",
+        "Header still shows … for USO and $GAS; + control remains",
+        "Correlated: /api/me* 500 (already filed as API outage)"
+      ],
+      "precondition": [
+        "Authenticated Privy session",
+        "Balance/me APIs failing or returning no numbers"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/ while authenticated.",
+        "Wait at least 10 seconds without navigating away.",
+        "Observe the top USO and $GAS pills.",
+        "Navigate to /garage and /mini-mart and re-check the same pills."
+      ],
+      "actual": "Pills stay on ellipsis forever; no failed/empty copy; still looks like loading. + remains inviting Buy $GAS.",
+      "expected": "After timeout or known failure, show a clear empty/failed balance state (e.g. — or error affordance), not endless loading ellipsis.",
+      "evidence": [
+        {
+          "src": "/evidence/ui-50-header-balances-stuck.png",
+          "alt": "Header balances still ellipsis after wait"
+        },
+        {
+          "src": "/evidence/ui-00-session-home.png",
+          "alt": "Map home — header … pills"
+        }
+      ],
+      "apiNotes": [
+        "GET /api/me* → 500 during outage"
+      ]
+    },
+    {
+      "id": "gc-garage-reading-forever",
+      "title": "[BUG] Garage - Fleet load - Reading your cars persists with no timeout or error",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "garage",
+        "loading",
+        "empty-state"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "/garage shows “Reading your cars…” continuously (≥12s observed) while profile chrome and Chop Shop / Inventory nav are already interactive. No timeout or soft-fail parity with other surfaces. Chop Shop similarly shows “Reading your garage..” behind tips.",
+      "testData": [
+        "Env: Production https://app.gas.cash/garage",
+        "Message visible at ~2s and still at ~12s",
+        "Date: 2026-10-26 UI audit"
+      ],
+      "precondition": [
+        "Authenticated session",
+        "Fleet/garage reads failing or hanging (same window as /api/* 500s)"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/garage while authenticated.",
+        "Note “Reading your cars…” at ~2 seconds.",
+        "Wait ~12 seconds without refresh.",
+        "Observe whether the message clears or an error replaces it."
+      ],
+      "actual": "“Reading your cars…” persists indefinitely; no error/empty fleet state. Chrome remains interactive.",
+      "expected": "Loading resolves to fleet data, empty fleet copy, or a soft-fail (“Could not read your cars”) with retry — not an endless reading message.",
+      "evidence": [
+        {
+          "src": "/evidence/ui-51-garage-loading-stuck.png",
+          "alt": "Garage still Reading your cars after wait"
+        },
+        {
+          "src": "/evidence/ui-67-chopshop-empty.png",
+          "alt": "Chop Shop — Reading your garage behind tips"
+        }
+      ],
+      "apiNotes": []
+    },
+    {
+      "id": "gc-portfolio-zero-dishonest",
+      "title": "[BUG] Portfolio - Balance sheet - Shows $0.00 while asset rows are dashes and rewards errored",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "portfolio",
+        "honesty",
+        "empty-state"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Portfolio chrome shows PORTFOLIO $0.00 while every asset row is an em-dash and rewards show “Could not read your rewards.” The $0.00 total reads as a real zero wallet, not a failed load — dishonest empty/error state during API outage.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Observed: PORTFOLIO $0.00 with GAS/USO/ETH/… rows as —",
+        "Also: Could not read your rewards",
+        "Account: Privy storageState; money-safe"
+      ],
+      "precondition": [
+        "Authenticated session",
+        "Portfolio/rewards reads failing"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/ while authenticated.",
+        "Open the portfolio / rewards bottom sheet.",
+        "Observe the PORTFOLIO total vs per-asset rows and any rewards error copy."
+      ],
+      "actual": "PORTFOLIO $0.00 with all asset rows as — and rewards soft-fail. Looks like zero balance, not load failure.",
+      "expected": "When balances cannot be read, do not present a confident $0.00 total — show failed/unavailable state consistent with per-row dashes and rewards error.",
+      "evidence": [
+        {
+          "src": "/evidence/ui-23-portfolio-shell.png",
+          "alt": "Portfolio / profile shell during outage"
+        },
+        {
+          "src": "/evidence/ui-00-session-home.png",
+          "alt": "Home chrome including portfolio $0 context"
+        }
+      ],
+      "apiNotes": [
+        "GET /api/me* / rewards → 500"
+      ]
+    },
+    {
+      "id": "gc-minimart-availability-labels",
+      "title": "[BUG] Mini Mart - Availability labels - SOON OPEN PLAY and live steppers mixed under shop fail",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "mini-mart",
+        "coming-soon",
+        "honesty"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Under “Could not load the shop,” Mini Mart mixes availability treatments: Keys/Crowbar T1–T2 keep live-looking − 0 + steppers; Insurance shows INSURE; Scratchers show PLAY above COMING LATER / NOT ON SALE YET; five items tagged SOON; Credit Card Fraud tagged OPEN inside Coming Later. Purchasable vs coming-soon is unclear. Complements gc-minimart-blank-prices (blank prices) with label/CTA honesty.",
+      "testData": [
+        "Env: Production https://app.gas.cash/mini-mart",
+        "Shop soft-fail visible",
+        "Labels: DROP ONLY (T3 OK), SOON ×5, OPEN on Credit Card Fraud, PLAY on Scratchers, INSURE on insurance",
+        "Date: 2026-10-26 UI audit"
+      ],
+      "precondition": [
+        "Authenticated session",
+        "Shop load failed banner visible",
+        "Money-safe: do not purchase"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/mini-mart.",
+        "Confirm “Could not load the shop.”",
+        "Scroll Keys, Crowbars, Insurance, Scratchers, Coming Later.",
+        "Compare CTAs/tags: steppers, INSURE, PLAY, SOON, OPEN, DROP ONLY."
+      ],
+      "actual": "Inconsistent availability: live-looking steppers/INSURE/PLAY alongside SOON; Credit Card Fraud marked OPEN under COMING LATER.",
+      "expected": "Single clear availability model per SKU (buyable / drop-only / coming soon / unavailable). No OPEN tag inside Coming Later; disable or relabel PLAY/INSURE/steppers when shop data did not load.",
+      "evidence": [
+        {
+          "src": "/evidence/ui-71-mm-crowbars-section.png",
+          "alt": "Crowbars — steppers + DROP ONLY"
+        },
+        {
+          "src": "/evidence/ui-72-mm-insurance-section.png",
+          "alt": "Insurance INSURE + Coming Later grid"
+        },
+        {
+          "src": "/evidence/ui-73-mm-scratchers-soon.png",
+          "alt": "Scratchers PLAY + SOON/OPEN tags"
+        },
+        {
+          "src": "/evidence/ui-64-mobile-mm-steppers.png",
+          "alt": "Mobile Keys steppers under shop fail"
+        }
+      ],
+      "apiNotes": []
+    },
+    {
+      "id": "gc-minimart-watermark-clip",
+      "title": "[BUG] Mini Mart - Product cards - 24/7 MART watermark and rules clip through steppers and copy",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "mini-mart",
+        "layout",
+        "overlap"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Decorative “24/7 MART” watermark and horizontal rule/scan lines render through Key steppers, CURRENT APR labels, Crowbar descriptions, and Insurance art — reducing legibility of controls and copy on desktop and mobile.",
+      "testData": [
+        "Env: Production https://app.gas.cash/mini-mart",
+        "Viewports: 1280 and 375",
+        "Date: 2026-10-26 UI audit"
+      ],
+      "precondition": [
+        "Open Mini Mart (shop fail or success — layering is structural)"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/mini-mart at ~1280px.",
+        "Inspect Keys steppers/APR against the 24/7 MART watermark.",
+        "Scroll to Crowbars and Insurance; note rules/watermark through copy.",
+        "Repeat at 375px width."
+      ],
+      "actual": "Watermark and horizontal rules clip through steppers, APR, crowbar blurbs, and insurance cards.",
+      "expected": "Decorative layers stay behind product chrome or are masked so controls and descriptions remain fully legible.",
+      "evidence": [
+        {
+          "src": "/evidence/ui-57-mm-after-plus-click.png",
+          "alt": "Watermark through Key steppers"
+        },
+        {
+          "src": "/evidence/ui-71-mm-crowbars-section.png",
+          "alt": "Watermark/rules through Crowbar copy"
+        },
+        {
+          "src": "/evidence/ui-32-mobile-minimart.png",
+          "alt": "Mobile Mini Mart watermark behind KEYS"
+        }
+      ],
+      "apiNotes": []
+    },
+    {
+      "id": "gc-minimart-insure-overlap",
+      "title": "[BUG] Mini Mart - Insurance - Duration control peeks from behind Insure button",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "mini-mart",
+        "layout",
+        "controls"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "On BASIC / SILVER / GOLD insurance cards, a grey duration pill/control sits behind or peeks out from under the INSURE button — broken layering and ambiguous hit targets.",
+      "testData": [
+        "Env: Production https://app.gas.cash/mini-mart → Insurance section",
+        "Cards: BASIC, SILVER, GOLD",
+        "Date: 2026-10-26 UI audit"
+      ],
+      "precondition": [
+        "Open Mini Mart and scroll to Insurance"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/mini-mart.",
+        "Scroll to the INSURANCE section.",
+        "Inspect the bottom of BASIC / SILVER / GOLD cards around the INSURE button."
+      ],
+      "actual": "Grey pill/slider peeks from behind INSURE on each tier card.",
+      "expected": "Duration selector and INSURE are laid out without overlap; both controls fully visible and independently tappable when enabled.",
+      "evidence": [
+        {
+          "src": "/evidence/ui-72-mm-insurance-section.png",
+          "alt": "Insurance — control behind Insure"
+        },
+        {
+          "src": "/evidence/ui-73-mm-scratchers-soon.png",
+          "alt": "Insurance row detail with Insure overlap"
+        }
+      ],
+      "apiNotes": []
+    },
+    {
+      "id": "gc-pumps-duplicate-error",
+      "title": "[BUG] Map - Live pumps - Duplicate error toast and card for the same failure",
+      "priority": "Low",
+      "status": "Triage",
+      "tags": [
+        "ui",
+        "map",
+        "consistency",
+        "error"
+      ],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "The same pumps failure is shown twice: top toast “Could not load pumps.” and LIVE PUMPS card “Could not read the pumps. Try again in a moment.” Toast also persists onto non-map routes, adding noise.",
+      "testData": [
+        "Env: Production https://app.gas.cash/",
+        "Both messages present simultaneously on map",
+        "Toast also observed on other shells during session"
+      ],
+      "precondition": [
+        "Authenticated session with live pumps soft-fail"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/.",
+        "Observe top toast and LIVE PUMPS card copy.",
+        "Navigate to /mini-mart or /garage and check whether the toast remains."
+      ],
+      "actual": "Duplicate messaging (toast + card) for one failure; toast follows across routes.",
+      "expected": "Single clear pumps error (prefer in-card with retry). Avoid redundant global toast spam on every shell.",
+      "evidence": [
+        {
+          "src": "/evidence/ui-00-session-home.png",
+          "alt": "Toast + LIVE PUMPS card both failing"
+        },
+        {
+          "src": "/evidence/ui-30-mobile-map.png",
+          "alt": "Mobile map — Could not load pumps toast"
+        }
+      ],
+      "apiNotes": []
     }
   ]
 }
