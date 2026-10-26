@@ -3,7 +3,9 @@ import { Link, Route, Routes, useParams } from 'react-router-dom'
 import { BugDetail, BugDetailEmpty } from './components/BugDetail'
 import { BugFilters } from './components/BugFilters'
 import { BugList } from './components/BugList'
+import { OpenBoardBanner } from './components/OpenBoardBanner'
 import { SiteNav } from './components/SiteNav'
+import { useLiveBugStatuses } from './hooks/useLiveBugStatuses'
 import { bugBoard, filterBugs, getBugById } from './lib/bugs'
 import { MindMapDetailPage, MindMapPage } from './pages/MindMapPage'
 import { ClaimGeoPage } from './pages/ClaimGeoPage'
@@ -16,13 +18,17 @@ function BoardShell() {
   const [priority, setPriority] = useState<BugPriority | 'all'>('all')
   const [status, setStatus] = useState<BugStatus | 'all'>('all')
   const [query, setQuery] = useState('')
+  const { mergeBugs, mergeBug, applyStatus } = useLiveBugStatuses()
+
+  const liveBugs = useMemo(() => mergeBugs(bugBoard.bugs), [mergeBugs])
 
   const filtered = useMemo(
-    () => filterBugs(bugBoard.bugs, { priority, status, q: query }),
-    [priority, status, query],
+    () => filterBugs(liveBugs, { priority, status, q: query }),
+    [liveBugs, priority, status, query],
   )
 
-  const selected = bugId ? getBugById(bugId) : undefined
+  const seeded = bugId ? getBugById(bugId) : undefined
+  const selected = seeded ? mergeBug(seeded) : undefined
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -53,6 +59,8 @@ function BoardShell() {
         </div>
       </header>
 
+      <OpenBoardBanner />
+
       <BugFilters
         priority={priority}
         status={status}
@@ -80,7 +88,10 @@ function BoardShell() {
               </Link>
             </div>
           ) : selected ? (
-            <BugDetail bug={selected} />
+            <BugDetail
+              bug={selected}
+              onStatusChange={(next) => applyStatus(selected.id, next).then(() => undefined)}
+            />
           ) : (
             <BugDetailEmpty />
           )}

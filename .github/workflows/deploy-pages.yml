@@ -31,6 +31,12 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          # Optional — leave secrets unset until Supabase / Sheets are ready.
+          # Empty values keep the SPA on localStorage fallback + native TC grid.
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_TC_SHEET_EMBED_URL: ${{ secrets.VITE_TC_SHEET_EMBED_URL }}
         run: npm run build
 
       - name: Upload Pages artifact

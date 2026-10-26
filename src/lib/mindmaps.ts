@@ -59,6 +59,25 @@ export function getMindMap(id: string): MindMapJson | undefined {
   return undefined
 }
 
+/** Best-effort domain route for a TC mindmapNode id (for spreadsheet links). */
+export function domainForMindmapNode(mindmapNode: string): DomainId | null {
+  const mn = mindmapNode.trim()
+  if (!mn) return null
+  if (mn === 'chop' || mn.startsWith('chop-')) return 'chopshop'
+  if (mn === 'minimart-soon' || mn === 'proof-dealership') return 'coming-soon'
+  if (mn === 'gas' || mn.startsWith('gas-') || mn === 'rewards') return 'wallet'
+  // Longer domain ids first (coming-soon before claim/coming collisions)
+  const ordered = [...DOMAIN_ORDER].sort((a, b) => b.length - a.length)
+  for (const id of ordered) {
+    if (mn === id || mn.startsWith(`${id}-`)) return id
+  }
+  for (const id of DOMAIN_ORDER) {
+    const map = DOMAIN_MAPS[id]
+    if (map.nodes.some((n) => n.id === mn)) return id
+  }
+  return null
+}
+
 /** Count suite TCs that map to this domain (exact, prefix, or listed on domain nodes). */
 export function countLinkedTcsForDomain(domainId: string): number {
   const map = getMindMap(domainId)

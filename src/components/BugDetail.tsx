@@ -1,7 +1,8 @@
 import { ExternalLink, ImageOff } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { publicUrl } from '../lib/publicUrl'
-import type { Bug } from '../types/bug'
+import type { Bug, BugStatus } from '../types/bug'
+import { BugLivePanel } from './BugLivePanel'
 import { PriorityChip } from './PriorityChip'
 import { RetestChip } from './RetestChip'
 import { StatusChip } from './StatusChip'
@@ -72,7 +73,13 @@ function EvidenceImage({ src, alt }: { src: string; alt: string }) {
   )
 }
 
-export function BugDetail({ bug }: { bug: Bug }) {
+export function BugDetail({
+  bug,
+  onStatusChange,
+}: {
+  bug: Bug
+  onStatusChange?: (status: BugStatus) => Promise<void>
+}) {
   return (
     <article className="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:px-6">
       <header className="space-y-3">
@@ -131,6 +138,10 @@ export function BugDetail({ bug }: { bug: Bug }) {
           ))}
         </div>
       </header>
+
+      {onStatusChange ? (
+        <BugLivePanel bugId={bug.id} status={bug.status} onStatusChange={onStatusChange} />
+      ) : null}
 
       <Section title="Test data">
         <BulletList items={bug.testData} />
