@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-26T03:30:00+07:00",
+  "source": "Seeded from docs/api-network-audit.md and docs/week-1-smoke-results.md",
+  "bugs": [
+    {
+      "id": "gc-api-500-outage",
+      "title": "[BUG] App API - /api/* data plane - All endpoints return HTTP 500 while SPA shells 200",
+      "priority": "P0",
+      "status": "Triage",
+      "tags": ["api", "outage", "production", "soft-fail", "hkg1"],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Every first-party `app.gas.cash/api/*` call in the logged-in network audit returned HTTP 500 with a uniform `code:internal` envelope. SPA document shells still load 200. Privy auth is healthy. Soft-fail UI copy matches these 500s 1:1 across Mini Mart, Live pumps, Leaderboard, ATM, and Inventory.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-26 (~10:27–10:30 +07)",
+        "Account: Privy storageState session (LOG OUT / SET USERNAME visible; no login wall)",
+        "Capture: 650 XHR/fetch — 397× 5xx; app /api/* success count: 0",
+        "Uniform body: {\"ok\":false,\"kind\":\"error\",\"code\":\"internal\",\"message\":\"Something went wrong. Try again.\",\"requestId\":\"hkg1::…\"}"
+      ],
+      "precondition": [
+        "Logged-in Privy session valid at start and end of capture",
+        "Geolocation granted (synthetic HCMC coords)",
+        "No txs signed; money-safe journey only"
+      ],
+      "steps": [
+        "Open https://app.gas.cash while authenticated.",
+        "Navigate across shells: `/`, `/garage`, `/mini-mart`, `/atm` (+ My Stakes), `/leaderboard`, `/mileage`, `/dealership`, `/proof`, `/chopshop`, `/pitstop`.",
+        "Observe soft-fail banners and Network panel for `app.gas.cash/api/*`.",
+        "Observe that document navigations return 200 while every `/api/*` returns 500."
+      ],
+      "actual": "All `https://app.gas.cash/api/*` calls return HTTP 500 with shared `code:internal` + `hkg1::` requestIds. UI shows soft-fails (shop, pumps, leaderboard, Robinhood Chain, inventory, blank balances). SPA shells still 200. Privy 2xx.",
+      "expected": "Authed `/api/*` business endpoints return 2xx with data; soft-fail banners absent when the session is valid. SPA and data plane should both be healthy for a logged-in user.",
+      "evidence": [
+        {
+          "src": "/evidence/api-03-mini-mart.png",
+          "alt": "Mini Mart — Could not load the shop"
+        },
+        {
+          "src": "/evidence/api-01-map.png",
+          "alt": "Map / Live pumps — Could not load/read the pumps"
+        },
+        {
+          "src": "/evidence/api-05-leaderboard.png",
+          "alt": "Leaderboard — Could not read the leaderboard"
+        },
+        {
+          "src": "/evidence/api-04b-atm-my-stakes.png",
+          "alt": "ATM My Stakes — Could not read Robinhood Chain"
+        },
+        {
+          "src": "/evidence/api-10-pitstop.png",
+          "alt": "Inventory /pitstop — Some inventory could not be read"
+        }
+      ],
+      "apiNotes": [
+        "GET /api/mini-mart, /api/key-prices → 500 (Mini Mart)",
+        "GET /api/claims/live, /api/stations → 500 (Live pumps)",
+        "GET /api/lineup → 500 ×34 (Leaderboard)",
+        "POST /api/rpc → 500/abort dominant (ATM)",
+        "GET /api/me*, /api/me/scrolls → 500 (header + inventory)"
+      ]
+    },
+    {
+      "id": "gc-rpc-storm-atm",
+      "title": "[BUG] ATM - Robinhood Chain / POST /api/rpc - Storm of 500s and Could not read Robinhood Chain",
+      "priority": "High",
+      "status": "Triage",
+      "tags": ["atm", "rpc", "network", "retry-storm"],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "`POST /api/rpc` dominates the failure volume (176 calls: 152×500 + 24 aborted) with bursts up to 12 requests / 3s on ATM / My Stakes. UI shows “Could not read Robinhood Chain” / “My stakes, could not read”.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Route: /atm → My Stakes",
+        "Endpoint: POST /api/rpc — 176 calls in audit session",
+        "Burst: up to 12 requests within ≤3s",
+        "Account: Privy storageState (authed); no stake tx signed"
+      ],
+      "precondition": [
+        "Logged-in session with ATM shell reachable",
+        "Money-safe: open My Stakes / stake CTA only; do not sign or send"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/atm while authenticated.",
+        "Open My Stakes (and stake CTA if shown).",
+        "Watch Network for `POST /api/rpc` volume and status.",
+        "Observe the ATM soft-fail copy for Robinhood Chain / My Stakes."
+      ],
+      "actual": "ATM shows “Could not read Robinhood Chain” (and My Stakes could not read). `POST /api/rpc` hammers with 500s/aborts; each navigation re-issues. Failing calls still take ~300–400ms each, amplifying perceived latency.",
+      "expected": "Chain reads succeed (or fail once with clear backoff). Soft-fail distinguishes RPC proxy 500 vs empty stakes. No 10+/3s retry storm on a known failure.",
+      "evidence": [
+        {
+          "src": "/evidence/api-04b-atm-my-stakes.png",
+          "alt": "ATM My Stakes soft-fail — Could not read Robinhood Chain"
+        },
+        {
+          "src": "/evidence/smoke-41-atm-stake-flow.png",
+          "alt": "Week-1 smoke — ATM stake flow soft-fail"
+        },
+        {
+          "src": "/evidence/api-04-atm.png",
+          "alt": "ATM overview during API outage"
+        }
+      ],
+      "apiNotes": [
+        "POST /api/rpc — 176 calls (152×500 + 24 aborted)",
+        "Shared /api/me* also 500 during ATM phase"
+      ]
+    },
+    {
+      "id": "gc-layout-refetch-storm",
+      "title": "[BUG] Layout chrome - Global fetches - me/stats, scratch tiers, claims/live, lineup refetch on every route",
+      "priority": "High",
+      "status": "Triage",
+      "tags": ["performance", "layout", "refetch", "api"],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Shared layout chrome re-fetches the same endpoints on almost every client navigation even when unrelated to the page. Combined with the /api/* 500 outage, duplicates amplify load and “Try again” latency without recovering data.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Observed counts (single logged-in journey): GET /api/me/stats ×38, GET /api/games/scratch/tiers ×38, GET /api/lineup ×34, GET /api/claims/live ×27",
+        "Burst: me/stats & scratch tiers up to 3/3s; lineup up to 5/3s",
+        "Also: GET /api/me, /api/base-rate, /api/cooldown, /api/me/migration-keys ×14–16 each"
+      ],
+      "precondition": [
+        "Authenticated session",
+        "DevTools Network open; filter XHR/fetch to app.gas.cash/api"
+      ],
+      "steps": [
+        "Load the home map while authenticated.",
+        "Client-navigate through garage, mini-mart, atm, leaderboard, mileage, dealership.",
+        "Compare request counts for `/api/me/stats`, `/api/games/scratch/tiers`, `/api/claims/live`, `/api/lineup` across phases.",
+        "Observe that unrelated pages still re-burst the same chrome endpoints."
+      ],
+      "actual": "Global chrome endpoints refetch on nearly every route. Unrelated pages still pull scratch tiers, live pumps, and lineup. During outage this multiplies 500 traffic without user recovery.",
+      "expected": "Layout data is cached/shared across routes (SWR/query cache or equivalent). No per-nav re-burst of me/stats, scratch tiers, claims/live, and lineup when data is fresh or already known-failed with backoff.",
+      "evidence": [
+        {
+          "src": "/evidence/api-01-map.png",
+          "alt": "Map chrome with live pumps soft-fail (claims/live)"
+        },
+        {
+          "src": "/evidence/smoke-10-shell-map.png",
+          "alt": "Shell map during soft-fail window"
+        },
+        {
+          "src": "/evidence/api-05-leaderboard.png",
+          "alt": "Leaderboard — lineup fetch soft-fail"
+        }
+      ],
+      "apiNotes": [
+        "GET /api/me/stats ×38",
+        "GET /api/games/scratch/tiers ×38",
+        "GET /api/lineup ×34",
+        "GET /api/claims/live ×27",
+        "Document/RSC GET /garage, /atm, / also high teens–20s"
+      ]
+    },
+    {
+      "id": "gc-auth-sync-500",
+      "title": "[BUG] Auth bootstrap - POST /api/auth/sync - Returns 500 while Privy session is healthy",
+      "priority": "High",
+      "status": "Triage",
+      "tags": ["auth", "privy", "api", "sync"],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "`POST /api/auth/sync` returned 500 (×13) throughout the audit while Privy (`auth.privy.io`) stayed fully 2xx. User remains Privy-logged-in (no login wall) but app auth bootstrap / data plane stays broken — suggests regional/backend or auth-context bug after Privy sync.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "POST /api/auth/sync → 500 ×13",
+        "Privy: GET apps + POST sessions + CF challenge — 27× 2xx",
+        "UI chrome: SET USERNAME, LOG OUT, portfolio shell present",
+        "Session end: Privy token + refresh still present"
+      ],
+      "precondition": [
+        "Valid Privy storageState reused",
+        "Confirm no login wall before probing /api/auth/sync"
+      ],
+      "steps": [
+        "Load https://app.gas.cash with a valid Privy session.",
+        "Confirm Privy network calls succeed (2xx).",
+        "Filter Network for `POST /api/auth/sync` across navigations.",
+        "Observe app soft-fails and whether sync recovers on retry."
+      ],
+      "actual": "`POST /api/auth/sync` repeatedly 500s with the same internal envelope. Privy remains healthy; user stays logged-in in Privy chrome but app APIs do not recover. Sync re-fires on navigation despite a stable Privy session.",
+      "expected": "When Privy session is valid, `/api/auth/sync` succeeds and establishes app auth context so subsequent `/api/*` reads work. Do not re-sync on every nav when already synced.",
+      "evidence": [
+        {
+          "src": "/evidence/api-03-mini-mart.png",
+          "alt": "Authed soft-fail while Privy session held (shop)"
+        },
+        {
+          "src": "/evidence/smoke-12-shell-minimart.png",
+          "alt": "Week-1 smoke Mini Mart shell — authed, shop load fail"
+        }
+      ],
+      "apiNotes": [
+        "POST /api/auth/sync ×13 → 500",
+        "Privy auth.privy.io — 27× 2xx",
+        "Shared recommendation: treat as P0 with /api/* outage; requestIds hkg1::"
+      ]
+    },
+    {
+      "id": "gc-docs-route-404",
+      "title": "[BUG] Docs / deep links - /chop-shop and /inventory - HTTP 404 vs live /chopshop and /pitstop",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": ["routing", "docs", "404", "chopshop", "pitstop"],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "Documented or guessed hyphenated paths `/chop-shop` and `/inventory` return HTTP 404. Product UI lives at `/chopshop` (Chop Shop) and `/pitstop` (Inventory), reachable from Garage nav.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "404: GET /chop-shop, GET /inventory",
+        "Live 200: GET /chopshop, GET /pitstop",
+        "Cases: GC-S01-08, GC-S01-09 (week-1 smoke)"
+      ],
+      "precondition": [
+        "Logged-in or anonymous shell load is fine — routing issue is path naming",
+        "Garage nav available to compare live destinations"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/chop-shop — observe 404.",
+        "Open https://app.gas.cash/inventory — observe 404.",
+        "From Garage, open Chop Shop and Inventory nav targets.",
+        "Confirm live URLs are `/chopshop` and `/pitstop` (200)."
+      ],
+      "actual": "`/chop-shop` and `/inventory` return HTTP 404. Live product routes are `/chopshop` and `/pitstop`. Docs/deep-links that use hyphenated paths break.",
+      "expected": "Either redirects (`/chop-shop` → `/chopshop`, `/inventory` → `/pitstop`) or docs/external links updated to the live paths so users never hit 404 for real features.",
+      "evidence": [
+        {
+          "src": "/evidence/smoke-20-404-chop-shop.png",
+          "alt": "HTTP 404 at /chop-shop"
+        },
+        {
+          "src": "/evidence/smoke-21-404-inventory.png",
+          "alt": "HTTP 404 at /inventory"
+        },
+        {
+          "src": "/evidence/smoke-71-garage-nav-chop-shop.png",
+          "alt": "Live Chop Shop via Garage nav → /chopshop"
+        },
+        {
+          "src": "/evidence/smoke-71-garage-nav-inventory.png",
+          "alt": "Live Inventory via Garage nav → /pitstop"
+        }
+      ],
+      "apiNotes": []
+    },
+    {
+      "id": "gc-minimart-blank-prices",
+      "title": "[BUG] Mini Mart - SKU chrome - Items look purchasable with blank prices while shop load fails",
+      "priority": "Medium",
+      "status": "Triage",
+      "tags": ["mini-mart", "ux", "shop", "honesty"],
+      "createdAt": "2026-10-26",
+      "updatedAt": "2026-10-26",
+      "env": "https://app.gas.cash",
+      "description": "When Mini Mart fails to load (`Could not load the shop`), SKU chrome still renders with blank/`-` prices and live-looking qty steppers (`− 0 +`). Keys, crowbars, insurance, scratchers, Alarm-class items list without a clear Coming Soon banner (Crowbar T3 correctly DROP ONLY). Risk of confusing purchasability during API outage.",
+      "testData": [
+        "Env: Production https://app.gas.cash/mini-mart",
+        "Soft-fail: “Could not load the shop”",
+        "Prices shown as `-` / blank; qty steppers visible",
+        "Case: GC-SHELL-minimart, GC-SHOP-honesty (read-only; no purchases)",
+        "Correlated APIs: GET /api/mini-mart, /unopened, /api/key-prices, /api/key-payback → 500"
+      ],
+      "precondition": [
+        "Authenticated session",
+        "Shop APIs failing (same window as full /api/* 500 outage) or shop load error banner visible",
+        "Money-safe: do not purchase"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/mini-mart while authenticated.",
+        "Confirm “Could not load the shop” (or equivalent) soft-fail.",
+        "Scan SKU rows: keys, crowbars, insurance, scratchers, Alarm-class.",
+        "Observe price cells and qty steppers while load is failed."
+      ],
+      "actual": "Shop error banner shows, but SKUs still render with blank/`-` prices and interactive-looking `− 0 +` steppers. Purchasability is ambiguous during load fail; limited SKUs lack a clear Coming Soon treatment (except Crowbar T3 DROP ONLY).",
+      "expected": "On shop load failure, disable purchase controls and/or hide price/qty chrome until prices load. Non-purchasable / coming-soon SKUs should be explicitly labeled so they do not look buyable.",
+      "evidence": [
+        {
+          "src": "/evidence/api-03-mini-mart.png",
+          "alt": "Mini Mart — Could not load the shop (API audit)"
+        },
+        {
+          "src": "/evidence/smoke-12-shell-minimart.png",
+          "alt": "Mini Mart shell — prices blank"
+        },
+        {
+          "src": "/evidence/smoke-30-minimart-overview.png",
+          "alt": "Mini Mart overview with SKU chrome during load fail"
+        },
+        {
+          "src": "/evidence/smoke-72-minimart-after-retry.png",
+          "alt": "Mini Mart after retry — still failed load"
+        }
+      ],
+      "apiNotes": [
+        "GET /api/mini-mart (+ /unopened) → 500",
+        "GET /api/key-prices, /api/key-payback → 500"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+# Gas Cash QA · Bug Board
+
+Local triage board for Gas Cash production QA findings. **Not Linear** — bugs live on disk as JSON and render in a Vite + React UI with STSS sections and inline evidence screenshots.
+
+## Quick start
+
+```bash
+npm install
+npm run dev
+```
+
+Dev server binds **`0.0.0.0:43127`**.
+
+Open [http://127.0.0.1:43127](http://127.0.0.1:43127).
+
+```bash
+npm run build   # production build
+npm run preview # preview build (also port 43127 via vite config if you point preview there)
+```
+
+## Where bugs live
+
+| Path | Role |
+| --- | --- |
+| [`data/bugs.json`](data/bugs.json) | **Source of truth** — all bugs, STSS fields, evidence paths |
+| [`public/evidence/`](public/evidence/) | PNG screenshots referenced as `/evidence/…` |
+
+Seeded from the project audits (`api-network-audit`, `week-1-smoke`). Session secrets / HAR cookies are **not** included.
+
+## How to add a bug
+
+1. Copy needed screenshots into `public/evidence/` (kebab filenames).
+2. Append an object to `bugs` in `data/bugs.json`:
+
+```json
+{
+  "id": "gc-short-slug",
+  "title": "[BUG] Page - Section - Issue",
+  "priority": "High",
+  "status": "Triage",
+  "tags": ["api"],
+  "createdAt": "2026-10-26",
+  "updatedAt": "2026-10-26",
+  "env": "https://app.gas.cash",
+  "description": "One or two plain sentences.",
+  "testData": ["Env: …", "Account: …"],
+  "precondition": ["…"],
+  "steps": ["1. …", "Observe …"],
+  "actual": "Broken outcome only.",
+  "expected": "Correct outcome only.",
+  "evidence": [{ "src": "/evidence/your-shot.png", "alt": "Short desc" }],
+  "apiNotes": ["GET /api/… → 500"]
+}
+```
+
+3. Save — Vite HMR reloads the board. Open `/bugs/<id>`.
+
+**Priorities:** `P0` | `High` | `Medium` | `Low`  
+**Statuses:** `Triage` | `Open` | `In Progress` | `Blocked` | `Resolved` | `Closed`
+
+Title format follows the STSS playbook: `[BUG] Page - Function/Section - Issue`.
+
+## Stack
+
+- Vite + React 19 + TypeScript
+- Tailwind CSS v4
+- React Router (list + detail)
+- IBM Plex Sans / Mono — industrial QA palette (slate / amber / red)
+
+## Safety
+
+- Local only — no Linear, no auth, no wallet.
+- Do not commit Privy `storageState`, HAR cookies, or key material.
+- Evidence images are UI soft-fail captures only.
