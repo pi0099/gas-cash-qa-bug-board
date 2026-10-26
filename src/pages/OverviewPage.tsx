@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { SiteNav } from '../components/SiteNav'
+import { publicUrl } from '../lib/publicUrl'
 
 const LIVE = 'https://pi0099.github.io/gas-cash-qa-bug-board/'
 
@@ -60,7 +61,8 @@ export function OverviewPage() {
 
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
         <p className="mb-8 text-sm leading-relaxed text-[var(--text-dim)]">
-          Grounded in QA research (test strategy / plan, week-1 smoke, API & UI audits). Tags mark evidence — nothing invented.
+          Grounded in QA research (test strategy / plan, week-1 smoke, API & UI audits) plus live modal capture.
+          Tags mark evidence — nothing invented.
           <span className="mt-2 flex flex-wrap gap-1.5">
             <Tag tone="doc">[Documented]</Tag>
             <Tag tone="obs">[Observed]</Tag>
@@ -69,21 +71,141 @@ export function OverviewPage() {
         </p>
 
         <div className="space-y-10">
-          <Section id="what" title="What Gas is">
+          <Section id="wedge" title="Product wedge">
             <p>
-              Gas is a <strong className="font-semibold text-[var(--text)]">location-based on-chain game</strong> on{' '}
-              <strong className="font-semibold text-[var(--text)]">Robinhood Chain (chain id 4663)</strong>.{' '}
+              Gas is <strong className="font-semibold text-[var(--text)]">not another DEX</strong>. It is a{' '}
+              <strong className="font-semibold text-[var(--text)]">proof-of-location game</strong> on{' '}
+              <strong className="font-semibold text-[var(--text)]">Robinhood Chain (4663)</strong> whose prize pool is funded by
+              on-chain protocol activity. Primary UX is mobile + map + social login (Privy), not MetaMask connect-first.{' '}
               <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag>
             </p>
+            <ol className="list-decimal space-y-2.5 pl-5 marker:font-semibold marker:text-[var(--amber)]">
+              <li>
+                <strong className="text-[var(--text)]">Protocol activity → prize pool</strong> — 2% $GAS trade tax plus key /
+                merge fees feed the pool players claim from. <Tag tone="doc">[Documented]</Tag>{' '}
+                <Tag tone="obs">[Observed]</Tag> on Proof
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Real stations + anti-cheat → hold-to-pump</strong> — visit a real gas
+                station, pass geo / Fingerprint / photo checks, hold to pump. <Tag tone="doc">[Documented]</Tag>{' '}
+                <Tag tone="obs">[Observed]</Tag> map shell
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Payout on Robinhood Chain</strong> — successful claims pay{' '}
+                <strong className="text-[var(--text)]">USO Stock Token</strong> + <strong className="text-[var(--text)]">$GAS</strong>{' '}
+                into the Privy embedded wallet. <Tag tone="doc">[Documented]</Tag>
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Progression</strong> — free bike → keys / cars → Starting 5 lineup → ATM
+                stake. Cars unlock fuller claim economics. <Tag tone="doc">[Documented]</Tag>
+              </li>
+            </ol>
             <p>
-              Players sign in with social OAuth via <strong className="font-semibold text-[var(--text)]">Privy</strong>, get an embedded
-              wallet, obtain a vehicle (free bike or car via keys), then physically go to a real gas station, hold to pump, and receive{' '}
-              <strong className="font-semibold text-[var(--text)]">USO Stock Token</strong> + <strong className="font-semibold text-[var(--text)]">$GAS</strong>{' '}
-              from the prize pool. <Tag tone="doc">[Documented]</Tag>
+              <strong className="text-[var(--text)]">Differentiator:</strong> gameplay is geo-gated and funded by protocol
+              activity — not a swap UI with a map skin. <Tag tone="doc">[Documented]</Tag>
             </p>
+          </Section>
+
+          <Section id="free-bike" title="Onboarding / free bike modal">
             <p>
-              This is <em>not</em> a classic DEX-first dApp: primary UX is mobile + map + social login, not MetaMask/WalletConnect connect.{' '}
-              <Tag tone="obs">[Observed]</Tag>
+              Live Mini Mart overlay captured on the QA account. <Tag tone="obs">[Observed]</Tag>
+            </p>
+            <p className="font-semibold tracking-wide text-[var(--text)]">A BIKE, ON THE HOUSE.</p>
+            <ul className="list-disc space-y-2 pl-5 marker:text-[var(--amber)]">
+              <li>
+                <strong className="text-[var(--text)]">7 claims</strong> on the bike; each claim pays{' '}
+                <strong className="text-[var(--text)]">4–20% of the rate</strong> (drawn fresh).
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">1 use per claim</strong>; bike <strong className="text-[var(--text)]">rests 36h</strong>{' '}
+                between uses.
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Cannot be repaired</strong>.
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Buy a car and the bike parks for good</strong>.
+              </li>
+              <li>
+                CTA: <strong className="text-[var(--text)]">CLAIM YOUR BIKE</strong>.
+              </li>
+            </ul>
+            <figure className="overflow-hidden rounded-md border border-[var(--border)] bg-[var(--bg-panel)]">
+              <img
+                src={publicUrl('/evidence/obs-bike-on-the-house-modal.png')}
+                alt="Mini Mart overlay: A BIKE, ON THE HOUSE. with CLAIM YOUR BIKE CTA"
+                className="block w-full"
+                loading="lazy"
+              />
+              <figcaption className="border-t border-[var(--border)] px-3 py-2 font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-dim)]">
+                Evidence · app.gas.cash/mini-mart · free-bike modal · [Observed]
+              </figcaption>
+            </figure>
+            <p className="rounded-md border border-[var(--amber)]/35 bg-[color-mix(in_srgb,var(--amber)_8%,transparent)] px-3 py-2.5 text-sm text-[var(--text-muted)]">
+              <strong className="text-[var(--text)]">Money-safe note:</strong> QA has{' '}
+              <strong className="text-[var(--text)]">not</strong> claimed the bike on the test account. Modal copy and CTA
+              were observed only — claim grant path remains unexecuted.
+            </p>
+          </Section>
+
+          <Section id="coverage" title="Exploration coverage">
+            <p>Honest status for stakeholders and next field / funded work:</p>
+            <div className="overflow-x-auto rounded-md border border-[var(--border)]">
+              <table className="w-full min-w-[320px] border-collapse text-left text-sm">
+                <thead>
+                  <tr className="border-b border-[var(--border)] bg-[var(--bg-panel)] font-[family-name:var(--font-mono)] text-[11px] tracking-wide text-[var(--text-dim)] uppercase">
+                    <th className="px-3 py-2 font-medium">Area</th>
+                    <th className="px-3 py-2 font-medium">Depth</th>
+                    <th className="px-3 py-2 font-medium">Notes</th>
+                  </tr>
+                </thead>
+                <tbody className="text-[var(--text-muted)]">
+                  <tr className="border-b border-[var(--border)]">
+                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Auth / Privy / shell routes</td>
+                    <td className="px-3 py-2.5">Full (lab)</td>
+                    <td className="px-3 py-2.5">Smoke, UI audit, TC run</td>
+                  </tr>
+                  <tr className="border-b border-[var(--border)]">
+                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Map / Mini Mart / Garage / ATM / Proof</td>
+                    <td className="px-3 py-2.5">Full shells</td>
+                    <td className="px-3 py-2.5">UI + API audits; stake UI observed</td>
+                  </tr>
+                  <tr className="border-b border-[var(--border)]">
+                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Free bike modal</td>
+                    <td className="px-3 py-2.5">Partial</td>
+                    <td className="px-3 py-2.5">Copy + CTA observed; claim not taken (money-safe)</td>
+                  </tr>
+                  <tr className="border-b border-[var(--border)]">
+                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Field hold-to-pump claim</td>
+                    <td className="px-3 py-2.5">Not done</td>
+                    <td className="px-3 py-2.5">Needs real station + field tester</td>
+                  </tr>
+                  <tr className="border-b border-[var(--border)]">
+                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Funded swaps / key buy / open</td>
+                    <td className="px-3 py-2.5">Partial / blocked</td>
+                    <td className="px-3 py-2.5">Micro-fund policy; Buy Gas attestation path only</td>
+                  </tr>
+                  <tr>
+                    <td className="px-3 py-2.5 font-medium text-[var(--text)]">Claimed-bike → claim economics</td>
+                    <td className="px-3 py-2.5">Not done</td>
+                    <td className="px-3 py-2.5">Blocked on free-bike claim decision</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Detail maps:{' '}
+              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap/vehicle`}>
+                Vehicle (free bike)
+              </a>
+              {' · '}
+              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap/claim`}>
+                Map / Claim
+              </a>
+              {' · '}
+              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap`}>
+                Hub mind map
+              </a>
             </p>
           </Section>
 
@@ -106,7 +228,7 @@ export function OverviewPage() {
                 <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag>
               </li>
               <li>
-                <strong className="text-[var(--text)]">Mini Mart</strong> — keys (Regular / Super / Premium) in $GAS; inventory open/boost.{' '}
+                <strong className="text-[var(--text)]">Mini Mart</strong> — keys (Regular / Super / Premium) in $GAS; free-bike overlay; inventory open/boost.{' '}
                 <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag>
               </li>
               <li>
@@ -133,7 +255,8 @@ export function OverviewPage() {
           <Section id="benefits" title="Benefits to the player">
             <ul className="list-disc space-y-2 pl-5 marker:text-[var(--amber)]">
               <li>Earn from real-world station visits — prize pool funded by protocol activity (tax + fees). <Tag tone="doc">[Documented]</Tag></li>
-              <li>Social onboarding (no seed-first MetaMask flow) with exportable non-custodial wallet. <Tag tone="doc">[Documented]</Tag></li>
+              <li>Low-friction start: social login + free bike (limited claims) before buying keys. <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag></li>
+              <li>Exportable non-custodial Privy wallet — no seed-first MetaMask flow. <Tag tone="doc">[Documented]</Tag></li>
               <li>Progression via cars, lineup multipliers, staking, and social leaderboards. <Tag tone="doc">[Documented]</Tag></li>
               <li>Transparent on-chain reconciliation via Proof + Blockscout. <Tag tone="obs">[Observed]</Tag></li>
             </ul>
@@ -158,14 +281,15 @@ export function OverviewPage() {
                 <Tag tone="doc">[Documented]</Tag>
               </li>
               <li>
-                <strong className="text-[var(--text)]">Bike vs car</strong> — free bike if no car; limited uses, never jackpot, claim cap ~$0.50.
-                Cars unlock fuller claim economics. <Tag tone="doc">[Documented]</Tag>
+                <strong className="text-[var(--text)]">Free bike</strong> — 7 claims, 4–20% of rate, 36h rest, cannot repair; car purchase parks bike for good.{' '}
+                <Tag tone="obs">[Observed]</Tag> modal · Docs also note never jackpot / low claim cap for bike tier.{' '}
+                <Tag tone="doc">[Documented]</Tag>
               </li>
               <li>
                 Claim refusals (wrong location, busy pumps, cooldown, daily cap ≤3) cost nothing — uses not consumed.{' '}
                 <Tag tone="doc">[Documented]</Tag>
               </li>
-              <li>Repairs cost USO (burn path to $GAS per docs). <Tag tone="doc">[Documented]</Tag></li>
+              <li>Repairs cost USO (burn path to $GAS per docs) — cars; bike cannot be repaired. <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag></li>
             </ul>
           </Section>
 
@@ -226,6 +350,10 @@ export function OverviewPage() {
               <li>
                 <strong className="text-[var(--text)]">Privy embedded wallet</strong> — export or risk lockout if social access is lost.{' '}
                 <Tag tone="doc">[Documented]</Tag>
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Free bike is irreversible progression</strong> — claiming starts the 7-use / 36h cycle; buying a
+                car parks the bike for good. QA left claim untouched on purpose. <Tag tone="obs">[Observed]</Tag>
               </li>
               <li>
                 <strong className="text-[var(--text)]">Coming soon / limited</strong> — Dealership (route shell, empty market); crowbars / insurance /
@@ -290,12 +418,22 @@ export function OverviewPage() {
                   Interactive mind map
                 </a>
               </li>
+              <li>
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap/vehicle`}>
+                  Vehicle detail map
+                </a>
+              </li>
+              <li>
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap/claim`}>
+                  Claim detail map
+                </a>
+              </li>
             </ul>
           </Section>
         </div>
 
         <footer className="mt-12 border-t border-[var(--border)] pt-4 font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-dim)]">
-          Sources: test-strategy.md, test-plan.md, week-1-smoke-results.md, api-network-audit.md, ui-bug-audit.md · Gas Cash QA
+          Sources: test-strategy.md, test-plan.md, week-1-smoke-results.md, api-network-audit.md, ui-bug-audit.md · free-bike modal capture · Gas Cash QA
         </footer>
       </main>
     </div>

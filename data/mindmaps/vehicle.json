@@ -1,7 +1,7 @@
 {
   "id": "vehicle",
   "title": "Vehicle",
-  "summary": "Free bike fallback, keys → cars, open/reveal, Starting 5 lineup.",
+  "summary": "Free bike onboarding modal, keys → cars, open/reveal, Starting 5 lineup.",
   "tags": ["Documented", "Observed"],
   "nodes": [
     {
@@ -9,9 +9,10 @@
       "label": "Get vehicle",
       "kind": "center",
       "position": { "x": 0, "y": 0 },
-      "tags": ["Documented"],
+      "tags": ["Documented", "Observed"],
       "tcTypes": ["F", "V"],
       "summary": "Free bike if no car; or buy keys and open cars (NFT).",
+      "detail": "Onboarding modal “A BIKE, ON THE HOUSE.” observed on Mini Mart [Observed]. Claim not taken on QA account (money-safe).",
       "tcIds": ["GC-TC-F-08"]
     },
     {
@@ -19,11 +20,16 @@
       "label": "Free bike",
       "kind": "branch",
       "position": { "x": -320, "y": -160 },
-      "tags": ["Documented"],
+      "tags": ["Documented", "Observed"],
       "tcTypes": ["F", "V"],
-      "summary": "Fallback when player has no car NFT.",
-      "detail": "Limited uses, never jackpot, claim cap ~$0.50 [Documented].",
-      "tcIdeas": ["No car → bike eligibility shown", "Bike claim caps enforced (field)"]
+      "summary": "Modal: “A BIKE, ON THE HOUSE.” → CLAIM YOUR BIKE.",
+      "detail": "Observed rules: 7 claims; each pays 4–20% of rate (fresh draw); 1 use per claim; 36h rest; cannot repair; buy a car and the bike parks for good. CTA: CLAIM YOUR BIKE. Docs also: never jackpot / low claim cap. QA has not claimed on the test account.",
+      "tcIdeas": [
+        "Claim modal appears when eligible (no car)",
+        "Modal rules match live copy (7 / 4–20% / 36h / no repair / car parks bike)",
+        "CLAIM YOUR BIKE grants bike ownership / garage entry",
+        "Decline or dismiss path (if any) leaves account without bike and re-offers later"
+      ]
     },
     {
       "id": "vehicle-keys",
@@ -44,8 +50,8 @@
       "tags": ["Documented"],
       "tcTypes": ["F", "V"],
       "summary": "Open after reveal → stats/tier within published ranges; sealed→active.",
-      "detail": "Boost steps ≤5 before open [Documented]. Inventory live at /pitstop.",
-      "tcIdeas": ["Boost preview before open", "Open records car in garage"]
+      "detail": "Boost steps ≤5 before open [Documented]. Inventory live at /pitstop. Buying/owning a car parks the free bike for good [Observed].",
+      "tcIdeas": ["Boost preview before open", "Open records car in garage", "After first car, free bike no longer claimable"]
     },
     {
       "id": "vehicle-lineup",
