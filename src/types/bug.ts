@@ -1,9 +1,16 @@
 export type BugPriority = 'P0' | 'High' | 'Medium' | 'Low'
 export type BugStatus = 'Triage' | 'Open' | 'In Progress' | 'Blocked' | 'Resolved' | 'Closed'
+export type RetestResult = 'Still valid' | 'Fixed' | 'Partial' | 'Blocked'
 
 export interface EvidenceImage {
   src: string
   alt: string
+}
+
+export interface BugRetest {
+  at: string
+  result: RetestResult
+  note: string
 }
 
 export interface Bug {
@@ -23,6 +30,11 @@ export interface Bug {
   expected: string
   evidence: EvidenceImage[]
   apiNotes?: string[]
+  /** Latest production retest (Asia/Saigon timestamps preferred). */
+  lastRetestAt?: string
+  lastRetestResult?: RetestResult
+  lastRetestNote?: string
+  retest?: BugRetest
 }
 
 export interface BugBoardData {

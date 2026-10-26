@@ -63,8 +63,19 @@ If the Pages API rejects `source` when using Actions, set Source to **GitHub Act
 | --- | --- |
 | [`data/bugs.json`](data/bugs.json) | **Source of truth** — all bugs, STSS fields, evidence paths |
 | [`public/evidence/`](public/evidence/) | PNG screenshots referenced as `/evidence/…` (resolved via Vite `base` at runtime) |
+| [`docs/retest.md`](docs/retest.md) | Latest production retest summary (2026-10-26) |
 
 Seeded from the project audits (`api-network-audit`, `week-1-smoke`). Session secrets / HAR cookies are **not** included.
+
+### Latest retest (2026-10-26 Asia/Saigon)
+
+Live: https://pi0099.github.io/gas-cash-qa-bug-board/
+
+| Still valid | Fixed | Partial | Blocked |
+| ---: | ---: | ---: | ---: |
+| 4 | 7 | 3 | 0 |
+
+Each bug carries `lastRetestAt` / `lastRetestResult` / `lastRetestNote` (and a `retest` object). List + detail show a **Retest:** badge. Status map: Still valid / Partial → `Open`; Fixed → `Resolved`.
 
 ## How to add a bug
 

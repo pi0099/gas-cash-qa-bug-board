@@ -3,6 +3,7 @@ import { useState, type ReactNode } from 'react'
 import { publicUrl } from '../lib/publicUrl'
 import type { Bug } from '../types/bug'
 import { PriorityChip } from './PriorityChip'
+import { RetestChip } from './RetestChip'
 import { StatusChip } from './StatusChip'
 
 function BulletList({ items }: { items: string[] }) {
@@ -78,6 +79,7 @@ export function BugDetail({ bug }: { bug: Bug }) {
         <div className="flex flex-wrap items-center gap-2">
           <PriorityChip priority={bug.priority} />
           <StatusChip status={bug.status} />
+          {bug.lastRetestResult ? <RetestChip result={bug.lastRetestResult} /> : null}
           <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--text-dim)]">
             {bug.id}
           </span>
@@ -86,6 +88,25 @@ export function BugDetail({ bug }: { bug: Bug }) {
           {bug.title}
         </h1>
         <p className="text-sm leading-relaxed text-[var(--text-muted)]">{bug.description}</p>
+        {bug.lastRetestResult ? (
+          <div className="rounded border border-[var(--border)] bg-[var(--bg-panel)] px-3 py-2.5 text-sm leading-relaxed text-[var(--text-muted)]">
+            <p className="mb-1 font-[family-name:var(--font-mono)] text-[11px] tracking-[0.14em] text-[var(--amber)] uppercase">
+              Latest retest
+            </p>
+            <p>
+              <span className="font-[family-name:var(--font-mono)] text-[var(--text)]">
+                {bug.lastRetestResult}
+              </span>
+              {bug.lastRetestAt ? (
+                <span className="font-[family-name:var(--font-mono)] text-[var(--text-dim)]">
+                  {' '}
+                  · {bug.lastRetestAt} (Asia/Saigon)
+                </span>
+              ) : null}
+            </p>
+            {bug.lastRetestNote ? <p className="mt-1">{bug.lastRetestNote}</p> : null}
+          </div>
+        ) : null}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-dim)]">
           <span>Created {bug.createdAt}</span>
           <span>Updated {bug.updatedAt}</span>

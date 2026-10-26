@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { Bug } from '../types/bug'
 import { PriorityChip } from './PriorityChip'
+import { RetestChip } from './RetestChip'
 import { StatusChip } from './StatusChip'
 
 interface Props {
@@ -38,11 +39,18 @@ export function BugList({ bugs, selectedId }: Props) {
               <div className="mb-1.5 flex flex-wrap items-center gap-2">
                 <PriorityChip priority={bug.priority} />
                 <StatusChip status={bug.status} />
+                {bug.lastRetestResult ? <RetestChip result={bug.lastRetestResult} /> : null}
                 <span className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-dim)]">
                   {bug.id}
                 </span>
               </div>
               <h2 className="text-[13.5px] leading-snug font-medium text-[var(--text)]">{bug.title}</h2>
+              {bug.lastRetestNote ? (
+                <p className="mt-1.5 line-clamp-2 font-[family-name:var(--font-mono)] text-[11px] leading-snug text-[var(--text-muted)]">
+                  {bug.lastRetestAt ? `${bug.lastRetestAt} · ` : ''}
+                  {bug.lastRetestNote}
+                </p>
+              ) : null}
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {bug.tags.map((tag) => (
                   <span
