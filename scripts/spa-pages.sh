@@ -6,7 +6,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"
 cp "$DIST/index.html" "$DIST/404.html"
 
-ROUTES=(overview summary mindmap test-cases claim-gps)
+ROUTES=(overview summary mindmap test-cases claim-gps mobile-coop)
 
 # Detail mind maps from data/mindmaps/*.json (skip hub)
 if [[ -d "$ROOT/data/mindmaps" ]]; then
