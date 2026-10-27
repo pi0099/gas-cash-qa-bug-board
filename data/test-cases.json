@@ -1,46 +1,50 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T16:34:58.000Z",
+  "updatedAt": "2026-10-27T18:38:49+07:00",
   "source": "Mind-map branches + claimed-bike deep dive 2026-10-26. Executed on https://app.gas.cash with fresh Privy storageState; free bike CLAIMED (authorized); money-safe otherwise.",
   "execution": {
-    "date": "2026-10-26",
+    "date": "2026-10-27",
     "env": "https://app.gas.cash",
     "sessionValid": true,
+    "sessionValidDuringRun": true,
+    "sessionNote": "Ad-hoc UI→API 2026-10-27: storageState valid at start; intentional LOG OUT at end cleared tokens (re-login required). Money-safe; free bike already claimed; Buy $GAS cancel-only; short HOLD only.",
     "summary": {
-      "pass": 47,
-      "fail": 6,
+      "pass": 54,
+      "fail": 10,
       "blocked": 2,
       "skip": 0,
-      "total": 55
+      "total": 66
     },
-    "sessionNote": "Fresh Privy login captured 2026-10-26 ~23:28 +07 after prior logout-stale state. Free bike claimed on QA account.",
-    "sessionValidDuringRun": true,
-    "claimedBikeBatch": {
-      "added": 20,
-      "pass": 18,
-      "fail": 1,
-      "blocked": 1,
+    "adhocBatch": {
+      "date": "2026-10-27",
+      "added": 11,
       "ids": [
-        "GC-TC-F-17",
-        "GC-TC-F-18",
-        "GC-TC-F-19",
-        "GC-TC-F-20",
-        "GC-TC-F-21",
-        "GC-TC-F-22",
-        "GC-TC-F-23",
-        "GC-TC-F-24",
-        "GC-TC-F-25",
-        "GC-TC-V-12",
-        "GC-TC-V-13",
-        "GC-TC-V-14",
-        "GC-TC-V-15",
-        "GC-TC-V-16",
-        "GC-TC-V-17",
-        "GC-TC-S-09",
-        "GC-TC-S-10",
-        "GC-TC-S-11",
-        "GC-TC-S-12",
-        "GC-TC-S-13"
+        "GC-TC-V-ADHOC-01",
+        "GC-TC-V-ADHOC-02",
+        "GC-TC-V-ADHOC-03",
+        "GC-TC-V-ADHOC-04",
+        "GC-TC-V-ADHOC-05",
+        "GC-TC-V-ADHOC-06",
+        "GC-TC-V-ADHOC-07",
+        "GC-TC-V-ADHOC-09",
+        "GC-TC-V-ADHOC-10",
+        "GC-TC-V-ADHOC-11",
+        "GC-TC-V-ADHOC-12"
+      ],
+      "fail": [
+        "GC-TC-V-ADHOC-02",
+        "GC-TC-V-ADHOC-09",
+        "GC-TC-V-ADHOC-10",
+        "GC-TC-V-ADHOC-11"
+      ],
+      "pass": [
+        "GC-TC-V-ADHOC-01",
+        "GC-TC-V-ADHOC-03",
+        "GC-TC-V-ADHOC-04",
+        "GC-TC-V-ADHOC-05",
+        "GC-TC-V-ADHOC-06",
+        "GC-TC-V-ADHOC-07",
+        "GC-TC-V-ADHOC-12"
       ]
     }
   },
@@ -57,7 +61,7 @@
       ],
       "steps": [
         "Open https://app.gas.cash with storageState.",
-        "Wait for shell to settle (\u22658s).",
+        "Wait for shell to settle (≥8s).",
         "Observe header chrome and primary map/home surface."
       ],
       "expected": "LOG OUT or SET USERNAME (or equivalent authed chrome) visible; no Privy login wall; branded map/home shell renders.",
@@ -105,7 +109,7 @@
         "Open home while authenticated.",
         "Locate header balance pills for USO and $GAS."
       ],
-      "expected": "Balance chrome present (numeric values, 0, or transient ellipsis \u2014 not missing entirely).",
+      "expected": "Balance chrome present (numeric values, 0, or transient ellipsis — not missing entirely).",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -191,13 +195,13 @@
       "type": "Functional",
       "mindmapNode": "claim",
       "priority": "P1",
-      "title": "Field claim / hold-to-pump \u2014 Blocked (requires physical station)",
+      "title": "Field claim / hold-to-pump — Blocked (requires physical station)",
       "preconditions": [
         "Real gas station presence required",
         "Remote agent cannot complete without burning uses"
       ],
       "steps": [
-        "N/A \u2014 field tester must hold-to-pump at a live station.",
+        "N/A — field tester must hold-to-pump at a live station.",
         "Document Blocked reason in execution notes."
       ],
       "expected": "Eligible claim pays USO+$GAS on-chain; refusals cost no uses. Not executable in this remote money-safe run.",
@@ -221,7 +225,7 @@
         "Wait up to 20s for fleet load.",
         "Observe empty fleet or cars; avoid free-bike claim overlays that burn uses."
       ],
-      "expected": "Garage settles to empty fleet, car list, or clear error \u2014 not endless 'Reading\u2026'.",
+      "expected": "Garage settles to empty fleet, car list, or clear error — not endless 'Reading…'.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -433,7 +437,7 @@
       "bugIds": [
         "gc-minimart-availability-labels"
       ],
-      "notes": "Coming-soon sections mix SOON/OPEN/PLAY with live-looking controls \u2014 honesty gap.",
+      "notes": "Coming-soon sections mix SOON/OPEN/PLAY with live-looking controls — honesty gap.",
       "evidence": [
         "/evidence/tc-run-20261026/v01-minimart-soon.png"
       ]
@@ -499,7 +503,7 @@
         "Open a nonsense path e.g. /this-route-does-not-exist-qa-2026.",
         "Observe 404 chrome."
       ],
-      "expected": "Branded Gas 404 with link/CTA back to home or map \u2014 not a bare Next.js/framework page.",
+      "expected": "Branded Gas 404 with link/CTA back to home or map — not a bare Next.js/framework page.",
       "automatable": true,
       "result": "Fail",
       "bugIds": [
@@ -518,14 +522,14 @@
       "title": "Header balances: ellipsis must resolve or show failed state",
       "preconditions": [
         "Authenticated session",
-        "Observe \u226515s after load"
+        "Observe ≥15s after load"
       ],
       "steps": [
         "Load home authenticated.",
-        "Watch USO/$GAS pills for 15\u201320s.",
-        "Note whether values settle to numbers/0 or remain \u2026 without error."
+        "Watch USO/$GAS pills for 15–20s.",
+        "Note whether values settle to numbers/0 or remain … without error."
       ],
-      "expected": "Balances settle to numbers (including 0) or show an explicit failed/retry state \u2014 not infinite ellipsis.",
+      "expected": "Balances settle to numbers (including 0) or show an explicit failed/retry state — not infinite ellipsis.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -596,7 +600,7 @@
         "If attestation checkboxes/buttons exist, leave unchecked and attempt Continue if possible.",
         "Cancel."
       ],
-      "expected": "Continue/swap disabled until attestation complete, or flow already attested with prior record \u2014 never silent skip of required legal gates.",
+      "expected": "Continue/swap disabled until attestation complete, or flow already attested with prior record — never silent skip of required legal gates.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -669,7 +673,7 @@
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
-      "notes": "CTA visible for 0 \u2014 did not click/sign (money-safe). Manual follow-up if enabled without validation.",
+      "notes": "CTA visible for 0 — did not click/sign (money-safe). Manual follow-up if enabled without validation.",
       "evidence": [
         "/evidence/tc-run-20261026/04-buygas-flow.png"
       ]
@@ -708,7 +712,7 @@
       ],
       "steps": [
         "Scan home, settings/side menu, support surfaces for seed/password/unlock-fee requests.",
-        "Open Buy Gas / Deposit chrome only enough to see export entry labels \u2014 do not reveal key.",
+        "Open Buy Gas / Deposit chrome only enough to see export entry labels — do not reveal key.",
         "Screenshot without any seed visible."
       ],
       "expected": "No UI asks for seed phrase, social password, or unlock fee. Export entry (if any) shows warnings only in this run.",
@@ -758,7 +762,7 @@
       "steps": [
         "Open Deposit / Buy Gas / wallet menu.",
         "Locate export/private-key entry if present.",
-        "Stop at warning / confirmation gate \u2014 do not reveal secret."
+        "Stop at warning / confirmation gate — do not reveal secret."
       ],
       "expected": "Export is behind intentional control + warning; seed never appears on home chrome casually.",
       "automatable": true,
@@ -782,7 +786,7 @@
         "Load app with network listen on POST /api/auth/sync.",
         "Note status codes during bootstrap."
       ],
-      "expected": "Sync returns 2xx, or user-visible recoverable error \u2014 not silent 500 with fake success UI.",
+      "expected": "Sync returns 2xx, or user-visible recoverable error — not silent 500 with fake success UI.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -871,7 +875,7 @@
         "Open https://app.gas.cash/mini-mart while authenticated.",
         "Observe overlay / modal chrome."
       ],
-      "expected": "Modal \u201cA BIKE, ON THE HOUSE.\u201d with CLAIM YOUR BIKE CTA (pre-claim) or post-claim success state \u2014 not a blank crash.",
+      "expected": "Modal “A BIKE, ON THE HOUSE.” with CLAIM YOUR BIKE CTA (pre-claim) or post-claim success state — not a blank crash.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -921,7 +925,7 @@
         "Click LET'S GO (or dismiss).",
         "Confirm modal clears."
       ],
-      "expected": "Success copy (\u201cThe bike is in your wallet.\u201d) and LET'S GO; dismiss leaves garage/home usable without reclaim CTA.",
+      "expected": "Success copy (“The bike is in your wallet.”) and LET'S GO; dismiss leaves garage/home usable without reclaim CTA.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -967,7 +971,7 @@
         "Open https://app.gas.cash/.",
         "Inspect claim/cooldown chrome."
       ],
-      "expected": "READY TO CLAIM (or equivalent) present with daily claim rate / cooldown labels \u2014 no login wall.",
+      "expected": "READY TO CLAIM (or equivalent) present with daily claim rate / cooldown labels — no login wall.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -1035,11 +1039,11 @@
         "Open STARTING 5 / fleet panel.",
         "Read slot fill state."
       ],
-      "expected": "Panel loads; shows honest empty/partial lineup (bike may or may not auto-fill \u2014 document observed behavior).",
+      "expected": "Panel loads; shows honest empty/partial lineup (bike may or may not auto-fill — document observed behavior).",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
-      "notes": "Observed: 0 OF 5 SLOTS FILLED \u2014 \u201cNo V2 lineup yet: your five strongest active cars.\u201d Bike not auto-added to Starting 5.",
+      "notes": "Observed: 0 OF 5 SLOTS FILLED — “No V2 lineup yet: your five strongest active cars.” Bike not auto-added to Starting 5.",
       "evidence": [
         "/evidence/claim-bike-starting5.png"
       ]
@@ -1058,7 +1062,7 @@
         "Open bike details in garage.",
         "Scan for REPAIR action."
       ],
-      "expected": "No enabled repair CTA for the free bike (matches \u201cCannot be repaired\u201d).",
+      "expected": "No enabled repair CTA for the free bike (matches “Cannot be repaired”).",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -1072,7 +1076,7 @@
       "type": "Validation",
       "mindmapNode": "vehicle-bike-economics",
       "priority": "P1",
-      "title": "Free-bike modal rules copy includes 7 / 4\u201320% / 36h / no repair / car parks",
+      "title": "Free-bike modal rules copy includes 7 / 4–20% / 36h / no repair / car parks",
       "preconditions": [
         "Modal visible (pre-claim or captured evidence)"
       ],
@@ -1080,7 +1084,7 @@
         "Read modal body copy.",
         "Check each published rule is present."
       ],
-      "expected": "Copy states 7 claims; 4\u201320% of rate; 36h rest; cannot repair; buy a car parks bike for good.",
+      "expected": "Copy states 7 claims; 4–20% of rate; 36h rest; cannot repair; buy a car parks bike for good.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -1105,13 +1109,13 @@
         "Open garage bike detail copy.",
         "Compare rest / wait period."
       ],
-      "expected": "Garage detail rest/wait period matches modal (36h) \u2014 no conflicting duration.",
+      "expected": "Garage detail rest/wait period matches modal (36h) — no conflicting duration.",
       "automatable": true,
       "result": "Fail",
       "bugIds": [
         "gc-bike-rest-copy-mismatch"
       ],
-      "notes": "Modal: rests 36h. Garage: \u201cThe free bike: a 24-hour wait\u2026\u201d. Conflict [Observed].",
+      "notes": "Modal: rests 36h. Garage: “The free bike: a 24-hour wait…”. Conflict [Observed].",
       "evidence": [
         "/evidence/claim-bike-20261026/04-claim-modal-before.png",
         "/evidence/claim-bike-garage-post.png"
@@ -1152,7 +1156,7 @@
         "Capture modal CTA before click.",
         "Capture modal CTA after click."
       ],
-      "expected": "Pre: CLAIM YOUR BIKE. Post: LET'S GO (or equivalent success dismiss) \u2014 not a second grant button.",
+      "expected": "Pre: CLAIM YOUR BIKE. Post: LET'S GO (or equivalent success dismiss) — not a second grant button.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
@@ -1177,11 +1181,11 @@
         "Open Starting 5.",
         "Read empty / 0-of-5 copy."
       ],
-      "expected": "Copy does not claim the user has zero vehicles if a free bike is owned \u2014 or clearly scopes \u201ccars\u201d vs bike.",
+      "expected": "Copy does not claim the user has zero vehicles if a free bike is owned — or clearly scopes “cars” vs bike.",
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
-      "notes": "Copy says \u201cNo V2 lineup yet: your five strongest active cars\u201d and 0/5 slots \u2014 scopes to cars/lineup, not denying bike ownership. Acceptable honesty.",
+      "notes": "Copy says “No V2 lineup yet: your five strongest active cars” and 0/5 slots — scopes to cars/lineup, not denying bike ownership. Acceptable honesty.",
       "evidence": [
         "/evidence/claim-bike-starting5.png"
       ]
@@ -1191,7 +1195,7 @@
       "type": "Validation",
       "mindmapNode": "vehicle-bike-grant",
       "priority": "P1",
-      "title": "Claim grant is one-shot (idempotent) \u2014 no second CLAIM YOUR BIKE",
+      "title": "Claim grant is one-shot (idempotent) — no second CLAIM YOUR BIKE",
       "preconditions": [
         "Bike already claimed"
       ],
@@ -1263,7 +1267,7 @@
         "Authenticated claim path"
       ],
       "steps": [
-        "Walk Mini Mart claim modal \u2192 CLAIM \u2192 LET'S GO \u2192 garage.",
+        "Walk Mini Mart claim modal → CLAIM → LET'S GO → garage.",
         "Scan for seed/private-key export prompts."
       ],
       "expected": "No seed/private key solicitation during free-bike claim.",
@@ -1303,7 +1307,7 @@
       "type": "Security",
       "mindmapNode": "claim-with-bike",
       "priority": "P2",
-      "title": "Field claim still gated \u2014 READY TO CLAIM does not bypass geo anti-cheat",
+      "title": "Field claim still gated — READY TO CLAIM does not bypass geo anti-cheat",
       "preconditions": [
         "Bike claimed",
         "Lab geo (synthetic / not at station)"
@@ -1319,6 +1323,267 @@
       "notes": "Money-safe / remote: did not execute hold-to-pump. READY TO CLAIM chrome only.",
       "evidence": [
         "/evidence/claim-bike-20261026/18-home-post-dismiss.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-01",
+      "type": "Validation",
+      "mindmapNode": "auth",
+      "priority": "P1",
+      "title": "Authed session loads home shell without login wall",
+      "preconditions": [
+        "Valid Privy storageState at start of run"
+      ],
+      "steps": [
+        "Open https://app.gas.cash with storageState.",
+        "Wait for shell settle.",
+        "Observe authed chrome."
+      ],
+      "expected": "SET USERNAME / LOG OUT chrome; no login wall.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass at start of 2026-10-27 ad-hoc; session later expired after intentional logout + token clear.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/01-home-authed.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-02",
+      "type": "Validation",
+      "mindmapNode": "profile-stats",
+      "priority": "P2",
+      "title": "Profile multiplier / daily claim rate show real values when READY TO CLAIM",
+      "preconditions": [
+        "Authed; free bike owned"
+      ],
+      "steps": [
+        "Open home.",
+        "Observe MULTIPLIER and DAILY CLAIM RATE.",
+        "Confirm READY TO CLAIM.",
+        "Cross-check garage bike."
+      ],
+      "expected": "Numeric/rate values (or explicit error), not \".\" / \"—\" placeholders.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-profile-blank-stats-dots"
+      ],
+      "notes": "Fail — placeholders while READY TO CLAIM.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/02-profile-blank-stats.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-03",
+      "type": "Validation",
+      "mindmapNode": "username",
+      "priority": "P1",
+      "title": "Username rejects XSS/script payloads (client)",
+      "preconditions": [
+        "Authed; SET USERNAME available"
+      ],
+      "steps": [
+        "Open Your username modal.",
+        "Paste <script>alert(1)</script> and <img src=x onerror=alert(1)>.",
+        "Observe Set username button and DOM."
+      ],
+      "expected": "Set username disabled; payload not executed as script; rules cite allowed charset.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Client validation Pass — Set username gray/disabled with XSS in field; rules “2 to 16… letters, numbers…”. Initial false-positive DOM onerror match was input value attribute only.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/92-username-xss-paste.png",
+        "/evidence/adhoc-ui-api-20261027/91-username-attempt.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-04",
+      "type": "Validation",
+      "mindmapNode": "username",
+      "priority": "P2",
+      "title": "Username enforces max length (≤16 per UI rules)",
+      "preconditions": [
+        "Username modal open"
+      ],
+      "steps": [
+        "Paste 32–80 character string.",
+        "Observe field truncation and Set username enabled state."
+      ],
+      "expected": "Value constrained to ≤16 (or submit blocked) per stated rules.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — long paste did not enable submit; UI states max 16.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/91-username-attempt.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-05",
+      "type": "Functional",
+      "mindmapNode": "buy-gas",
+      "priority": "P2",
+      "title": "Buy $GAS attestation can be cancelled without completing purchase",
+      "preconditions": [
+        "Authed; money-safe"
+      ],
+      "steps": [
+        "Open Buy Gas.",
+        "Cancel/Close attestation only."
+      ],
+      "expected": "Flow dismisses; no purchase.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Cancel-only observed.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/55-buygas-attestation.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-06",
+      "type": "Security",
+      "mindmapNode": "auth-api",
+      "priority": "P1",
+      "title": "Unauth GET /api/me returns 401 without user payload",
+      "preconditions": [
+        "Clean browser context"
+      ],
+      "steps": [
+        "Open app unauthenticated.",
+        "GET /api/me.",
+        "Open gated shells."
+      ],
+      "expected": "401 / sign-in required; gated routes show login wall.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — /api/me 401; /garage,/mini-mart,/atm login walls.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/70-unauth-garage.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-07",
+      "type": "Functional",
+      "mindmapNode": "auth",
+      "priority": "P1",
+      "title": "LOG OUT clears Privy tokens and gated chrome",
+      "preconditions": [
+        "Authed session"
+      ],
+      "steps": [
+        "Open menu → LOG OUT.",
+        "Navigate /mileage.",
+        "Check localStorage privy:token and login wall."
+      ],
+      "expected": "Login wall; tokens cleared; no READY TO CLAIM / SET USERNAME.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass on confirmed logout click — tokens cleared, mileage shows Sign in. Earlier false positive was menu open without clicking LOG OUT.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/101-after-logout.png",
+        "/evidence/adhoc-ui-api-20261027/102-mileage-post-logout.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-09",
+      "type": "Validation",
+      "mindmapNode": "chopshop",
+      "priority": "P2",
+      "title": "Chop Shop exits Reading state when garage has vehicles or none eligible",
+      "preconditions": [
+        "Authed; bike in garage"
+      ],
+      "steps": [
+        "Open /chopshop.",
+        "Wait ≥10s.",
+        "Compare with /garage bike."
+      ],
+      "expected": "Eligible list, explicit empty (“no cars”), or error — not endless Reading.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-chopshop-reading-forever"
+      ],
+      "notes": "Fail — Reading your garage… while bike visible in Garage.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/10-chopshop.png",
+        "/evidence/adhoc-ui-api-20261027/20-garage-bike.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-10",
+      "type": "Functional",
+      "mindmapNode": "routing",
+      "priority": "P3",
+      "title": "/starting-5 deep link is branded or redirects to Garage Starting 5",
+      "preconditions": [],
+      "steps": [
+        "Open /starting-5.",
+        "Observe 404 vs redirect."
+      ],
+      "expected": "Live shell or branded 404 with home CTA — not stranded Next.js 404.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-starting5-route-404",
+        "gc-404-unbranded"
+      ],
+      "notes": "Fail — unbranded 404.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/10-starting5.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-11",
+      "type": "Validation",
+      "mindmapNode": "mileage-referrals",
+      "priority": "P2",
+      "title": "Invite CTA gated until username is set",
+      "preconditions": [
+        "Authed without username"
+      ],
+      "steps": [
+        "Open /mileage Referrals.",
+        "Read username requirement copy.",
+        "Observe INVITE SOMEONE ON X."
+      ],
+      "expected": "CTA hidden/disabled or opens username flow first.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-mileage-invite-without-username"
+      ],
+      "notes": "Fail — INVITE CTA presented with “Set a username…” copy.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/10-mileage.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-12",
+      "type": "Functional",
+      "mindmapNode": "claim-geo",
+      "priority": "P2",
+      "title": "Short HOLD TO PUMP does not POST claim / burn bike use",
+      "preconditions": [
+        "Authed; mocked geo; money-safe"
+      ],
+      "steps": [
+        "Open map with geo.",
+        "If HOLD visible, short-press <0.5s.",
+        "Watch network for claim POST."
+      ],
+      "expected": "No claim POST; bike uses unchanged.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — claimPosts=0 across far/denied scenarios; station sheet HOLD not always reached this run.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/60-far-hcmc-d-after-hold.png"
       ]
     }
   ]
