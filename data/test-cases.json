@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T19:20:48+07:00",
+  "updatedAt": "2026-10-27T20:35:00+07:00",
   "source": "Mind-map branches + claimed-bike deep dive 2026-10-26. Executed on https://app.gas.cash with fresh Privy storageState; free bike CLAIMED (authorized); money-safe otherwise.",
   "execution": {
     "date": "2026-10-27",
     "env": "https://app.gas.cash",
     "sessionValid": true,
     "sessionValidDuringRun": true,
-    "sessionNote": "Ad-hoc UI→API 2026-10-27 pass-2: prior logout cleared tokens; headed re-login required for deeper validation. Money-safe; free bike claimed; Buy $GAS cancel-only; short HOLD only. New Fail GC-TC-V-ADHOC-13 (garage carousel Reading).",
+    "sessionNote": "Pass-3 2026-10-27: fresh Privy login via Google Tiếp tục; storageState saved; location grant/deny/far suite executed; money-safe.",
     "summary": {
-      "pass": 54,
-      "fail": 11,
+      "pass": 56,
+      "fail": 12,
       "blocked": 2,
       "skip": 0,
-      "total": 67
+      "total": 70
     },
     "adhocBatch": {
       "date": "2026-10-27",
@@ -30,14 +30,19 @@
         "GC-TC-V-ADHOC-10",
         "GC-TC-V-ADHOC-11",
         "GC-TC-V-ADHOC-12",
-        "GC-TC-V-ADHOC-13"
+        "GC-TC-V-ADHOC-13",
+        "GC-TC-V-LOC-01",
+        "GC-TC-V-LOC-02",
+        "GC-TC-V-LOC-03",
+        "GC-TC-V-LOC-04"
       ],
       "fail": [
         "GC-TC-V-ADHOC-02",
         "GC-TC-V-ADHOC-09",
         "GC-TC-V-ADHOC-10",
         "GC-TC-V-ADHOC-11",
-        "GC-TC-V-ADHOC-13"
+        "GC-TC-V-ADHOC-13",
+        "GC-TC-V-LOC-01"
       ],
       "pass": [
         "GC-TC-V-ADHOC-01",
@@ -46,7 +51,9 @@
         "GC-TC-V-ADHOC-05",
         "GC-TC-V-ADHOC-06",
         "GC-TC-V-ADHOC-07",
-        "GC-TC-V-ADHOC-12"
+        "GC-TC-V-ADHOC-12",
+        "GC-TC-V-LOC-02",
+        "GC-TC-V-LOC-03"
       ]
     }
   },
@@ -1612,6 +1619,109 @@
       "evidence": [
         "/evidence/adhoc-ui-api-20261027/10-garage.png",
         "/evidence/adhoc-ui-api-20261027/20-garage-bike.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-LOC-01",
+      "type": "Functional",
+      "mindmapNode": "claim-geo",
+      "priority": "P2",
+      "title": "Granted geolocation applies mocked Jakarta coords to distance + /api/stations bbox",
+      "preconditions": [
+        "Authed Privy session",
+        "geolocation permission granted"
+      ],
+      "steps": [
+        "setGeolocation Jakarta; open home; reload.",
+        "Read distance badge.",
+        "Inspect GET /api/stations west/east/south/north."
+      ],
+      "expected": "Stations bbox near Jakarta; distance consistent with nearby stations (not ~1900 KM / foreign bbox).",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-location-browser-geo-ignored"
+      ],
+      "notes": "Fail — Jakarta mock yielded distance=1893.1 KM and HCMC stations bbox.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/440-loc-grant-jakarta.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-LOC-02",
+      "type": "Functional",
+      "mindmapNode": "claim-geo",
+      "priority": "P2",
+      "title": "HCMC mocked geo updates stations bbox; short HOLD does not POST claim",
+      "preconditions": [
+        "Authed",
+        "geolocation granted"
+      ],
+      "steps": [
+        "setGeolocation HCMC; reload.",
+        "Observe distance + stations bbox.",
+        "Short-press HOLD if visible; watch claim POSTs."
+      ],
+      "expected": "Stations bbox follows HCMC; claimPosts=0 on short HOLD.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — distance=2.9 KM; stationsBboxIsHcmc=True; claimPostsDelta=0",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/441-loc-far-hcmc.png",
+        "/evidence/adhoc-ui-api-20261027/442-loc-far-after-hold.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-LOC-03",
+      "type": "Functional",
+      "mindmapNode": "claim-geo",
+      "priority": "P2",
+      "title": "Denied geolocation shows Turn on location / blocked soft-fail",
+      "preconditions": [
+        "Authed",
+        "geolocation permission denied/cleared"
+      ],
+      "steps": [
+        "Open home without geolocation permission.",
+        "Observe blocked / Turn on location copy.",
+        "Do not complete a paid claim."
+      ],
+      "expected": "Clear soft-fail prompting location enable; no silent ready-at-station claim path.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — blocked=True turnOnCta=True",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/460-loc-deny.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-LOC-04",
+      "type": "Functional",
+      "mindmapNode": "claim-geo",
+      "priority": "P2",
+      "title": "Chrome Allow this time does not re-prompt on later map/nav actions",
+      "preconditions": [
+        "Authed Privy session on Chrome desktop",
+        "Site location not permanently allowed",
+        "User will choose Allow this time (not while visiting)"
+      ],
+      "steps": [
+        "Trigger Know your location / location CTA on home/map.",
+        "In Chrome bubble, click Allow this time.",
+        "Navigate Garage / Mini Mart / Map, reopen claim/map, refresh.",
+        "Observe whether Chrome location bubble returns."
+      ],
+      "expected": "No repeated Allow this time / Know your location Chrome bubble storm after a one-shot grant within the same short session; map/claim soft-fail paths remain correct if geo unavailable.",
+      "automatable": false,
+      "result": "Fail",
+      "bugIds": [
+        "gc-location-allow-this-time-reprompt"
+      ],
+      "notes": "Fail — user evidence shows Chrome Allow this time bubble on app.gas.cash; reappears after later actions per report. Lab AX under Playwright profile did not observe native bubble (hidden); filed from user capture + product re-request pattern. Prefer Playwright permissions+setGeolocation for automated geo labs going forward.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/470-loc-allow-this-time-user.png"
       ]
     }
   ]

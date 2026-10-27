@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T19:20:32+07:00",
-  "source": "Audits + retests + ad-hoc UI→API validation 2026-10-27 pass-2 (see docs/adhoc-ui-api-2026-10-27.md in QA store)",
+  "updatedAt": "2026-10-27T20:35:00+07:00",
+  "source": "Audits + ad-hoc UI→API + location suite 2026-10-27 pass-3 (Allow this time re-prompt)",
   "bugs": [
     {
       "id": "gc-api-500-outage",
@@ -210,12 +210,19 @@
       ],
       "lastRetestAt": "2026-10-27 ~18:30 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Ad-hoc 2026-10-27 +07: shell walk still refetches chrome — me/stats×9, scratch/tiers×9, claims/live×18, lineup×5, me×10, auth/sync×12, rpc×96 across ~12 routes. Also 2×429 on POST /api/auth/sync during storm.",
+      "lastRetestNote": "Pass-3 2026-10-27: chrome refetch still present during shell walk.",
       "retest": {
         "at": "2026-10-27 ~18:30 +07",
         "result": "Still valid",
         "note": "Ad-hoc 2026-10-27 +07: shell walk still refetches chrome — me/stats×9, scratch/tiers×9, claims/live×18, lineup×5, me×10, auth/sync×12, rpc×96 across ~12 routes. Also 2×429 on POST /api/auth/sync during storm."
-      }
+      },
+      "retests": [
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-3 2026-10-27: chrome refetch still present during shell walk."
+        }
+      ]
     },
     {
       "id": "gc-auth-sync-500",
@@ -1032,6 +1039,14 @@
       ],
       "relatedTcIds": [
         "GC-TC-V-ADHOC-02"
+      ],
+      "lastRetestNote": "Pass-3 2026-10-27: still shows . / — placeholders with READY TO CLAIM after fresh Privy login.",
+      "retests": [
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-3 2026-10-27: still shows . / — placeholders with READY TO CLAIM after fresh Privy login."
+        }
       ]
     },
     {
@@ -1082,6 +1097,14 @@
       ],
       "relatedTcIds": [
         "GC-TC-V-ADHOC-09"
+      ],
+      "lastRetestNote": "Pass-3 2026-10-27: still Reading your garage…",
+      "retests": [
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-3 2026-10-27: still Reading your garage…"
+        }
       ]
     },
     {
@@ -1128,6 +1151,14 @@
       "apiNotes": [],
       "relatedTcIds": [
         "GC-TC-V-ADHOC-10"
+      ],
+      "lastRetestNote": "Pass-3 2026-10-27: /starting-5 still unbranded 404.",
+      "retests": [
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-3 2026-10-27: /starting-5 still unbranded 404."
+        }
       ]
     },
     {
@@ -1176,6 +1207,14 @@
       "apiNotes": [],
       "relatedTcIds": [
         "GC-TC-V-ADHOC-11"
+      ],
+      "lastRetestNote": "Pass-3 2026-10-27: still INVITE CTA + set username copy.",
+      "retests": [
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-3 2026-10-27: still INVITE CTA + set username copy."
+        }
       ]
     },
     {
@@ -1231,7 +1270,146 @@
       "relatedTcIds": [
         "GC-TC-V-ADHOC-13"
       ],
-      "lastRetestNote": "Pass-2 2026-10-27: confirmed from ad-hoc evidence; headed re-login in progress for live re-capture."
+      "lastRetestNote": "Pass-3 2026-10-27: still Reading sibling with bike loaded.",
+      "retests": [
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-3 2026-10-27: still Reading sibling with bike loaded."
+        }
+      ]
+    },
+    {
+      "id": "gc-location-browser-geo-ignored",
+      "title": "[BUG] Map / Location - Browser geolocation - Jakarta mock ignored; stations bbox and distance follow another region",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "location",
+        "geo",
+        "map",
+        "ui-api",
+        "stations"
+      ],
+      "createdAt": "2026-10-27",
+      "updatedAt": "2026-10-27",
+      "env": "https://app.gas.cash",
+      "description": "With an authenticated session, Playwright grants geolocation and setGeolocation(Jakarta Monas ≈ -6.175, 106.827). Home still shows a huge distance badge (~1893.1 KM) and GET /api/stations uses an HCMC bbox (south≈10.85, north≈10.93) instead of a Jakarta bbox. Re-setting geolocation to HCMC then yields ~2.9 KM and an HCMC stations bbox — proving the map can follow geo, but the Jakarta grant path did not apply. Deny path correctly shows Turn on location / blocked soft-fail.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-27 (~20:19–20:25 +07)",
+        "Account: Privy storageState (post Tiếp tục Google consent); free bike claimed; username unset",
+        "Grant mock: latitude -6.175392, longitude 106.827153 + permissions geolocation",
+        "Observed stations URL under Jakarta mock: west/east ~106.54–106.65, south/north ~10.85–10.93 (HCMC)",
+        "Far/at-station control: setGeolocation HCMC → distance ~2.9 KM + HCMC stations bbox",
+        "Deny control: clearPermissions → Turn on location / blocked copy present"
+      ],
+      "precondition": [
+        "Authenticated Privy session",
+        "Browser geolocation permission granted for app.gas.cash",
+        "Money-safe; short HOLD only; no paid claim"
+      ],
+      "steps": [
+        "Open https://app.gas.cash with geolocation permission granted.",
+        "setGeolocation to Jakarta (approx -6.175, 106.827) and reload.",
+        "Observe distance badge / Finding you / Move closer copy.",
+        "Capture GET /api/stations query (west/east/south/north).",
+        "setGeolocation to HCMC (approx 10.823, 106.630), reload, compare distance + stations bbox.",
+        "In a separate context with geolocation denied, confirm Turn on location / blocked soft-fail."
+      ],
+      "actual": "Under Jakarta mock: distance badge 1893.1 KM; stations bbox is HCMC (south/north ~10.x). Under HCMC mock: distance ~2.9 KM and stations bbox follows HCMC. Deny path shows blocked/Turn on location.",
+      "expected": "When browser geolocation is granted and set to Jakarta, map center, distance badge, and /api/stations bbox must follow that coordinate (Jakarta west/east/south/north), not a different region. Deny path soft-fail should remain.",
+      "evidence": [
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/440-loc-grant-jakarta.png",
+          "alt": "Grant+Jakarta mock — ~1893 KM badge"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/441-loc-far-hcmc.png",
+          "alt": "HCMC mock — ~2.9 KM"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/460-loc-deny.png",
+          "alt": "Deny path — Turn on location"
+        }
+      ],
+      "apiNotes": [
+        "Jakarta-mock stations sample: [{'status': 200, 'url': 'https://app.gas.cash/api/stations?west=106.54767106734603&east=106.65753384329601&south=10.856913284920743&north=10.93276822417248&cols=20'}]",
+        "HCMC-mock stations sample: [{'status': 200, 'url': 'https://app.gas.cash/api/stations?west=106.54767106734037&east=106.65753384329035&south=10.856913284924973&north=10.93276822417671&cols=20'}]",
+        "Short HOLD under far/HCMC: claimPostsDelta=0 (money-safe)"
+      ],
+      "relatedTcIds": [
+        "GC-TC-V-LOC-01",
+        "GC-TC-V-LOC-02",
+        "GC-TC-V-LOC-03"
+      ]
+    },
+    {
+      "id": "gc-location-allow-this-time-reprompt",
+      "title": "[BUG] Map - Location permission - Allow this time prompt reappears after later actions",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "location",
+        "geo",
+        "map",
+        "validation",
+        "ux",
+        "chrome",
+        "permissions"
+      ],
+      "createdAt": "2026-10-27",
+      "updatedAt": "2026-10-27",
+      "env": "https://app.gas.cash",
+      "description": "On Chrome, after the user answers the location permission bubble with **Allow this time** (one-shot grant, not \"Allow while visiting the site\"), the same \"Know your location\" / Allow this time prompt reappears after later UI actions (nav map/garage/minimart, reopen claim/map, refresh, etc.). Product repeatedly re-requests geolocation in a way that surfaces Chrome's one-time permission UI again, interrupting the session.\n\nPrimary evidence is a user screenshot of the Chrome bubble on app.gas.cash. Lab headed Playwright+AX attempt could not reliably observe the native bubble (Chrome often suppresses/hides it under automation profiles); subsequent lab location suites use Playwright `permissions: ['geolocation']` + `setGeolocation` and are tracked separately (`gc-location-browser-geo-ignored`).",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-27",
+        "Browser: Google Chrome (desktop)",
+        "Account: Logged-in Privy session",
+        "Permission choice: Allow this time (NOT Allow while visiting the site / Always allow)",
+        "Evidence: /evidence/adhoc-ui-api-20261027/470-loc-allow-this-time-user.png (user capture of Know your location / Allow this time bubble)",
+        "Lab note: repro-allow-this-time.mjs — AX observed permission UI as hidden; reappearedAfterAllow=false under automation; user capture remains authoritative for the Chrome one-time UX"
+      ],
+      "precondition": [
+        "Logged-in session on https://app.gas.cash",
+        "Chrome has not permanently allowed location for the site (no while-visiting / Always grant stored)",
+        "App shows Know your location / location CTA that triggers navigator geolocation",
+        "Money-safe; do not complete paid claims"
+      ],
+      "steps": [
+        "Open https://app.gas.cash while authenticated.",
+        "When Chrome shows Know your location for app.gas.cash, choose Allow this time (not Allow while visiting the site).",
+        "Perform subsequent UI actions: navigate Map / Garage / Mini Mart, reopen claim/map surfaces, and/or refresh.",
+        "Observe whether the same Chrome location permission bubble returns."
+      ],
+      "actual": "After Allow this time, later map/claim/nav/refresh actions cause the same Chrome location permission popup (Know your location / Allow this time / Allow while visiting the site / Never allow) to reappear repeatedly.",
+      "expected": "One Allow this time grant should cover the immediate location need without repeatedly interrupting the user with the same Chrome permission bubble on every later map/claim/nav action in the same short session. If the product must re-query geo, it should prefer a durable site grant path (prompt for while-visiting) or reuse the one-shot result without re-prompt storms; permanent deny/block soft-fail remains correct.",
+      "evidence": [
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/470-loc-allow-this-time-user.png",
+          "alt": "User — Chrome Know your location / Allow this time on app.gas.cash"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/471-home-before-allow.png",
+          "alt": "Lab — home before Allow this time attempt"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/472-after-location-cta.png",
+          "alt": "Lab — after location CTA"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/475-after-reload.png",
+          "alt": "Lab — after reload (AX bubble not observed under automation)"
+        }
+      ],
+      "apiNotes": [
+        "Chrome one-time (Allow this time) permission does not persist across subsequent getCurrentPosition calls the way while-visiting does — product re-prompt UX should account for this.",
+        "Automated lab follows up with Playwright permissions:['geolocation'] + setGeolocation (see GC-TC-V-LOC-01..03 / gc-location-browser-geo-ignored), not native Allow this time clicking."
+      ],
+      "relatedTcIds": [
+        "GC-TC-V-LOC-04"
+      ]
     }
   ]
 }
