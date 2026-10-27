@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T18:38:49+07:00",
+  "updatedAt": "2026-10-27T19:20:48+07:00",
   "source": "Mind-map branches + claimed-bike deep dive 2026-10-26. Executed on https://app.gas.cash with fresh Privy storageState; free bike CLAIMED (authorized); money-safe otherwise.",
   "execution": {
     "date": "2026-10-27",
     "env": "https://app.gas.cash",
     "sessionValid": true,
     "sessionValidDuringRun": true,
-    "sessionNote": "Ad-hoc UI→API 2026-10-27: storageState valid at start; intentional LOG OUT at end cleared tokens (re-login required). Money-safe; free bike already claimed; Buy $GAS cancel-only; short HOLD only.",
+    "sessionNote": "Ad-hoc UI→API 2026-10-27 pass-2: prior logout cleared tokens; headed re-login required for deeper validation. Money-safe; free bike claimed; Buy $GAS cancel-only; short HOLD only. New Fail GC-TC-V-ADHOC-13 (garage carousel Reading).",
     "summary": {
       "pass": 54,
-      "fail": 10,
+      "fail": 11,
       "blocked": 2,
       "skip": 0,
-      "total": 66
+      "total": 67
     },
     "adhocBatch": {
       "date": "2026-10-27",
-      "added": 11,
+      "added": 12,
       "ids": [
         "GC-TC-V-ADHOC-01",
         "GC-TC-V-ADHOC-02",
@@ -29,13 +29,15 @@
         "GC-TC-V-ADHOC-09",
         "GC-TC-V-ADHOC-10",
         "GC-TC-V-ADHOC-11",
-        "GC-TC-V-ADHOC-12"
+        "GC-TC-V-ADHOC-12",
+        "GC-TC-V-ADHOC-13"
       ],
       "fail": [
         "GC-TC-V-ADHOC-02",
         "GC-TC-V-ADHOC-09",
         "GC-TC-V-ADHOC-10",
-        "GC-TC-V-ADHOC-11"
+        "GC-TC-V-ADHOC-11",
+        "GC-TC-V-ADHOC-13"
       ],
       "pass": [
         "GC-TC-V-ADHOC-01",
@@ -1584,6 +1586,32 @@
       "notes": "Pass — claimPosts=0 across far/denied scenarios; station sheet HOLD not always reached this run.",
       "evidence": [
         "/evidence/adhoc-ui-api-20261027/60-far-hcmc-d-after-hold.png"
+      ]
+    },
+    {
+      "id": "GC-TC-V-ADHOC-13",
+      "type": "Functional",
+      "mindmapNode": "garage-fleet",
+      "priority": "P2",
+      "title": "Garage fleet carousel resolves Reading state once bike is loaded",
+      "preconditions": [
+        "Authed; free bike claimed"
+      ],
+      "steps": [
+        "Open /garage.",
+        "Confirm BIKE attributes load.",
+        "Inspect fleet carousel sibling cards for ≥10s."
+      ],
+      "expected": "No sibling card stuck on “Reading your garage…” after fleet data is available.",
+      "automatable": true,
+      "result": "Fail",
+      "bugIds": [
+        "gc-garage-carousel-reading-forever"
+      ],
+      "notes": "Fail — sibling carousel card remains Reading while free bike is selected/loaded.",
+      "evidence": [
+        "/evidence/adhoc-ui-api-20261027/10-garage.png",
+        "/evidence/adhoc-ui-api-20261027/20-garage-bike.png"
       ]
     }
   ]

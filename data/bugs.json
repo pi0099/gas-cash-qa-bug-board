@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T18:38:49+07:00",
-  "source": "Audits + retests + ad-hoc UI→API validation 2026-10-27 (see docs/adhoc-ui-api-2026-10-27.md in QA store)",
+  "updatedAt": "2026-10-27T19:20:32+07:00",
+  "source": "Audits + retests + ad-hoc UI→API validation 2026-10-27 pass-2 (see docs/adhoc-ui-api-2026-10-27.md in QA store)",
   "bugs": [
     {
       "id": "gc-api-500-outage",
@@ -1177,6 +1177,61 @@
       "relatedTcIds": [
         "GC-TC-V-ADHOC-11"
       ]
+    },
+    {
+      "id": "gc-garage-carousel-reading-forever",
+      "title": "[BUG] Garage - Fleet carousel - Sibling slot stuck on Reading your garage while free bike already loaded",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "garage",
+        "loading",
+        "ui-api",
+        "soft-fail",
+        "regression-adjacent"
+      ],
+      "createdAt": "2026-10-27",
+      "updatedAt": "2026-10-27",
+      "env": "https://app.gas.cash",
+      "description": "On /garage with the free bike already claimed and fully rendered (OVR/attributes visible, STARTER/BIKE selected), an adjacent fleet-carousel card remains on “Reading your garage…” with a spinner. No timeout, error, or empty-slot state. Distinct from Resolved gc-garage-reading-forever (“Reading your cars…” full-page) and from Open gc-chopshop-reading-forever (Chop Shop picker).",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-27 (~18:16–18:30 +07, continued pass-2 review)",
+        "Account: QA Privy; free bike claimed; username unset",
+        "Route: /garage and /garage?car=bike"
+      ],
+      "precondition": [
+        "Authenticated session with free bike in garage",
+        "Do not start chop/merge/buy"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/garage (or /garage?car=bike).",
+        "Confirm the free BIKE details load (OVR, SPEED, attributes).",
+        "Observe the bottom fleet carousel cards, including non-selected siblings.",
+        "Wait ≥10s without interacting.",
+        "Observe whether any sibling card remains on “Reading your garage…”."
+      ],
+      "actual": "Selected STARTER/BIKE card shows the bike, but an adjacent carousel card stays on “Reading your garage…” with spinner indefinitely. Profile CARS/MULTIPLIER/COOLDOWN also show placeholders (see gc-profile-blank-stats-dots).",
+      "expected": "Once fleet data is available, carousel slots resolve to real vehicles or a clear empty/unavailable state — not an endless Reading spinner on a sibling card while the bike is already shown.",
+      "evidence": [
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/10-garage.png",
+          "alt": "Garage — bike loaded + sibling Reading your garage…"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/20-garage-bike.png",
+          "alt": "Garage bike detail same session"
+        }
+      ],
+      "apiNotes": [
+        "Related Resolved: gc-garage-reading-forever (full-page Reading your cars).",
+        "Related Open: gc-chopshop-reading-forever (Chop Shop picker).",
+        "Layout refetch storm still active (gc-layout-refetch-storm) — may contribute to stalled sibling loads."
+      ],
+      "relatedTcIds": [
+        "GC-TC-V-ADHOC-13"
+      ],
+      "lastRetestNote": "Pass-2 2026-10-27: confirmed from ad-hoc evidence; headed re-login in progress for live re-capture."
     }
   ]
 }
