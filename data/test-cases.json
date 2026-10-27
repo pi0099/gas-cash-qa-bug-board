@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T20:35:00+07:00",
+  "updatedAt": "2026-10-27T21:05:00+07:00",
   "source": "Mind-map branches + claimed-bike deep dive 2026-10-26. Executed on https://app.gas.cash with fresh Privy storageState; free bike CLAIMED (authorized); money-safe otherwise.",
   "execution": {
     "date": "2026-10-27",
@@ -1401,10 +1401,9 @@
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
-      "notes": "Client validation Pass — Set username gray/disabled with XSS in field; rules “2 to 16… letters, numbers…”. Initial false-positive DOM onerror match was input value attribute only.",
+      "notes": "Pass-4: XSS payload leaves Set username disabled=true (551-username-matrix.png).",
       "evidence": [
-        "/evidence/adhoc-ui-api-20261027/92-username-xss-paste.png",
-        "/evidence/adhoc-ui-api-20261027/91-username-attempt.png"
+        "/evidence/adhoc-ui-api-20261027/551-username-matrix.png"
       ]
     },
     {
@@ -1424,9 +1423,9 @@
       "automatable": true,
       "result": "Pass",
       "bugIds": [],
-      "notes": "Pass — long paste did not enable submit; UI states max 16.",
+      "notes": "Pass-4: 40-char string → Set username disabled=true; @@@ disabled; ab / ok_user_qa enabled.",
       "evidence": [
-        "/evidence/adhoc-ui-api-20261027/91-username-attempt.png"
+        "/evidence/adhoc-ui-api-20261027/551-username-matrix.png"
       ]
     },
     {
@@ -1615,10 +1614,11 @@
       "bugIds": [
         "gc-garage-carousel-reading-forever"
       ],
-      "notes": "Fail — sibling carousel card remains Reading while free bike is selected/loaded.",
+      "notes": "Fail — Pass-4 still Reading sibling with Free BIKE (550).",
       "evidence": [
         "/evidence/adhoc-ui-api-20261027/10-garage.png",
-        "/evidence/adhoc-ui-api-20261027/20-garage-bike.png"
+        "/evidence/adhoc-ui-api-20261027/20-garage-bike.png",
+        "/evidence/adhoc-ui-api-20261027/550-garage-empty-copy.png"
       ]
     },
     {
@@ -1642,9 +1642,10 @@
       "bugIds": [
         "gc-location-browser-geo-ignored"
       ],
-      "notes": "Fail — Jakarta mock yielded distance=1893.1 KM and HCMC stations bbox.",
+      "notes": "Fail — Pass-3 + Pass-4 recheck distance=1893.1 KM; stations bbox HCMC.",
       "evidence": [
-        "/evidence/adhoc-ui-api-20261027/440-loc-grant-jakarta.png"
+        "/evidence/adhoc-ui-api-20261027/440-loc-grant-jakarta.png",
+        "/evidence/adhoc-ui-api-20261027/505-jakarta-recheck.png"
       ]
     },
     {

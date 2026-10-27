@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T20:35:00+07:00",
+  "updatedAt": "2026-10-27T21:05:00+07:00",
   "source": "Audits + ad-hoc UI→API + location suite 2026-10-27 pass-3 (Allow this time re-prompt)",
   "bugs": [
     {
@@ -1030,22 +1030,33 @@
         {
           "src": "/evidence/adhoc-ui-api-20261027/90-profile-stats-vs-api.png",
           "alt": "Follow-up — placeholders persist"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/500-home-hcmc.png",
+          "alt": "Pass-4 — profile placeholders under HCMC geo"
         }
       ],
       "apiNotes": [
         "GET /api/base-rate → 200 with baseRaw/pool data during run",
         "Layout chrome refetch: GET /api/me/stats ×9+ per shell walk (see gc-layout-refetch-storm)",
-        "POST /api/auth/sync hit HTTP 429 ×2 during storm — may contribute to blank stats windows"
+        "POST /api/auth/sync hit HTTP 429 ×2 during storm — may contribute to blank stats windows",
+        "Pass-4: GET /api/me/stats 200 with claimCount=0 / totalClaimedRaw=0 while UI READY TO CLAIM.",
+        "Pass-4: GET /api/lineup multiplierBps=null / ids=null correlates with MULTIPLIER placeholder."
       ],
       "relatedTcIds": [
         "GC-TC-V-ADHOC-02"
       ],
-      "lastRetestNote": "Pass-3 2026-10-27: still shows . / — placeholders with READY TO CLAIM after fresh Privy login.",
+      "lastRetestNote": "Pass-4: still MULTIPLIER/DAILY CLAIM RATE “.” / “—” with READY TO CLAIM; /api/me/stats 200 zeros; lineup multiplierBps null.",
       "retests": [
         {
           "date": "2026-10-27",
           "result": "Still valid",
           "note": "Pass-3 2026-10-27: still shows . / — placeholders with READY TO CLAIM after fresh Privy login."
+        },
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-4 HCMC geo home 500-home-hcmc.png — placeholders persist."
         }
       ]
     },
@@ -1260,22 +1271,32 @@
         {
           "src": "/evidence/adhoc-ui-api-20261027/20-garage-bike.png",
           "alt": "Garage bike detail same session"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/550-garage-empty-copy.png",
+          "alt": "Pass-4 — Reading your garage sibling beside Free BIKE"
         }
       ],
       "apiNotes": [
         "Related Resolved: gc-garage-reading-forever (full-page Reading your cars).",
         "Related Open: gc-chopshop-reading-forever (Chop Shop picker).",
-        "Layout refetch storm still active (gc-layout-refetch-storm) — may contribute to stalled sibling loads."
+        "Layout refetch storm still active (gc-layout-refetch-storm) — may contribute to stalled sibling loads.",
+        "Pass-4: GET /api/lineup and /api/lineup?view=garage → ids:null, live:0, multiplierBps:null while Garage UI shows Free BIKE OVR 5."
       ],
       "relatedTcIds": [
         "GC-TC-V-ADHOC-13"
       ],
-      "lastRetestNote": "Pass-3 2026-10-27: still Reading sibling with bike loaded.",
+      "lastRetestNote": "Pass-4 2026-10-27: still “Reading your garage…” sibling beside STARTER Free BIKE (550-garage-empty-copy.png). /api/lineup?view=garage returns ids:null,live:0 while bike UI loaded.",
       "retests": [
         {
           "date": "2026-10-27",
           "result": "Still valid",
           "note": "Pass-3 2026-10-27: still Reading sibling with bike loaded."
+        },
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-4: Reading sibling still present with Free BIKE; lineup API ids null."
         }
       ]
     },
@@ -1331,6 +1352,10 @@
         {
           "src": "/evidence/adhoc-ui-api-20261027/460-loc-deny.png",
           "alt": "Deny path — Turn on location"
+        },
+        {
+          "src": "/evidence/adhoc-ui-api-20261027/505-jakarta-recheck.png",
+          "alt": "Pass-4 Jakarta recheck — ~1893 KM"
         }
       ],
       "apiNotes": [
@@ -1342,6 +1367,14 @@
         "GC-TC-V-LOC-01",
         "GC-TC-V-LOC-02",
         "GC-TC-V-LOC-03"
+      ],
+      "lastRetestNote": "Pass-4 recheck: Jakarta setGeolocation still distance=1893.1 KM; stations bbox HCMC south/north ~10.85–10.93.",
+      "retests": [
+        {
+          "date": "2026-10-27",
+          "result": "Still valid",
+          "note": "Pass-4 505-jakarta-recheck.png — still ignored."
+        }
       ]
     },
     {
@@ -1409,7 +1442,8 @@
       ],
       "relatedTcIds": [
         "GC-TC-V-LOC-04"
-      ]
+      ],
+      "lastRetestNote": "Filed from user evidence; subsequent labs use Playwright permissions+setGeolocation (pass-4)."
     }
   ]
 }
