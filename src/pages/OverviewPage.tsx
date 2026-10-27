@@ -87,7 +87,8 @@ export function OverviewPage() {
               </li>
               <li>
                 <strong className="text-[var(--text)]">Real stations + anti-cheat → hold-to-pump</strong> — visit a real gas
-                station, pass geo / Fingerprint / photo checks, hold to pump. <Tag tone="doc">[Documented]</Tag>{' '}
+                station on a <strong className="text-[var(--text)]">phone</strong> (desktop Sensors ≠ pump path), pass geo /
+                Fingerprint / photo checks, hold to pump. <Tag tone="doc">[Documented]</Tag>{' '}
                 <Tag tone="obs">[Observed]</Tag> map shell
               </li>
               <li>
