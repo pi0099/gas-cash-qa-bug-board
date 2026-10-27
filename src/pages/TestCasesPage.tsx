@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { SiteNav } from '../components/SiteNav'
+import { PageHeader } from '../components/PageHeader'
 import { publicUrl } from '../lib/publicUrl'
 import { domainForMindmapNode } from '../lib/mindmaps'
 import {
@@ -262,32 +262,21 @@ export function TestCasesPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 backdrop-blur-md sm:px-5">
-        <div className="relative flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <Link
-            to="/test-cases"
-            className="group z-10 inline-flex shrink-0 flex-col gap-0.5 no-underline sm:min-w-[9.5rem]"
-          >
-            <span className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
-              Gas Cash · Local QA
-            </span>
-            <span className="text-lg font-bold tracking-tight text-[var(--text)] group-hover:text-[var(--amber)]">
-              TC spreadsheet
-            </span>
+      <PageHeader
+        title={
+          <Link to="/test-cases" className="text-[var(--text)] no-underline hover:text-[var(--amber)]">
+            Test Cases
           </Link>
-          <div className="z-10 flex justify-center sm:absolute sm:inset-x-0 sm:top-1/2 sm:-translate-y-1/2 sm:pointer-events-none">
-            <div className="sm:pointer-events-auto">
-              <SiteNav />
-            </div>
-          </div>
-          <div className="z-10 hidden text-right font-[family-name:var(--font-mono)] text-[10px] leading-relaxed text-[var(--text-dim)] sm:block sm:min-w-[9.5rem]">
+        }
+        meta={
+          <>
             <div>
               {summary.pass}P · {summary.fail}F · {summary.blocked}B · {summary.skip}S
             </div>
             <div>{testCaseSuite.execution.date}</div>
-          </div>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <div className="flex flex-col gap-3 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_88%,transparent)] px-4 py-3 backdrop-blur-sm sm:flex-row sm:flex-wrap sm:items-end sm:gap-4">
         <label className="flex min-w-[180px] flex-1 flex-col gap-1">

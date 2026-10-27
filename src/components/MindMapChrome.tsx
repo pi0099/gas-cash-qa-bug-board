@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { DOMAIN_LABELS, DOMAIN_ORDER, type DomainId } from '../lib/mindmaps'
-import { SiteNav } from './SiteNav'
+import { PageHeader } from './PageHeader'
 
 type Props = {
   domainId?: DomainId
@@ -12,13 +12,10 @@ export function MindMapChrome({ domainId, subtitle }: Props) {
   const title = domainId ? DOMAIN_LABELS[domainId] : 'Product mind map'
 
   return (
-    <header className="z-20 shrink-0 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 backdrop-blur-md sm:px-5">
-      <div className="relative flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-        <div className="z-10 shrink-0 text-center sm:min-w-[11rem] sm:text-left">
-          <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
-            Gas Cash · Local QA
-          </p>
-          <h1 className="text-lg font-bold tracking-tight text-[var(--text)]">{title}</h1>
+    <PageHeader
+      title={title}
+      belowTitle={
+        <>
           <nav
             aria-label="Mind map breadcrumb"
             className="mt-1 flex flex-wrap items-center justify-center gap-1 font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-dim)] sm:justify-start"
@@ -39,19 +36,14 @@ export function MindMapChrome({ domainId, subtitle }: Props) {
             )}
           </nav>
           {subtitle ? (
-            <p className="mt-1 hidden max-w-[14rem] text-[11px] leading-snug text-[var(--text-dim)] sm:block">
+            <p className="mt-1 hidden max-w-[18rem] text-[11px] leading-snug text-[var(--text-dim)] sm:block">
               {subtitle}
             </p>
           ) : null}
-        </div>
-
-        <div className="z-10 flex justify-center sm:absolute sm:inset-x-0 sm:top-1/2 sm:-translate-y-1/2 sm:pointer-events-none">
-          <div className="sm:pointer-events-auto">
-            <SiteNav />
-          </div>
-        </div>
-
-        <div className="z-10 flex w-full max-w-xs flex-col items-stretch gap-1 sm:min-w-[11rem] sm:max-w-[13rem] sm:items-end">
+        </>
+      }
+      meta={
+        <div className="flex w-full max-w-xs flex-col items-stretch gap-1 sm:min-w-[11rem] sm:max-w-[13rem] sm:items-end">
           <label
             htmlFor="mindmap-domain"
             className="font-[family-name:var(--font-mono)] text-[10px] tracking-wide text-[var(--text-dim)] uppercase"
@@ -77,7 +69,7 @@ export function MindMapChrome({ domainId, subtitle }: Props) {
             ))}
           </select>
         </div>
-      </div>
-    </header>
+      }
+    />
   )
 }

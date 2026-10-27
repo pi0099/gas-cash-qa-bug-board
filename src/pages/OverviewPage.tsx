@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { SiteNav } from '../components/SiteNav'
+import { PageHeader } from '../components/PageHeader'
 import { publicUrl } from '../lib/publicUrl'
 
 const LIVE = 'https://pi0099.github.io/gas-cash-qa-bug-board/'
@@ -42,22 +42,7 @@ function Section({
 export function OverviewPage() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 backdrop-blur-md sm:px-6">
-        <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <div className="z-10 shrink-0 text-center sm:min-w-[10rem] sm:text-left">
-            <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
-              Gas Cash · Local QA
-            </p>
-            <h1 className="text-lg font-bold tracking-tight text-[var(--text)]">Product overview</h1>
-          </div>
-          <div className="z-10 flex justify-center sm:absolute sm:inset-x-0 sm:top-1/2 sm:-translate-y-1/2 sm:pointer-events-none">
-            <div className="sm:pointer-events-auto">
-              <SiteNav />
-            </div>
-          </div>
-          <div className="pointer-events-none hidden sm:block sm:min-w-[10rem]" aria-hidden />
-        </div>
-      </header>
+      <PageHeader sticky title={<h1 className="text-lg font-bold tracking-tight text-[var(--text)]">Product overview</h1>} />
 
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
         <p className="mb-8 text-sm leading-relaxed text-[var(--text-dim)]">
@@ -216,12 +201,12 @@ export function OverviewPage() {
                 Map / Claim
               </a>
               {' · '}
-              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}claim-gps`}>
-                Claim / GPS
+              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}strategy#claim-gps`}>
+                Strategy · Claim / GPS
               </a>
               {' · '}
-              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mobile-coop`}>
-                Mobile coop
+              <a className="text-[var(--amber)] hover:underline" href={`${LIVE}strategy#mobile-coop`}>
+                Strategy · Mobile coop
               </a>
               {' · '}
               <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mindmap`}>
@@ -449,12 +434,25 @@ export function OverviewPage() {
                   Claim detail map
                 </a>
                 {' · '}
-                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}claim-gps`}>
-                  Claim / GPS guide
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}strategy`}>
+                  Test Strategy
                 </a>
                 {' · '}
-                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}mobile-coop`}>
-                  Mobile coop
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}plan`}>
+                  Test Plan
+                </a>
+                {' · '}
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}test-cases`}>
+                  Test Cases
+                </a>
+              </li>
+              <li>
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}strategy#claim-gps`}>
+                  Strategy · Claim / GPS (§4.4)
+                </a>
+                {' · '}
+                <a className="text-[var(--amber)] hover:underline" href={`${LIVE}strategy#mobile-coop`}>
+                  Strategy · Mobile coop (§4.5)
                 </a>
               </li>
             </ul>

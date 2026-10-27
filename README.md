@@ -12,9 +12,13 @@ Also ships shareable research pages:
 | `/overview` (alias `/summary`) | Product brief grounded in QA docs |
 | `/mindmap` | Hub overview — edges/borders colored by suite TC coverage |
 | `/mindmap/:domain` | Per-domain React Flow maps; green/amber/blue/gray = Pass / mixed-Fail / designed / none |
+| `/strategy` | Test Strategy (includes Claim/GPS §4.4 + Mobile coop §4.5) |
+| `/plan` | Test Plan |
 | `/test-cases` | TC spreadsheet (native grid from `data/test-cases.json`; optional Sheets iframe) |
-| `/claim-gps` | Claim / GPS QA guide |
-| `/mobile-coop` | Mobile agent ↔ user coop + phone claim matrix |
+| `/claim-gps` | Redirect → `/strategy#claim-gps` |
+| `/mobile-coop` | Redirect → `/strategy#mobile-coop` |
+
+Top nav: **Bugs board** · **Overview** · **Mindmap** · **Testing** ▾ (Test Strategy · Test Plan · Test Cases).
 
 ## Quick start
 
@@ -42,7 +46,7 @@ Configured for **project Pages** at:
 | --- | --- |
 | Vite `base` | `/gas-cash-qa-bug-board/` |
 | Router | `BrowserRouter` with matching `basename` |
-| SPA deep links | `dist/404.html` + `overview/` `summary/` `mindmap/` + `mindmap/<domain>/` + `test-cases/` `claim-gps/` `mobile-coop/` index copies (`scripts/spa-pages.sh`) |
+| SPA deep links | `dist/404.html` + `overview/` `summary/` `mindmap/` + `mindmap/<domain>/` + `strategy/` `plan/` `test-cases/` `claim-gps/` `mobile-coop/` index copies (`scripts/spa-pages.sh`) |
 | Mind map data | Editable JSON under [`data/mindmaps/`](data/mindmaps/) (hub + one file per domain) |
 | Deploy | [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) → `actions/upload-pages-artifact` + `actions/deploy-pages` |
 
