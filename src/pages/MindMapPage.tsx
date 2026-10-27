@@ -2,7 +2,7 @@ import { ReactFlowProvider } from '@xyflow/react'
 import { Link, useParams } from 'react-router-dom'
 import { MindMapCanvas } from '../components/MindMapCanvas'
 import { MindMapChrome } from '../components/MindMapChrome'
-import { SiteNav } from '../components/SiteNav'
+import { PageHeader } from '../components/PageHeader'
 import { DOMAIN_LABELS, getMindMap, hubMap, isDomainId, type DomainId } from '../lib/mindmaps'
 
 function MindMapShell({
@@ -43,18 +43,7 @@ function MindMapShell({
 function MindMapNotFound({ slug }: { slug: string }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 sm:px-5">
-        <div className="relative flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
-          <div className="text-center sm:text-left">
-            <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
-              Gas Cash · Local QA
-            </p>
-            <h1 className="text-lg font-bold text-[var(--text)]">Mind map not found</h1>
-          </div>
-          <SiteNav />
-          <div className="hidden sm:block sm:min-w-[10rem]" />
-        </div>
-      </header>
+      <PageHeader title="Mind map not found" />
       <main className="mx-auto flex max-w-lg flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
         <p className="text-sm text-[var(--text-muted)]">
           No detail map for{' '}

@@ -4,13 +4,14 @@ import { BugDetail, BugDetailEmpty } from './components/BugDetail'
 import { BugFilters } from './components/BugFilters'
 import { BugList } from './components/BugList'
 import { OpenBoardBanner } from './components/OpenBoardBanner'
-import { SiteNav } from './components/SiteNav'
+import { PageHeader } from './components/PageHeader'
 import { useLiveBugStatuses } from './hooks/useLiveBugStatuses'
 import { bugBoard, filterBugs, getBugById } from './lib/bugs'
 import { MindMapDetailPage, MindMapPage } from './pages/MindMapPage'
-import { ClaimGeoPage } from './pages/ClaimGeoPage'
-import { MobileCoopPage } from './pages/MobileCoopPage'
 import { OverviewPage } from './pages/OverviewPage'
+import { PlanPage } from './pages/PlanPage'
+import { ClaimGpsRedirect, MobileCoopRedirect } from './pages/StrategyRedirect'
+import { StrategyPage } from './pages/StrategyPage'
 import { TestCasesPage } from './pages/TestCasesPage'
 import type { BugPriority, BugStatus } from './types/bug'
 
@@ -33,32 +34,23 @@ function BoardShell() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_92%,transparent)] px-4 py-3.5 backdrop-blur-md sm:px-5">
-        <div className="relative flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <Link
-            to="/"
-            className="group z-10 inline-flex shrink-0 flex-col gap-0.5 no-underline sm:min-w-[9.5rem]"
-          >
-            <span className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.2em] text-[var(--amber)] uppercase">
-              Gas Cash · Local QA
-            </span>
-            <span className="text-lg font-bold tracking-tight text-[var(--text)] group-hover:text-[var(--amber)]">
-              Bug Board
-            </span>
+      <PageHeader
+        title={
+          <Link to="/" className="text-[var(--text)] no-underline hover:text-[var(--amber)]">
+            Bug Board
           </Link>
-          <div className="z-10 flex justify-center sm:absolute sm:inset-x-0 sm:top-1/2 sm:-translate-y-1/2 sm:pointer-events-none">
-            <div className="sm:pointer-events-auto">
-              <SiteNav />
+        }
+        meta={
+          <>
+            <div>
+              {bugBoard.bugs.length} seeded · disk SoT
             </div>
-          </div>
-          <div className="z-10 hidden text-right font-[family-name:var(--font-mono)] text-[10px] leading-relaxed text-[var(--text-dim)] sm:block sm:min-w-[9.5rem]">
-            <div>{bugBoard.bugs.length} seeded · disk SoT</div>
-            <div className="max-w-[280px] truncate sm:ml-auto sm:max-w-[11rem]" title={bugBoard.source}>
+            <div className="max-w-[280px] truncate sm:ml-auto sm:max-w-[14rem]" title={bugBoard.source}>
               {bugBoard.updatedAt}
             </div>
-          </div>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <OpenBoardBanner />
 
@@ -113,8 +105,10 @@ export default function App() {
       <Route path="/mindmap/:domain" element={<MindMapDetailPage />} />
       <Route path="/test-cases" element={<TestCasesPage />} />
       <Route path="/test-cases/:tcId" element={<TestCasesPage />} />
-      <Route path="/claim-gps" element={<ClaimGeoPage />} />
-      <Route path="/mobile-coop" element={<MobileCoopPage />} />
+      <Route path="/strategy" element={<StrategyPage />} />
+      <Route path="/plan" element={<PlanPage />} />
+      <Route path="/claim-gps" element={<ClaimGpsRedirect />} />
+      <Route path="/mobile-coop" element={<MobileCoopRedirect />} />
     </Routes>
   )
 }
