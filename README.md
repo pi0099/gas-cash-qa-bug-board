@@ -14,6 +14,7 @@ Also ships shareable research pages:
 | `/mindmap/:domain` | Per-domain React Flow maps; green/amber/blue/gray = Pass / mixed-Fail / designed / none |
 | `/test-cases` | TC spreadsheet (native grid from `data/test-cases.json`; optional Sheets iframe) |
 | `/claim-gps` | Claim / GPS QA guide |
+| `/mobile-coop` | Mobile agent ↔ user coop + phone claim matrix |
 
 ## Quick start
 
@@ -41,7 +42,7 @@ Configured for **project Pages** at:
 | --- | --- |
 | Vite `base` | `/gas-cash-qa-bug-board/` |
 | Router | `BrowserRouter` with matching `basename` |
-| SPA deep links | `dist/404.html` + `overview/` `summary/` `mindmap/` + `mindmap/<domain>/` + `test-cases/` index copies (`scripts/spa-pages.sh`) |
+| SPA deep links | `dist/404.html` + `overview/` `summary/` `mindmap/` + `mindmap/<domain>/` + `test-cases/` `claim-gps/` `mobile-coop/` index copies (`scripts/spa-pages.sh`) |
 | Mind map data | Editable JSON under [`data/mindmaps/`](data/mindmaps/) (hub + one file per domain) |
 | Deploy | [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) → `actions/upload-pages-artifact` + `actions/deploy-pages` |
 

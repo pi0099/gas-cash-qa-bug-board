@@ -4,14 +4,14 @@
 | --- | --- |
 | Product | [app.gas.cash](https://app.gas.cash) |
 | Audience | QA (lab + field) |
-| Date | 2026-10-26 |
+| Date | 2026-10-26 (phone-gate note 2026-10-27) |
 | Money policy | Free bike already claimed on QA account; **do not** complete a paid hold-to-pump that burns a bike use unless explicitly authorized |
 | Legend | **[Documented]** public docs/privacy/terms · **[Observed]** this lab run / prior store runs · **[Inferred]** logical from evidence, not a product promise |
 
 **Bottom line for the two user questions**
 
-1. **Fake GPS for testing:** Browser / Playwright geolocation mocking is **lab-sufficient for proximity UI** (map centers, distance label, station sheet, unlocked **HOLD TO PUMP** at `0 m`). It is **not** proven to produce a paid claim — product docs say the server trusts nothing the phone says; expect **Partial → Field-only** for payout.
-2. **Is being “at a station” enough?** No. You must be signed in with an eligible vehicle (free bike or car lineup), off cooldown / under daily caps, grant location, open a live station pump, get inside the (unpublished) station radius so the client drops the “Move closer…” soft-gate, then **hold to pump** and pass **server** geo / Fingerprint / network / optional photo checks. Standing nearby without hold + checks does not pay.
+1. **Fake GPS for testing:** Browser / Playwright geolocation mocking is **lab-sufficient for proximity UI** (map centers, distance label, station sheet, unlocked **HOLD TO PUMP** at `0 m` on a **phone-class** client). It is **not** proven to produce a paid claim — product docs say the server trusts nothing the phone says; expect **Partial → Field-only** for payout. **Phone gate [Observed 2026-10-27]:** desktop + DevTools Sensors can show distance (e.g. ~18 m at Hóc Môn) but HOLD still says “Pumping only works on a phone…” — use mobile UA/touch, iOS Sim / Android Emulator, or Playwright mobile emulation for claim chrome.
+2. **Is being “at a station” enough?** No. You must be signed in with an eligible vehicle (free bike or car lineup), off cooldown / under daily caps, on a **phone** client, grant location, open a live station pump, get inside the (unpublished) station radius so the client drops the “Move closer…” soft-gate, then **hold to pump** and pass **server** geo / Fingerprint / network / optional photo checks. Standing nearby without hold + checks does not pay.
 
 ---
 
@@ -202,5 +202,6 @@ Set the simulator/emulator custom location to the same station coords, open Safa
 
 - `docs/claim-bike-deep-dive.md` — free bike grant on QA account
 - `docs/test-plan.md` Suite D — claim scenarios
-- `docs/test-strategy.md` — anti-cheat testing posture
+- `docs/test-strategy.md` — §4.4 mobile-only claim / fake GPS / browser matrix
+- `docs/mobile-agent-cooperation.md` — agent ↔ user phone handoff (not in strategy)
 - Mind map: [Map / Claim](https://pi0099.github.io/gas-cash-qa-bug-board/mindmap/claim)

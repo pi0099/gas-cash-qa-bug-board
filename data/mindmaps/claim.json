@@ -141,11 +141,12 @@
         "F",
         "V"
       ],
-      "summary": "Playwright/CDP setGeolocation unlocks 0 m + HOLD TO PUMP UI; payout still Field-only.",
-      "detail": "2026-10-26: mock Pertashop (-7.670405, 111.228684) \u2192 0 m, no Move closer; HCMC ~147 m \u2192 Move closer copy. Fingerprint loads. Short HOLD tap: no claim POST. Guide: docs/claim-geo-testing-guide.md. Verdict: Lab-sufficient for proximity UI; Partial/Field-only for paid claim.",
+      "summary": "Phone-class client + geo mock unlocks 0 m + HOLD UI; desktop Sensors hit phone gate; payout Field-only.",
+      "detail": "2026-10-26: mock Pertashop (-7.670405, 111.228684) \u2192 0 m, no Move closer; HCMC ~147 m \u2192 Move closer copy. 2026-10-27: desktop Sensors can show ~18 m (e.g. H\u00f3c M\u00f4n) but HOLD says Pumping only works on a phone. Use mobile UA/touch, iOS Sim / Android Emulator, or Playwright mobile emulation. Guide: docs/claim-geo-testing-guide.md. Payout still Field-only.",
       "envHint": "lab",
       "tcIdeas": [
-        "Mock at live station coords \u2192 0 m + HOLD TO PUMP",
+        "Mock at live station coords on phone UA \u2192 0 m + HOLD TO PUMP",
+        "Desktop + Sensors \u2192 phone-only block copy",
         "Mock ~150 m away \u2192 Move closer soft-gate",
         "Deny geo \u2192 Turn on location banner",
         "Do not complete paid hold without authorization"

@@ -95,7 +95,10 @@ export function ClaimGeoPage() {
                 <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--text)]">setGeolocation</code> +
                 geo permission is <strong className="text-[var(--text)]">lab-sufficient for proximity UI</strong> (map center,
                 distance, station sheet, unlocked <strong className="text-[var(--text)]">HOLD TO PUMP</strong> at{' '}
-                <code className="font-[family-name:var(--font-mono)] text-[13px]">0 m</code>). Paid payout is still{' '}
+                <code className="font-[family-name:var(--font-mono)] text-[13px]">0 m</code> on a{' '}
+                <strong className="text-[var(--text)]">phone-class</strong> client). Desktop + DevTools Sensors can show
+                distance but HOLD still says “Pumping only works on a phone…” — use mobile UA/touch, iOS Sim / Android
+                Emulator, or Playwright mobile emulation. Paid payout is still{' '}
                 <strong className="text-[var(--text)]">Field-only</strong> — docs say the server trusts nothing the phone says.{' '}
                 <Tag tone="obs">[Observed]</Tag> <Tag tone="doc">[Documented]</Tag>
               </li>

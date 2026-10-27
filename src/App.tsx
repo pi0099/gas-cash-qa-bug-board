@@ -9,6 +9,7 @@ import { useLiveBugStatuses } from './hooks/useLiveBugStatuses'
 import { bugBoard, filterBugs, getBugById } from './lib/bugs'
 import { MindMapDetailPage, MindMapPage } from './pages/MindMapPage'
 import { ClaimGeoPage } from './pages/ClaimGeoPage'
+import { MobileCoopPage } from './pages/MobileCoopPage'
 import { OverviewPage } from './pages/OverviewPage'
 import { TestCasesPage } from './pages/TestCasesPage'
 import type { BugPriority, BugStatus } from './types/bug'
@@ -113,6 +114,7 @@ export default function App() {
       <Route path="/test-cases" element={<TestCasesPage />} />
       <Route path="/test-cases/:tcId" element={<TestCasesPage />} />
       <Route path="/claim-gps" element={<ClaimGeoPage />} />
+      <Route path="/mobile-coop" element={<MobileCoopPage />} />
     </Routes>
   )
 }
