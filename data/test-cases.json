@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T21:05:00+07:00",
-  "source": "Mind-map branches + claimed-bike deep dive 2026-10-26. Executed on https://app.gas.cash with fresh Privy storageState; free bike CLAIMED (authorized); money-safe otherwise.",
+  "updatedAt": "2026-10-28T17:20:00.000Z",
+  "source": "Mind-map branches + claimed-bike deep dive 2026-10-26. Executed on https://app.gas.cash with fresh Privy storageState; free bike CLAIMED (authorized); money-safe otherwise. + Wallet/deposit/withdraw UI validation 2026-10-28",
   "execution": {
-    "date": "2026-10-27",
+    "date": "2026-10-28",
     "env": "https://app.gas.cash",
     "sessionValid": true,
     "sessionValidDuringRun": true,
@@ -55,7 +55,8 @@
         "GC-TC-V-LOC-02",
         "GC-TC-V-LOC-03"
       ]
-    }
+    },
+    "note": "Wallet DW money-safe validation pass"
   },
   "testCases": [
     {
@@ -1723,6 +1724,304 @@
       "notes": "Fail — user evidence shows Chrome Allow this time bubble on app.gas.cash; reappears after later actions per report. Lab AX under Playwright profile did not observe native bubble (hidden); filed from user capture + product re-request pattern. Prefer Playwright permissions+setGeolocation for automated geo labs going forward.",
       "evidence": [
         "/evidence/adhoc-ui-api-20261027/470-loc-allow-this-time-user.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-01",
+      "type": "Functional",
+      "mindmapNode": "wallet",
+      "priority": "P1",
+      "title": "Header USO/$GAS chips consistent with empty wallet + /api/me session",
+      "preconditions": [
+        "Authed Privy storageState",
+        "Empty or known balances"
+      ],
+      "steps": [
+        "Open https://app.gas.cash.",
+        "Read header USO and $GAS chips.",
+        "Capture GET /api/me (browser network).",
+        "Open Deposit and compare YOUR ADDRESS to me.user.wallet."
+      ],
+      "expected": "Header shows numeric balances (0 OK). /api/me 200 with wallet. Deposit address matches me.user.wallet. No stuck ellipsis when me healthy.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — header 0/0; /api/me 200 wallet 0x7AcA…A178; deposit address match.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/a8-header-final.png",
+        "/evidence/wallet-dw-20261028/b1-deposit.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-02",
+      "type": "Functional",
+      "mindmapNode": "wallet",
+      "priority": "P2",
+      "title": "Portfolio panel opens with honest empty-wallet chrome",
+      "preconditions": [
+        "Authed"
+      ],
+      "steps": [
+        "Open PORTFOLIO / $0.00 panel.",
+        "Observe total vs asset rows."
+      ],
+      "expected": "Panel opens; empty wallet may show $0.00 with dashes without rewards soft-fail (honest empty).",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — $0.00 + dashes; no rewards error (Resolved dishonest-$0 stays fixed).",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/10-portfolio.png",
+        "/evidence/wallet-dw-20261028/b8-portfolio.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-03",
+      "type": "Functional",
+      "mindmapNode": "buy-gas",
+      "priority": "P1",
+      "title": "Buy Gas opens via aria-label Buy Gas / GAS +",
+      "preconditions": [
+        "Authed"
+      ],
+      "steps": [
+        "Click [aria-label=Buy Gas] or GAS + chip.",
+        "Observe Buy/Deposit/Withdraw sheet."
+      ],
+      "expected": "Sheet opens with BUY $GAS / DEPOSIT / WITHDRAW tabs.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — aria Buy Gas opens sheet; plain text + alone flaky.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/91-buy-opened.png",
+        "/evidence/wallet-dw-20261028/a0-buy.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-04",
+      "type": "Functional",
+      "mindmapNode": "buy-gas",
+      "priority": "P1",
+      "title": "Stock Token attestation can Close without swap",
+      "preconditions": [
+        "Authed",
+        "Money-safe"
+      ],
+      "steps": [
+        "Open Buy Gas.",
+        "Tap READ THE RULES.",
+        "Tap Close / Escape.",
+        "Confirm no swap/withdraw/station POST."
+      ],
+      "expected": "“Before you swap a Stock Token” dismisses; no money POST.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — Close cancel; moneyPosts=0.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/b6-rules.png",
+        "/evidence/wallet-dw-20261028/b7-rules-cancel.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-05",
+      "type": "Validation",
+      "mindmapNode": "buy-gas",
+      "priority": "P1",
+      "title": "Buy amount empty/zero/negative/over-balance shows error and blocks buy",
+      "preconditions": [
+        "Buy Gas sheet open",
+        "Money-safe"
+      ],
+      "steps": [
+        "Leave amount empty; enter 0; enter -1; enter amount > USO balance.",
+        "Observe CTA and error copy.",
+        "Do not complete buy."
+      ],
+      "expected": "Clear errors (NO AMOUNT YET / Enter more than 0 / Enter an amount… / That is more than your USO); no completed swap.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — red border + copy; CTA stays READ THE RULES / NO AMOUNT YET.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/a1-buy-empty.png",
+        "/evidence/wallet-dw-20261028/a1-buy-zero.png",
+        "/evidence/wallet-dw-20261028/a1-buy-negative.png",
+        "/evidence/wallet-dw-20261028/a1-buy-huge.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-06",
+      "type": "Functional",
+      "mindmapNode": "fund-deposit",
+      "priority": "P1",
+      "title": "Deposit tab shows own address + QR without send CTA",
+      "preconditions": [
+        "Buy Gas sheet open"
+      ],
+      "steps": [
+        "Select DEPOSIT tab.",
+        "Observe YOUR ADDRESS, QR, Blockscout, HOLD TO EXPORT.",
+        "Do not hold export."
+      ],
+      "expected": "Receive-only chrome; address is session wallet; no enabled Send/Confirm spend.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — address+QR+Blockscout; HOLD TO EXPORT not pressed.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/b1-deposit.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-07",
+      "type": "Validation",
+      "mindmapNode": "wallet",
+      "priority": "P1",
+      "title": "Withdraw empty/zero/negative/over-balance disables WITHDRAW",
+      "preconditions": [
+        "Withdraw tab open",
+        "Money-safe"
+      ],
+      "steps": [
+        "Clear amount; enter 0; -1; alpha; amount > balance.",
+        "Observe WITHDRAW disabled + error copy."
+      ],
+      "expected": "WITHDRAW disabled; copy covers empty/zero/invalid/over-balance.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — disabled + Enter an amount above zero / like 100 / more than your $GAS.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/b3-wd-amt-empty.png",
+        "/evidence/wallet-dw-20261028/b3-wd-amt-zero.png",
+        "/evidence/wallet-dw-20261028/b3-wd-amt-one.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-08",
+      "type": "Validation",
+      "mindmapNode": "wallet",
+      "priority": "P1",
+      "title": "Withdraw refuses garbage, zero, short, and self addresses",
+      "preconditions": [
+        "Withdraw tab open",
+        "Money-safe"
+      ],
+      "steps": [
+        "Paste/type garbage, 0x000…0, short 0xabc, own wallet address.",
+        "Observe errors and WITHDRAW disabled."
+      ],
+      "expected": "parseRecipient-style refusals: starting 0x / cannot receive / own address; CTA disabled.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — matches withdraw.ts refuse set (invalid/zero/self).",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/b4-wd-addr-garbage.png",
+        "/evidence/wallet-dw-20261028/b4-wd-addr-zero.png",
+        "/evidence/wallet-dw-20261028/b4-wd-addr-self.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-09",
+      "type": "Validation",
+      "mindmapNode": "wallet",
+      "priority": "P2",
+      "title": "Withdraw valid-format address still blocked when amount exceeds balance",
+      "preconditions": [
+        "Withdraw tab",
+        "0 $GAS balance"
+      ],
+      "steps": [
+        "Enter valid non-self 0x… recipient and amount 1.",
+        "Observe CTA."
+      ],
+      "expected": "Valid address acknowledged; WITHDRAW stays disabled with over-balance copy.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — Valid Robinhood Chain address + That is more than your $GAS.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/b4-wd-addr-valid.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-10",
+      "type": "Validation",
+      "mindmapNode": "atm",
+      "priority": "P1",
+      "title": "ATM stake ENTER disabled for empty/zero/negative/below-balance amounts",
+      "preconditions": [
+        "Authed",
+        "/atm",
+        "Money-safe — cancel only"
+      ],
+      "steps": [
+        "Open STAKE sheet.",
+        "Enter empty, 0, -1, 1, 999, alpha.",
+        "Observe ENTER.",
+        "Escape/cancel — do not ENTER."
+      ],
+      "expected": "ENTER disabled for invalid/insufficient amounts; no station POST.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass desktop+mobile; ENTER disabled even at 1000 with 0 balance. moneyPosts=0.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/d-63-zero.png",
+        "/evidence/wallet-dw-20261028/d-63-negative.png",
+        "/evidence/wallet-dw-20261028/d-63-999.png",
+        "/evidence/wallet-dw-20261028/m-63-zero.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-11",
+      "type": "Functional",
+      "mindmapNode": "atm",
+      "priority": "P2",
+      "title": "ATM stake sheet cancel closes without staking",
+      "preconditions": [
+        "Stake sheet open"
+      ],
+      "steps": [
+        "Open stake form.",
+        "Press Escape / cancel.",
+        "Confirm no POST /api/station."
+      ],
+      "expected": "Sheet dismisses; no stake broadcast.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [],
+      "notes": "Pass — cancelled; moneyPosts=0.",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/d-64-cancelled.png",
+        "/evidence/wallet-dw-20261028/44-stake-cancelled.png"
+      ]
+    },
+    {
+      "id": "GC-TC-W-DW-12",
+      "type": "Functional",
+      "mindmapNode": "atm",
+      "priority": "P2",
+      "title": "ATM My Stakes empty chrome when no positions",
+      "preconditions": [
+        "Authed account with no stakes"
+      ],
+      "steps": [
+        "Open /atm → My Stakes."
+      ],
+      "expected": "NO STAKES YET (or equivalent) without Robinhood soft-fail when rpc healthy.",
+      "automatable": true,
+      "result": "Pass",
+      "bugIds": [
+        "gc-rpc-storm-atm"
+      ],
+      "notes": "Pass empty chrome; rpc volume still elevated (known Open).",
+      "evidence": [
+        "/evidence/wallet-dw-20261028/45-my-stakes.png",
+        "/evidence/wallet-dw-20261028/52-mobile-atm.png"
       ]
     }
   ]
