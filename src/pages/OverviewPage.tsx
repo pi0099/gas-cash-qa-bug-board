@@ -249,7 +249,19 @@ export function OverviewPage() {
               <li>
                 <strong className="text-[var(--text)]">Social</strong> — mileage, leaderboard, profiles, referrals (
                 <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--text)]">gas.cash/r/…</code>
-                ). <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag> shells
+                ); referral claim share ladder live in Mileage → Rewards (2–10%).{' '}
+                <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag> shells
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Dealership</strong> — V2 car listings for $GAS (
+                <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--text)]">/dealership</code>
+                ). <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag> live listings
+              </li>
+              <li>
+                <strong className="text-[var(--text)]">Scratchers</strong> —{' '}
+                <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--text)]">/scratchers</code>{' '}
+                pick-a-card chrome (paid play money-safe blocked in lab). <Tag tone="doc">[Documented]</Tag>{' '}
+                <Tag tone="obs">[Observed]</Tag>
               </li>
               <li>
                 <strong className="text-[var(--text)]">Proof</strong> — public prize pool, prices, contract links.{' '}
@@ -362,9 +374,10 @@ export function OverviewPage() {
                 car parks the bike for good. QA left claim untouched on purpose. <Tag tone="obs">[Observed]</Tag>
               </li>
               <li>
-                <strong className="text-[var(--text)]">Coming soon / limited</strong> — Dealership (route shell, empty market); crowbars / insurance /
-                theft / scratchers / Alarm-class Mini Mart items; Mafia Men / Job Board / jackpot; chat “We&apos;re Closed”; referral claim share off.{' '}
-                <Tag tone="soon">[Coming soon]</Tag> <Tag tone="obs">[Observed]</Tag> where noted in audits
+                <strong className="text-[var(--text)]">Coming soon / limited</strong> — Alarm-class Mini Mart items (SOON); Job Board / Proxy /
+                jackpot closed on chain; chat “We&apos;re Closed”; daily check-in flag off to public (Mileage still advertises it — see bugs).
+                Crowbars / insurance / Scratchers / Dealership / referral share are <Tag tone="obs">[Observed]</Tag> live chrome (funded actions
+                money-safe blocked). <Tag tone="soon">[Coming soon]</Tag> only where noted
               </li>
               <li>
                 Docs path gaps: <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--text)]">/chop-shop</code> &amp;{' '}

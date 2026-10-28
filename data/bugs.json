@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-28T09:45:00+07:00",
-  "source": "Field report 2026-10-28 (Hóc Môn non-fuel POI) + Android emulator CHECK IN 2026-10-27",
+  "updatedAt": "2026-10-28T23:30:00+07:00",
+  "source": "Non-GPS function pass 2026-10-28 (product-internal map + money-safe shells) + prior field/emulator bugs",
   "bugs": [
     {
       "id": "gc-api-500-outage",
@@ -162,7 +162,7 @@
         "api"
       ],
       "createdAt": "2026-10-26",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Shared layout chrome re-fetches the same endpoints on almost every client navigation even when unrelated to the page. Combined with the /api/* 500 outage, duplicates amplify load and “Try again” latency without recovering data.\n\n**Retest 2026-10-26 (Still valid):** Chrome still refetches on each nav — me/stats×7, scratch/tiers×7, claims/live×14, lineup×5 across 7 routes.",
       "testData": [
@@ -208,13 +208,13 @@
         "GET /api/claims/live ×27",
         "Document/RSC GET /garage, /atm, / also high teens–20s"
       ],
-      "lastRetestAt": "2026-10-27 ~18:30 +07",
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Pass-3 2026-10-27: chrome refetch still present during shell walk.",
+      "lastRetestNote": "Non-GPS shell walk: ~4449 network hits; POST /api/rpc ×208; auth/sync ×26; me/stats ×22; scratch/tiers ×22; 429×6. No 5xx.",
       "retest": {
-        "at": "2026-10-27 ~18:30 +07",
+        "at": "2026-10-28 ~23:20 +07",
         "result": "Still valid",
-        "note": "Ad-hoc 2026-10-27 +07: shell walk still refetches chrome — me/stats×9, scratch/tiers×9, claims/live×18, lineup×5, me×10, auth/sync×12, rpc×96 across ~12 routes. Also 2×429 on POST /api/auth/sync during storm."
+        "note": "Non-GPS shell walk: ~4449 network hits; POST /api/rpc ×208; auth/sync ×26; me/stats ×22; scratch/tiers ×22; 429×6. No 5xx."
       },
       "retests": [
         {
@@ -299,7 +299,7 @@
         "pitstop"
       ],
       "createdAt": "2026-10-26",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Documented or guessed hyphenated paths `/chop-shop` and `/inventory` return HTTP 404. Product UI lives at `/chopshop` (Chop Shop) and `/pitstop` (Inventory), reachable from Garage nav.\n\n**Retest 2026-10-26 (Still valid):** /chop-shop and /inventory still HTTP 404; /chopshop and /pitstop still 200.",
       "testData": [
@@ -347,13 +347,13 @@
         }
       ],
       "apiNotes": [],
-      "lastRetestAt": "2026-10-27 ~18:30 +07",
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Ad-hoc 2026-10-27 +07: /chop-shop and /inventory still 404. Also /starting-5 → unbranded 404 (filed separately).",
+      "lastRetestNote": "Non-GPS pass: /chop-shop and /inventory still 404; live /chopshop and /pitstop OK.",
       "retest": {
-        "at": "2026-10-27 ~18:30 +07",
+        "at": "2026-10-28 ~23:20 +07",
         "result": "Still valid",
-        "note": "Ad-hoc 2026-10-27 +07: /chop-shop and /inventory still 404. Also /starting-5 → unbranded 404 (filed separately)."
+        "note": "Non-GPS pass: /chop-shop and /inventory still 404; live /chopshop and /pitstop OK."
       }
     },
     {
@@ -438,7 +438,7 @@
         "empty-state"
       ],
       "createdAt": "2026-10-26",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Deep-link / docs paths such as /chop-shop and /inventory render the default white Next.js-style “404 | This page could not be found.” page with no Gas Cash branding, chrome, or home CTA. Users who mistype or follow outdated docs are stranded off-product. Independent of the /api/* outage.\n\n**Retest 2026-10-26 (Still valid):** Still white Next.js-style “404 | This page could not be found.” with no Gas Cash chrome/CTA.",
       "testData": [
@@ -478,13 +478,13 @@
         }
       ],
       "apiNotes": [],
-      "lastRetestAt": "2026-10-27 ~18:30 +07",
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Ad-hoc 2026-10-27 +07: /starting-5, /chop-shop, /inventory still white Next.js 404 with no brand/CTA. Evidence: /evidence/adhoc-ui-api-20261027/10-starting5.png",
+      "lastRetestNote": "Non-GPS pass: /starting-5, /chop-shop, /inventory, /games, /scratch still unbranded 404.",
       "retest": {
-        "at": "2026-10-27 ~18:30 +07",
+        "at": "2026-10-28 ~23:20 +07",
         "result": "Still valid",
-        "note": "Ad-hoc 2026-10-27 +07: /starting-5, /chop-shop, /inventory still white Next.js 404 with no brand/CTA. Evidence: /evidence/adhoc-ui-api-20261027/10-starting5.png"
+        "note": "Non-GPS pass: /starting-5, /chop-shop, /inventory, /games, /scratch still unbranded 404."
       }
     },
     {
@@ -680,7 +680,7 @@
         "honesty"
       ],
       "createdAt": "2026-10-26",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Under “Could not load the shop,” Mini Mart mixes availability treatments: Keys/Crowbar T1–T2 keep live-looking − 0 + steppers; Insurance shows INSURE; Scratchers show PLAY above COMING LATER / NOT ON SALE YET; five items tagged SOON; Credit Card Fraud tagged OPEN inside Coming Later. Purchasable vs coming-soon is unclear. Complements gc-minimart-blank-prices (blank prices) with label/CTA honesty.\n\n**Retest 2026-10-26 (Still valid):** Shop loads, but COMING LATER still mixes SOON×5 with OPEN on Credit Card Fraud; Scratchers still PLAY; labels remain inconsistent.",
       "testData": [
@@ -729,13 +729,13 @@
         }
       ],
       "apiNotes": [],
-      "lastRetestAt": "2026-10-27 ~18:30 +07",
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
       "lastRetestResult": "Still valid",
-      "lastRetestNote": "Ad-hoc 2026-10-27 +07: Mini Mart loads with prices; SOON/OPEN/PLAY mix still present in body scan (shop healthy this run).",
+      "lastRetestNote": "Non-GPS pass: Mini Mart still mixes PLAY (Scratchers), OPEN, SOON, COMING LATER. Scratchers route /scratchers is live chrome. Evidence 30-minimart.png.",
       "retest": {
-        "at": "2026-10-27 ~18:30 +07",
+        "at": "2026-10-28 ~23:20 +07",
         "result": "Still valid",
-        "note": "Ad-hoc 2026-10-27 +07: Mini Mart loads with prices; SOON/OPEN/PLAY mix still present in body scan (shop healthy this run)."
+        "note": "Non-GPS pass: Mini Mart still mixes PLAY (Scratchers), OPEN, SOON, COMING LATER. Scratchers route /scratchers is live chrome. Evidence 30-minimart.png."
       }
     },
     {
@@ -930,7 +930,7 @@
         "consistency"
       ],
       "createdAt": "2026-10-26",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Free-bike onboarding modal states each claim spends one use and the bike rests **36h**. After CLAIM YOUR BIKE, garage bike detail copy says **“The free bike: a 24-hour wait, and a share of the base rate per claim.”** Players get conflicting rest-period guidance before field claims.",
       "testData": [
@@ -969,13 +969,13 @@
       "relatedTcIds": [
         "GC-TC-V-13"
       ],
-      "lastRetestAt": "2026-10-27 ~18:30 +07",
-      "lastRetestResult": "Partial",
-      "lastRetestNote": "Ad-hoc 2026-10-27 +07: Garage bike detail still shows 24-hour wait. 36h modal copy not re-shown this run (bike already claimed; gift modal dismissed).",
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
+      "lastRetestResult": "Still valid",
+      "lastRetestNote": "Non-GPS pass: garage bike detail still “24-hour wait”; product-internal docs + chain cooldown() = 36h. Evidence 20-garage-bike.png.",
       "retest": {
-        "at": "2026-10-27 ~18:30 +07",
-        "result": "Partial",
-        "note": "Ad-hoc 2026-10-27 +07: Garage bike detail still shows 24-hour wait. 36h modal copy not re-shown this run (bike already claimed; gift modal dismissed)."
+        "at": "2026-10-28 ~23:20 +07",
+        "result": "Still valid",
+        "note": "Non-GPS pass: garage bike detail still “24-hour wait”; product-internal docs + chain cooldown() = 36h. Evidence 20-garage-bike.png."
       }
     },
     {
@@ -991,7 +991,7 @@
         "consistency"
       ],
       "createdAt": "2026-10-27",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Profile chrome under SET USERNAME shows CARS / MULTIPLIER / DAILY CLAIM RATE as bare em-dash or \".\" placeholders (with “WHAT THIS MEANS” labels) while the same shell shows READY TO CLAIM and the account owns the free bike in Garage. Reads as missing data, not an error or a computed bike-derived rate.",
       "testData": [
@@ -1046,7 +1046,7 @@
       "relatedTcIds": [
         "GC-TC-V-ADHOC-02"
       ],
-      "lastRetestNote": "Pass-4: still MULTIPLIER/DAILY CLAIM RATE “.” / “—” with READY TO CLAIM; /api/me/stats 200 zeros; lineup multiplierBps null.",
+      "lastRetestNote": "Non-GPS pass: home/garage profile still shows MULTIPLIER / COOLDOWN as “.” / — while READY TO CLAIM. Evidence media/non-gps-20261028/01-home-profile.png, 20-garage-bike.png.",
       "retests": [
         {
           "date": "2026-10-27",
@@ -1058,7 +1058,14 @@
           "result": "Still valid",
           "note": "Pass-4 HCMC geo home 500-home-hcmc.png — placeholders persist."
         }
-      ]
+      ],
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
+      "lastRetestResult": "Still valid",
+      "retest": {
+        "at": "2026-10-28 ~23:20 +07",
+        "result": "Still valid",
+        "note": "Non-GPS pass: home/garage profile still shows MULTIPLIER / COOLDOWN as “.” / — while READY TO CLAIM. Evidence media/non-gps-20261028/01-home-profile.png, 20-garage-bike.png."
+      }
     },
     {
       "id": "gc-chopshop-reading-forever",
@@ -1072,7 +1079,7 @@
         "ui-api"
       ],
       "createdAt": "2026-10-27",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "/chopshop stays on “Reading your garage…” with CAR A / CAR B empty chrome. Same session /garage?car=bike already shows the free bike with full attributes. No timeout, error, or “no eligible cars” empty state — users cannot tell if Chop Shop excludes bikes or if the load failed.",
       "testData": [
@@ -1109,14 +1116,21 @@
       "relatedTcIds": [
         "GC-TC-V-ADHOC-09"
       ],
-      "lastRetestNote": "Pass-3 2026-10-27: still Reading your garage…",
+      "lastRetestNote": "Non-GPS pass: /chopshop still shows Reading your garage… with bike-only account. Evidence shell-chopshop.png.",
       "retests": [
         {
           "date": "2026-10-27",
           "result": "Still valid",
           "note": "Pass-3 2026-10-27: still Reading your garage…"
         }
-      ]
+      ],
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
+      "lastRetestResult": "Still valid",
+      "retest": {
+        "at": "2026-10-28 ~23:20 +07",
+        "result": "Still valid",
+        "note": "Non-GPS pass: /chopshop still shows Reading your garage… with bike-only account. Evidence shell-chopshop.png."
+      }
     },
     {
       "id": "gc-starting5-route-404",
@@ -1130,7 +1144,7 @@
         "docs"
       ],
       "createdAt": "2026-10-27",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Direct navigation to /starting-5 returns the same unbranded Next.js 404 as /chop-shop and /inventory. Garage UI exposes a “STARTING 5” label/chrome, so users or docs that invent a hyphenated path get stranded. Related to gc-docs-route-404 / gc-404-unbranded.",
       "testData": [
@@ -1163,14 +1177,21 @@
       "relatedTcIds": [
         "GC-TC-V-ADHOC-10"
       ],
-      "lastRetestNote": "Pass-3 2026-10-27: /starting-5 still unbranded 404.",
+      "lastRetestNote": "Non-GPS pass: /starting-5 still unbranded 404; Garage still labels STARTING 5. Evidence shell-starting-5.png.",
       "retests": [
         {
           "date": "2026-10-27",
           "result": "Still valid",
           "note": "Pass-3 2026-10-27: /starting-5 still unbranded 404."
         }
-      ]
+      ],
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
+      "lastRetestResult": "Still valid",
+      "retest": {
+        "at": "2026-10-28 ~23:20 +07",
+        "result": "Still valid",
+        "note": "Non-GPS pass: /starting-5 still unbranded 404; Garage still labels STARTING 5. Evidence shell-starting-5.png."
+      }
     },
     {
       "id": "gc-mileage-invite-without-username",
@@ -1184,7 +1205,7 @@
         "cta"
       ],
       "createdAt": "2026-10-27",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Mileage Referrals copy says “Set a username to get your invite link.” while a primary INVITE SOMEONE ON X button remains visible/enabled for accounts with SET USERNAME still unset. Validation/CTA mismatch — either gate the button or change copy.",
       "testData": [
@@ -1219,14 +1240,21 @@
       "relatedTcIds": [
         "GC-TC-V-ADHOC-11"
       ],
-      "lastRetestNote": "Pass-3 2026-10-27: still INVITE CTA + set username copy.",
+      "lastRetestNote": "Non-GPS pass: “Set a username…” + INVITE SOMEONE ON X still both shown. Evidence 50-mileage.png. Referral Rewards sheet itself is live (2–10% ladder).",
       "retests": [
         {
           "date": "2026-10-27",
           "result": "Still valid",
           "note": "Pass-3 2026-10-27: still INVITE CTA + set username copy."
         }
-      ]
+      ],
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
+      "lastRetestResult": "Still valid",
+      "retest": {
+        "at": "2026-10-28 ~23:20 +07",
+        "result": "Still valid",
+        "note": "Non-GPS pass: “Set a username…” + INVITE SOMEONE ON X still both shown. Evidence 50-mileage.png. Referral Rewards sheet itself is live (2–10% ladder)."
+      }
     },
     {
       "id": "gc-garage-carousel-reading-forever",
@@ -1241,7 +1269,7 @@
         "regression-adjacent"
       ],
       "createdAt": "2026-10-27",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "On /garage with the free bike already claimed and fully rendered (OVR/attributes visible, STARTER/BIKE selected), an adjacent fleet-carousel card remains on “Reading your garage…” with a spinner. No timeout, error, or empty-slot state. Distinct from Resolved gc-garage-reading-forever (“Reading your cars…” full-page) and from Open gc-chopshop-reading-forever (Chop Shop picker).",
       "testData": [
@@ -1286,7 +1314,7 @@
       "relatedTcIds": [
         "GC-TC-V-ADHOC-13"
       ],
-      "lastRetestNote": "Pass-4 2026-10-27: still “Reading your garage…” sibling beside STARTER Free BIKE (550-garage-empty-copy.png). /api/lineup?view=garage returns ids:null,live:0 while bike UI loaded.",
+      "lastRetestNote": "Non-GPS pass: garage bike loaded + sibling “Reading your garage…”. Evidence 20-garage-bike.png.",
       "retests": [
         {
           "date": "2026-10-27",
@@ -1298,7 +1326,14 @@
           "result": "Still valid",
           "note": "Pass-4: Reading sibling still present with Free BIKE; lineup API ids null."
         }
-      ]
+      ],
+      "lastRetestAt": "2026-10-28 ~23:20 +07",
+      "lastRetestResult": "Still valid",
+      "retest": {
+        "at": "2026-10-28 ~23:20 +07",
+        "result": "Still valid",
+        "note": "Non-GPS pass: garage bike loaded + sibling “Reading your garage…”. Evidence 20-garage-bike.png."
+      }
     },
     {
       "id": "gc-location-browser-geo-ignored",
@@ -1557,6 +1592,63 @@
       "apiNotes": [
         "Client soft-gate Pass at 0 m; Move closer at ~152–153 m also Pass (see 18-far-152m-move-closer.png).",
         "Phone gate for HOLD chrome cleared on Android emulator (no \"Pumping only works on a phone…\")."
+      ]
+    },
+    {
+      "id": "gc-mileage-checkin-advertised-while-closed",
+      "title": "[BUG] Mileage - Ways to earn - DAILY CHECK-IN advertised while check-in flag closed to public",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "mileage",
+        "check-in",
+        "copy",
+        "feature-flag",
+        "validation",
+        "consistency"
+      ],
+      "createdAt": "2026-10-28",
+      "updatedAt": "2026-10-28",
+      "env": "https://app.gas.cash",
+      "description": "Mileage → WAYS TO EARN lists **DAILY CHECK-IN** with **+5 MI A DAY**, and CHECK-INS appears as a mileage bucket. Product-internal `feature/rewards.md` marks check-in `#status/closed` to the public (`show_checkin` seeded OFF; open only to `CHECKIN_USER_IDS`). Tapping DAILY CHECK-IN navigates to the map home (`/`) with no check-in sheet or soft “unavailable” explanation — dead-end CTA for a closed feature.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-28 (~23:20 +07)",
+        "Account: QA Privy session (bike claimed; no username)",
+        "Docs: docs/product-internal/feature/rewards.md — Check-in #status/closed public",
+        "Evidence: /evidence/non-gps-20261028/50-mileage.png, 51-mileage-checkin-row.png, 52-after-checkin-click.png"
+      ],
+      "precondition": [
+        "Logged-in Privy session",
+        "Open /mileage",
+        "Account is not on CHECKIN_USER_IDS allowlist (default QA)",
+        "Money-safe; no funded actions"
+      ],
+      "steps": [
+        "Open https://app.gas.cash/mileage.",
+        "Scroll to WAYS TO EARN and note DAILY CHECK-IN / +5 MI A DAY (and CHECK-INS bucket).",
+        "Tap DAILY CHECK-IN.",
+        "Observe destination UI and whether any check-in flow or closed-state copy appears."
+      ],
+      "actual": "Mileage advertises DAILY CHECK-IN (+5 MI A DAY). Tap navigates to map home `/` with READY TO CLAIM chrome and no check-in UI / closed-feature message.",
+      "expected": "Either hide DAILY CHECK-IN / CHECK-INS while `show_checkin` is off for the account, or keep the row but open an explicit unavailable/coming-soon state instead of dumping the user on the map with no explanation.",
+      "evidence": [
+        {
+          "src": "/evidence/non-gps-20261028/50-mileage.png",
+          "alt": "Mileage — WAYS TO EARN includes DAILY CHECK-IN +5 MI A DAY"
+        },
+        {
+          "src": "/evidence/non-gps-20261028/51-mileage-checkin-row.png",
+          "alt": "Mileage check-in row before tap"
+        },
+        {
+          "src": "/evidence/non-gps-20261028/52-after-checkin-click.png",
+          "alt": "After DAILY CHECK-IN tap — map home, no check-in sheet"
+        }
+      ],
+      "apiNotes": [
+        "Internal rewards.md: show_checkin seeded OFF; CHECKIN_USER_IDS allowlist.",
+        "Related station CHECK IN path is separate (gc-checkin-emulator-phone-check-fail) — this bug is Mileage earn-path advertising."
       ]
     }
   ]
