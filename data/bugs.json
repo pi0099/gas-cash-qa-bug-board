@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T21:05:00+07:00",
-  "source": "Audits + ad-hoc UI→API + location suite 2026-10-27 pass-3 (Allow this time re-prompt)",
+  "updatedAt": "2026-10-28T02:37:00.000Z",
+  "source": "Field report 2026-10-28 — invalid Hóc Môn station POI (bus stop / cultural house labeled GAS STATION)",
   "bugs": [
     {
       "id": "gc-api-500-outage",
@@ -1444,6 +1444,59 @@
         "GC-TC-V-LOC-04"
       ],
       "lastRetestNote": "Filed from user evidence; subsequent labs use Playwright permissions+setGeolocation (pass-4)."
+    },
+    {
+      "id": "gc-station-poi-hoc-mon-nonfuel",
+      "title": "[BUG] Map - Station POI - Non-fuel venue labeled GAS STATION (Hóc Môn bus stop / cultural house)",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "map",
+        "stations",
+        "poi",
+        "data-quality",
+        "claim",
+        "field"
+      ],
+      "createdAt": "2026-10-28",
+      "updatedAt": "2026-10-28",
+      "env": "https://app.gas.cash",
+      "description": "On the live map near Đỗ Văn Dậy / Tân Hiệp (Hóc Môn), the app surfaces a claimable pump as **GAS STATION / Vietnam** (AVAILABLE, RATE UP TO 20%, CLAIM UP TO $0.03). Field report + Google Maps place this pin on **Nhà Văn Hóa Thiếu Nhi Huyện Hóc Môn** / a bus-stop area — not a fuel station. Same ~coords were previously used as a lab “Hóc Môn fuel station” reference for claim/geo work.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-28",
+        "UI: Station sheet — GAS STATION, Vietnam, 463 m, ≈ 8 min walk, Pumped 0x, AVAILABLE, RATE UP TO 20%, CLAIM UP TO $0.03",
+        "App pin label: Gas station (map marker GAS)",
+        "Coords (Maps place): lat 10.8958182, lng 106.5984768",
+        "Nearby streets on map: Đỗ Văn Dậy, Đường Liên-Xã-Thị-Trấn-Tân-Hiệp, Ấp 17",
+        "Maps place: Nhà Văn Hóa Thiếu Nhi Huyện Hóc Môn — https://www.google.com/maps/place/Nh%C3%A0+V%C4%83n+H%C3%B3a+Thi%E1%BA%BFu+Nhi+Huy%E1%BB%87n+H%C3%B3c+M%C3%B4n+-+%C4%90%C3%B4%CC%81i+Di%E1%BB%87n+16+-+%C4%90%E1%BB%97+V%C4%83n+D%E1%BA%ADy+-+X%C3%A3+T%C3%A2n+Hi%E1%BB%87p/@10.8954088,106.5984579,17.78z/data=!4m6!3m5!1s0x3174d5917439a57d:0xe10a310801258489!8m2!3d10.8958182!4d106.5984768!16s%2Fg%2F11t40bqhng",
+        "Reporter: user field report (bus stop in real life, not fuel)",
+        "Prior lab ref (same area): adb/geo ~10.895682, 106.598389 labeled “Hóc Môn fuel station” in claim/geo docs"
+      ],
+      "precondition": [
+        "Open https://app.gas.cash with location available near Tân Hiệp / Hóc Môn (or map centered on lat 10.8958182, lng 106.5984768)",
+        "Stations / Live pumps load for the HCMC west bbox covering Hóc Môn",
+        "Money-safe: do not HOLD TO PUMP / claim at this pin"
+      ],
+      "steps": [
+        "Open https://app.gas.cash and grant location (or pan/search to Đỗ Văn Dậy / Tân Hiệp, Hóc Môn).",
+        "Locate the purple GAS map marker near Đỗ Văn Dậy (~lat 10.8958, lng 106.5985).",
+        "Open the station sheet for that pin.",
+        "Observe the title/type, distance, availability, and claim offer copy.",
+        "Compare the pin against Google Maps / ground truth at the same coordinates (Nhà Văn Hóa Thiếu Nhi Huyện Hóc Môn / bus-stop area)."
+      ],
+      "actual": "App labels the venue **GAS STATION / Vietnam**, shows AVAILABLE with RATE UP TO 20% and CLAIM UP TO $0.03 at ~463 m. Ground truth at lat 10.8958182, lng 106.5984768 is a children’s cultural house / bus-stop area — not a fuel station.",
+      "expected": "Only real fuel stations appear as claimable GAS STATION POIs. Non-fuel venues (bus stops, cultural houses, etc.) must not be typed/labeled as gas stations or offer pump claim rates.",
+      "evidence": [
+        {
+          "src": "/evidence/station-poi-20261028/hoc-mon-gas-station-bus-stop.png",
+          "alt": "Station sheet GAS STATION Vietnam 463 m AVAILABLE at Đỗ Văn Dậy / Tân Hiệp — user reports bus stop"
+        }
+      ],
+      "apiNotes": [
+        "Suspected bad stations POI / place-type in /api/stations (or upstream feed) for ~10.8958182, 106.5984768.",
+        "Related lab usage: claim-geo / Android emulator suites used nearly the same coords as a fuel station — re-validate any “Hóc Môn station” fixtures after this POI is corrected or removed."
+      ]
     }
   ]
 }
