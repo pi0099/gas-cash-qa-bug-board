@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-28T23:30:00+07:00",
-  "source": "Non-GPS function pass 2026-10-28 (product-internal map + money-safe shells) + prior field/emulator bugs",
+  "updatedAt": "2026-10-28T17:20:00.000Z",
+  "source": "Wallet/deposit/withdraw UI validation 2026-10-28 + prior",
   "bugs": [
     {
       "id": "gc-api-500-outage",
@@ -97,7 +97,7 @@
         "retry-storm"
       ],
       "createdAt": "2026-10-26",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "`POST /api/rpc` dominates the failure volume (176 calls: 152×500 + 24 aborted) with bursts up to 12 requests / 3s on ATM / My Stakes. UI shows “Could not read Robinhood Chain” / “My stakes, could not read”.\n\n**Retest 2026-10-26 (Partial):** POST /api/rpc now 200; My Stakes shows NO STAKES YET (no Robinhood soft-fail). Still high rpc volume (19 in ATM phase; 331 session-wide).",
       "testData": [
@@ -143,12 +143,19 @@
       ],
       "lastRetestAt": "2026-10-27 ~18:30 +07",
       "lastRetestResult": "Partial",
-      "lastRetestNote": "Ad-hoc 2026-10-27 +07: POST /api/rpc returns 200; My Stakes healthy empty (NO STAKES YET). Volume still elevated — 13 rpc in ATM phase, 96 during full shell walk.",
+      "lastRetestNote": "Wallet DW 2026-10-28 +07: POST /api/rpc 200; My Stakes healthy empty; volume still elevated (×116 rpc this wallet/ATM pass). Validation ENTER disabled OK.",
       "retest": {
         "at": "2026-10-27 ~18:30 +07",
         "result": "Partial",
         "note": "Ad-hoc 2026-10-27 +07: POST /api/rpc returns 200; My Stakes healthy empty (NO STAKES YET). Volume still elevated — 13 rpc in ATM phase, 96 during full shell walk."
-      }
+      },
+      "retests": [
+        {
+          "at": "2026-10-28",
+          "note": "Wallet DW 2026-10-28 +07: POST /api/rpc 200; My Stakes healthy empty; volume still elevated (×116 rpc this wallet/ATM pass). Validation ENTER disabled OK.",
+          "result": "Partial — volume"
+        }
+      ]
     },
     {
       "id": "gc-layout-refetch-storm",
@@ -499,7 +506,7 @@
         "loading"
       ],
       "createdAt": "2026-10-26",
-      "updatedAt": "2026-10-27",
+      "updatedAt": "2026-10-28",
       "env": "https://app.gas.cash",
       "description": "Header USO and $GAS pills remain on ellipsis (… / ...) indefinitely across surfaces after long waits. UI never transitions to a failed/empty marker, so balances look perpetually loading. Still a presentation bug when /api/me* fails.\n\n**Retest 2026-10-26 (Partial):** Often shows numeric 0 once /api/me succeeds; still intermittently stuck on … without a failed-state marker (observed after waits).",
       "testData": [
@@ -543,12 +550,19 @@
       ],
       "lastRetestAt": "2026-10-27 ~18:30 +07",
       "lastRetestResult": "Partial",
-      "lastRetestNote": "Ad-hoc 2026-10-27 +07: Header now shows numeric 0 / 0 for USO/$GAS (not stuck ellipsis) on this account. May be fixed for zero balances; keep open if ellipsis still appears during slow/failed balance reads.",
+      "lastRetestNote": "Wallet DW 2026-10-28 +07: Header shows numeric USO 0 / $GAS 0 (not ellipsis) on QA account; deposit address matches /api/me wallet.",
       "retest": {
         "at": "2026-10-27 ~18:30 +07",
         "result": "Partial",
         "note": "Ad-hoc 2026-10-27 +07: Header now shows numeric 0 / 0 for USO/$GAS (not stuck ellipsis) on this account. May be fixed for zero balances; keep open if ellipsis still appears during slow/failed balance reads."
-      }
+      },
+      "retests": [
+        {
+          "at": "2026-10-28",
+          "note": "Wallet DW 2026-10-28 +07: Header shows numeric USO 0 / $GAS 0 (not ellipsis) on QA account; deposit address matches /api/me wallet.",
+          "result": "Improved on empty wallet"
+        }
+      ]
     },
     {
       "id": "gc-garage-reading-forever",
@@ -661,12 +675,19 @@
       ],
       "lastRetestAt": "2026-10-26 20:15 +07",
       "lastRetestResult": "Fixed",
-      "lastRetestNote": "Retest 2026-10-26 +07: /api/me* healthy; header/portfolio zeros are consistent with an empty wallet (no rewards soft-fail). Dishonest $0-during-outage state gone.",
+      "lastRetestNote": "Wallet DW 2026-10-28 +07: still honest empty $0.00 + dashes (Resolved stands).",
       "retest": {
         "at": "2026-10-26 20:15 +07",
         "result": "Fixed",
         "note": "Retest 2026-10-26 +07: /api/me* healthy; header/portfolio zeros are consistent with an empty wallet (no rewards soft-fail). Dishonest $0-during-outage state gone."
-      }
+      },
+      "retests": [
+        {
+          "at": "2026-10-28",
+          "note": "Honest empty wallet chrome reconfirmed.",
+          "result": "Still Resolved"
+        }
+      ]
     },
     {
       "id": "gc-minimart-availability-labels",
