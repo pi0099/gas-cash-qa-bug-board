@@ -5,8 +5,9 @@ import { BugFilters } from './components/BugFilters'
 import { BugList } from './components/BugList'
 import { OpenBoardBanner } from './components/OpenBoardBanner'
 import { PageHeader } from './components/PageHeader'
+import { useBugEdits } from './hooks/useBugEdits'
 import { useLiveBugStatuses } from './hooks/useLiveBugStatuses'
-import { bugBoard, filterBugs, getBugById } from './lib/bugs'
+import { bugBoard, filterBugs, getBugById, type BugSortMode } from './lib/bugs'
 import { MindMapDetailPage, MindMapPage } from './pages/MindMapPage'
 import { OverviewPage } from './pages/OverviewPage'
 import { PlanPage } from './pages/PlanPage'
@@ -20,17 +21,22 @@ function BoardShell() {
   const [priority, setPriority] = useState<BugPriority | 'all'>('all')
   const [status, setStatus] = useState<BugStatus | 'all'>('all')
   const [query, setQuery] = useState('')
-  const { mergeBugs, mergeBug, applyStatus } = useLiveBugStatuses()
+  const [sort, setSort] = useState<BugSortMode>('newest')
+  const { mergeBugs: mergeStatuses, mergeBug: mergeStatus, applyStatus } = useLiveBugStatuses()
+  const { mergeBugs: mergeEdits, mergeBug: mergeEdit, applyEdit } = useBugEdits()
 
-  const liveBugs = useMemo(() => mergeBugs(bugBoard.bugs), [mergeBugs])
+  const liveBugs = useMemo(() => {
+    const withEdits = mergeEdits(bugBoard.bugs)
+    return mergeStatuses(withEdits)
+  }, [mergeEdits, mergeStatuses])
 
   const filtered = useMemo(
-    () => filterBugs(liveBugs, { priority, status, q: query }),
-    [liveBugs, priority, status, query],
+    () => filterBugs(liveBugs, { priority, status, q: query, sort }),
+    [liveBugs, priority, status, query, sort],
   )
 
   const seeded = bugId ? getBugById(bugId) : undefined
-  const selected = seeded ? mergeBug(seeded) : undefined
+  const selected = seeded ? mergeStatus(mergeEdit(seeded)) : undefined
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -58,9 +64,17 @@ function BoardShell() {
         priority={priority}
         status={status}
         query={query}
+        sort={sort}
         onPriority={setPriority}
         onStatus={setStatus}
         onQuery={setQuery}
+        onSort={setSort}
+        onClear={() => {
+          setPriority('all')
+          setStatus('all')
+          setQuery('')
+          setSort('newest')
+        }}
         resultCount={filtered.length}
         totalCount={bugBoard.bugs.length}
       />
@@ -84,6 +98,10 @@ function BoardShell() {
             <BugDetail
               bug={selected}
               onStatusChange={(next) => applyStatus(selected.id, next).then(() => undefined)}
+              onSaveEdit={async (fields) => {
+                await applyEdit(selected.id, fields)
+                await applyStatus(selected.id, fields.status)
+              }}
             />
           ) : (
             <BugDetailEmpty />

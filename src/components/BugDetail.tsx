@@ -1,7 +1,8 @@
-import { ExternalLink, ImageOff } from 'lucide-react'
+import { ExternalLink, ImageOff, Pencil } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { publicUrl } from '../lib/publicUrl'
-import type { Bug, BugStatus } from '../types/bug'
+import type { Bug, BugEditableFields, BugStatus } from '../types/bug'
+import { BugEditForm } from './BugEditForm'
 import { BugLivePanel } from './BugLivePanel'
 import { PriorityChip } from './PriorityChip'
 import { RetestChip } from './RetestChip'
@@ -76,10 +77,14 @@ function EvidenceImage({ src, alt }: { src: string; alt: string }) {
 export function BugDetail({
   bug,
   onStatusChange,
+  onSaveEdit,
 }: {
   bug: Bug
   onStatusChange?: (status: BugStatus) => Promise<void>
+  onSaveEdit?: (fields: BugEditableFields) => Promise<void>
 }) {
+  const [editing, setEditing] = useState(false)
+
   return (
     <article className="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:px-6">
       <header className="space-y-3">
@@ -90,6 +95,16 @@ export function BugDetail({
           <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--text-dim)]">
             {bug.id}
           </span>
+          {onSaveEdit && !editing ? (
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="ml-auto inline-flex items-center gap-1.5 rounded border border-[var(--border)] bg-[var(--bg-panel)] px-2.5 py-1 text-xs font-medium text-[var(--text-muted)] hover:border-[var(--amber-dim)] hover:text-[var(--amber)]"
+            >
+              <Pencil className="size-3" aria-hidden />
+              Edit
+            </button>
+          ) : null}
         </div>
         <h1 className="text-xl leading-snug font-semibold text-[var(--text)] sm:text-2xl">
           {bug.title}
@@ -139,7 +154,18 @@ export function BugDetail({
         </div>
       </header>
 
-      {onStatusChange ? (
+      {editing && onSaveEdit ? (
+        <BugEditForm
+          bug={bug}
+          onCancel={() => setEditing(false)}
+          onSave={async (fields) => {
+            await onSaveEdit(fields)
+            setEditing(false)
+          }}
+        />
+      ) : null}
+
+      {!editing && onStatusChange ? (
         <BugLivePanel bugId={bug.id} status={bug.status} onStatusChange={onStatusChange} />
       ) : null}
 
@@ -204,7 +230,8 @@ export function BugDetailEmpty() {
       <p className="max-w-sm text-sm text-[var(--text-muted)]">
         Local triage board — STSS sections and evidence live in{' '}
         <code className="font-[family-name:var(--font-mono)] text-[var(--amber)]">data/bugs.json</code>.
-        Not connected to Linear.
+        Not connected to Linear. Use <strong>Edit</strong> on a bug to change title / STSS / priority /
+        status (Supabase when wired).
       </p>
     </div>
   )

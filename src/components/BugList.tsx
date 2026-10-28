@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import type { Bug } from '../types/bug'
 import { PriorityChip } from './PriorityChip'
@@ -10,12 +11,21 @@ interface Props {
 }
 
 export function BugList({ bugs, selectedId }: Props) {
+  const selectedRef = useRef<HTMLAnchorElement | null>(null)
+
+  useEffect(() => {
+    if (!selectedId) return
+    selectedRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }, [selectedId, bugs])
+
   if (bugs.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 p-10 text-center">
         <p className="text-sm font-medium text-[var(--text)]">No bugs match these filters</p>
         <p className="max-w-xs text-sm text-[var(--text-muted)]">
-          Clear search or widen priority/status. Source of truth remains{' '}
+          Clear search or widen priority/status. Try <strong>P2</strong>, accent-free search (e.g.{' '}
+          <code className="font-[family-name:var(--font-mono)] text-[var(--amber)]">hoc mon</code>
+          ), or sort <strong>Newest first</strong>. Source:{' '}
           <code className="font-[family-name:var(--font-mono)] text-[var(--amber)]">data/bugs.json</code>.
         </p>
       </div>
@@ -29,6 +39,7 @@ export function BugList({ bugs, selectedId }: Props) {
         return (
           <li key={bug.id}>
             <Link
+              ref={active ? selectedRef : undefined}
               to={`/bugs/${bug.id}`}
               className={`block px-4 py-3 transition-colors hover:bg-[color-mix(in_srgb,var(--amber)_6%,transparent)] ${
                 active

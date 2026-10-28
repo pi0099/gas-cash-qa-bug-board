@@ -1,6 +1,9 @@
 import type { BugStatus } from '../types/bug'
 import { getSupabase, supabaseConfigured } from './supabase'
 
+/** Keep in sync with `EDIT_COMMENT_AUTHOR` in bugEdits.ts — hidden from comment UI. */
+const EDIT_COMMENT_AUTHOR = '__edit__'
+
 const STATUS_KEY = 'gc-qa-bug-live-status-v1'
 const COMMENTS_KEY = 'gc-qa-bug-live-comments-v1'
 
@@ -58,9 +61,15 @@ function lsSetStatus(bugId: string, status: BugStatus): BugStatusRow {
   return row
 }
 
+function isVisibleComment(c: BugComment): boolean {
+  return c.author !== EDIT_COMMENT_AUTHOR
+}
+
 function lsGetComments(bugId: string): BugComment[] {
   const map = readJson<CommentsMap>(COMMENTS_KEY, {})
-  return [...(map[bugId] ?? [])].sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  return [...(map[bugId] ?? [])]
+    .filter(isVisibleComment)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
 }
 
 function lsAddComment(bugId: string, body: string, author: string): BugComment {
@@ -114,13 +123,15 @@ async function sbGetComments(bugId: string): Promise<BugComment[]> {
     .eq('bug_id', bugId)
     .order('created_at', { ascending: true })
   if (error) throw error
-  return (data ?? []).map((row) => ({
-    id: row.id as string,
-    bugId: row.bug_id as string,
-    body: row.body as string,
-    author: (row.author as string) || 'anon',
-    createdAt: row.created_at as string,
-  }))
+  return (data ?? [])
+    .map((row) => ({
+      id: row.id as string,
+      bugId: row.bug_id as string,
+      body: row.body as string,
+      author: (row.author as string) || 'anon',
+      createdAt: row.created_at as string,
+    }))
+    .filter(isVisibleComment)
 }
 
 async function sbAddComment(bugId: string, body: string, author: string): Promise<BugComment> {
