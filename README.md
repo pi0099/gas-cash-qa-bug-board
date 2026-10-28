@@ -2,7 +2,7 @@
 
 Local triage board for Gas Cash production QA findings. **Not Linear** — bugs live on disk as JSON and render in a Vite + React UI with STSS sections and inline evidence screenshots.
 
-**Temp open board** — no auth. Live status + comments use **localStorage** until `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` are set (then `@supabase/supabase-js` from the browser). See [`.env.example`](.env.example), [`supabase/migrations/001_open_rls.sql`](supabase/migrations/001_open_rls.sql), and `npm run bug:update`.
+**Temp open board** — no auth. Live status + comments use **Supabase** when `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` are set at build time (Pages Actions secrets); otherwise browser **localStorage**. See [`.env.example`](.env.example), [`supabase/migrations/001_open_rls.sql`](supabase/migrations/001_open_rls.sql), and `npm run bug:update`.
 
 Also ships shareable research pages:
 
