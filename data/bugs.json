@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-28T02:37:00.000Z",
-  "source": "Field report 2026-10-28 — invalid Hóc Môn station POI (bus stop / cultural house labeled GAS STATION)",
+  "updatedAt": "2026-10-28T09:45:00+07:00",
+  "source": "Field report 2026-10-28 (Hóc Môn non-fuel POI) + Android emulator CHECK IN 2026-10-27",
   "bugs": [
     {
       "id": "gc-api-500-outage",
@@ -1496,6 +1496,67 @@
       "apiNotes": [
         "Suspected bad stations POI / place-type in /api/stations (or upstream feed) for ~10.8958182, 106.5984768.",
         "Related lab usage: claim-geo / Android emulator suites used nearly the same coords as a fuel station — re-validate any “Hóc Môn station” fixtures after this POI is corrected or removed."
+      ]
+    },
+    {
+      "id": "gc-checkin-emulator-phone-check-fail",
+      "title": "[BUG] Station sheet - CHECK IN - Phone check fails on Android emulator (raw sin1 id in toast)",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "check-in",
+        "claim",
+        "fingerprint",
+        "android",
+        "emulator",
+        "ux",
+        "mobile"
+      ],
+      "createdAt": "2026-10-27",
+      "updatedAt": "2026-10-27",
+      "env": "https://app.gas.cash",
+      "description": "On Android Studio Pixel_6a emulator (API 16 / Chrome), logged-in at a live Hóc Môn station with client distance 0 m and HOLD TO PUMP unlocked (phone gate cleared for claim chrome), tapping CHECK IN fails immediately with toast \"We couldn't check your phone. Try again.\" plus a raw Fingerprint-style request id concatenated with no space/newline (e.g. Try again.sin1::kxmfc-… / fg5m8-…). Retry produces a new id; Check-in puzzle never opens. Soft-gate distance UX and HOLD visibility still work. Likely emulator/bot signal rejection — lab impact is Check-in path blocked on emulator; toast formatting still leaks internal ids to users.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Date: 2026-10-27",
+        "Client: Android Emulator Pixel_6a (sdk_gphone64_arm64), Chrome, headed",
+        "GPS mock: adb emu geo fix 106.598389 10.895682 (Hóc Môn fuel station ~0 m)",
+        "Account: Logged-in Privy Google (QA bike READY TO CLAIM)",
+        "Money-safe: short-tap HOLD only; no paid claim",
+        "Error ids observed: sin1::kxmfc-1793117904724-87d12f6c6452 ; sin1::fg5m8-1793117936041-1da85d53afec"
+      ],
+      "precondition": [
+        "Pixel_6a (or similar) Android emulator with Chrome",
+        "Signed in to app.gas.cash with eligible bike",
+        "Emulator GPS fixed on a live station so station sheet shows 0 m and HOLD TO PUMP without Move closer"
+      ],
+      "steps": [
+        "Boot emulator; set GPS to station lat/lng (Hóc Môn 10.895682, 106.598389).",
+        "Open Chrome → https://app.gas.cash and complete Privy Google login.",
+        "Dismiss tips; confirm Ready to claim / Open the nearest pump, 0 m away.",
+        "Open nearest pump station sheet.",
+        "Tap CHECK IN.",
+        "Tap CHECK IN again to retry."
+      ],
+      "actual": "Toast: \"We couldn't check your phone. Try again.\" immediately followed by raw id sin1::<token> with no separator. Check-in puzzle/UI does not open. Retry yields a different id. HOLD TO PUMP remains visible at 0 m.",
+      "expected": "Either Check-in opens on a supported phone-class client, or a user-safe refusal without leaking internal request ids; if emulators are unsupported, copy should say so without concatenating sin1::… into the toast.",
+      "evidence": [
+        {
+          "src": "/evidence/android-emulator-20261027/14-checkin-phone-fail.png",
+          "alt": "CHECK IN toast phone check fail with sin1 id at 0 m"
+        },
+        {
+          "src": "/evidence/android-emulator-20261027/16-checkin-retry.png",
+          "alt": "CHECK IN retry — new sin1 id"
+        },
+        {
+          "src": "/evidence/android-emulator-20261027/12-station-sheet-0m-hold.png",
+          "alt": "Station sheet 0 m HOLD TO PUMP before Check in"
+        }
+      ],
+      "apiNotes": [
+        "Client soft-gate Pass at 0 m; Move closer at ~152–153 m also Pass (see 18-far-152m-move-closer.png).",
+        "Phone gate for HOLD chrome cleared on Android emulator (no \"Pumping only works on a phone…\")."
       ]
     }
   ]
