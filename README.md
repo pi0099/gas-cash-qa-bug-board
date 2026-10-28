@@ -2,7 +2,7 @@
 
 Local triage board for Gas Cash production QA findings. **Not Linear** — bugs live on disk as JSON and render in a Vite + React UI with STSS sections and inline evidence screenshots.
 
-**Temp open board** — no auth. Live status + comments use **localStorage** until `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` are set (then `@supabase/supabase-js` from the browser). See [`.env.example`](.env.example), [`supabase/migrations/001_open_rls.sql`](supabase/migrations/001_open_rls.sql), and `npm run bug:update`.
+**Temp open board** — no auth. Live status, comments, and **Edit** (title / STSS / priority / status) use **Supabase** when `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` are set (Actions secrets → Vite build); otherwise **localStorage**. See [`.env.example`](.env.example), [`supabase/migrations/001_open_rls.sql`](supabase/migrations/001_open_rls.sql), [`supabase/migrations/002_bug_edits.sql`](supabase/migrations/002_bug_edits.sql), and `npm run bug:update`.
 
 Also ships shareable research pages:
 
@@ -116,8 +116,14 @@ Each bug carries `lastRetestAt` / `lastRetestResult` / `lastRetestNote` (and a `
 
 3. Save — Vite HMR reloads the board. Open `/bugs/<id>` (under the Pages base path when deployed).
 
-**Priorities:** `P0` | `High` | `Medium` | `Low`  
+**Priorities:** `P0` | `P1` | `High` | `P2` | `Medium` | `P3` | `Low`  
 **Statuses:** `Triage` | `Open` | `In Progress` | `Blocked` | `Resolved` | `Closed`
+
+List defaults to **Newest first**; priority filter includes `P2`/`P3`; search folds accents (`hoc mon` → Hóc Môn). Deep links scroll the selected row into view.
+
+### Edit on the board
+
+Open a bug → **Edit** → change title, description, STSS lists, priority, status → **Save**. Persists to Supabase `bug_edits` when migration `002_bug_edits.sql` is applied; until then the SPA writes a hidden `__edit__` row in `bug_comments` (same open anon RLS). Disk `data/bugs.json` remains the seed SoT for new deploys.
 
 Title format follows the STSS playbook: `[BUG] Page - Function/Section - Issue`.
 

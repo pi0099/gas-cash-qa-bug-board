@@ -1,4 +1,4 @@
-export type BugPriority = 'P0' | 'High' | 'Medium' | 'Low'
+export type BugPriority = 'P0' | 'P1' | 'High' | 'P2' | 'Medium' | 'P3' | 'Low'
 export type BugStatus = 'Triage' | 'Open' | 'In Progress' | 'Blocked' | 'Resolved' | 'Closed'
 export type RetestResult = 'Still valid' | 'Fixed' | 'Partial' | 'Blocked'
 
@@ -36,6 +36,21 @@ export interface Bug {
   lastRetestNote?: string
   retest?: BugRetest
 }
+
+/** Editable STSS + triage fields (disk seed + live overrides). */
+export type BugEditableFields = Pick<
+  Bug,
+  | 'title'
+  | 'description'
+  | 'testData'
+  | 'precondition'
+  | 'steps'
+  | 'actual'
+  | 'expected'
+  | 'apiNotes'
+  | 'priority'
+  | 'status'
+>
 
 export interface BugBoardData {
   version: number

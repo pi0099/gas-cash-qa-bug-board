@@ -2,8 +2,11 @@ import type { BugPriority } from '../types/bug'
 
 const styles: Record<BugPriority, string> = {
   P0: 'bg-[var(--red-dim)] text-[#ffb4b4] border-[var(--red)]',
+  P1: 'bg-[color-mix(in_srgb,var(--amber)_18%,transparent)] text-[var(--amber)] border-[var(--amber-dim)]',
   High: 'bg-[color-mix(in_srgb,var(--amber)_18%,transparent)] text-[var(--amber)] border-[var(--amber-dim)]',
+  P2: 'bg-[var(--slate-chip)] text-[#c5d0de] border-[var(--border-strong)]',
   Medium: 'bg-[var(--slate-chip)] text-[#c5d0de] border-[var(--border-strong)]',
+  P3: 'bg-[color-mix(in_srgb,var(--text-dim)_25%,transparent)] text-[var(--text-muted)] border-[var(--border)]',
   Low: 'bg-[color-mix(in_srgb,var(--text-dim)_25%,transparent)] text-[var(--text-muted)] border-[var(--border)]',
 }
 

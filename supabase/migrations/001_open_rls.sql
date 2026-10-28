@@ -66,7 +66,16 @@ insert into public.bug_live_status (bug_id, status, updated_at) values
   ('gc-minimart-watermark-clip', 'Open', now()),
   ('gc-minimart-insure-overlap', 'Resolved', now()),
   ('gc-pumps-duplicate-error', 'Resolved', now()),
-  ('gc-bike-rest-copy-mismatch', 'Open', now())
+  ('gc-bike-rest-copy-mismatch', 'Open', now()),
+  ('gc-profile-blank-stats-dots', 'Open', now()),
+  ('gc-chopshop-reading-forever', 'Open', now()),
+  ('gc-starting5-route-404', 'Open', now()),
+  ('gc-mileage-invite-without-username', 'Open', now()),
+  ('gc-garage-carousel-reading-forever', 'Open', now()),
+  ('gc-location-browser-geo-ignored', 'Open', now()),
+  ('gc-location-allow-this-time-reprompt', 'Open', now()),
+  ('gc-station-poi-hoc-mon-nonfuel', 'Open', now()),
+  ('gc-checkin-emulator-phone-check-fail', 'Open', now())
 on conflict (bug_id) do update
   set status = excluded.status,
       updated_at = excluded.updated_at;

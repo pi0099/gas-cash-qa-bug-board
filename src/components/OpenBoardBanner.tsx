@@ -13,7 +13,7 @@ export function OpenBoardBanner({ compact = false }: { compact?: boolean }) {
       <p className="leading-snug text-[var(--text)]">
         <span className="font-semibold text-[var(--amber)]">Temp open board</span>
         {' — '}
-        anyone with the link can edit status and comments (no login).
+        anyone with the link can edit bugs, status, and comments (no login).
         <span className="ml-1 font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-dim)] sm:text-[11px]">
           backend: {backend}
         </span>
