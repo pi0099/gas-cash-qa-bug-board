@@ -78,6 +78,8 @@ If the Pages API rejects `source` when using Actions, set Source to **GitHub Act
 
 Seeded from the project audits (`api-network-audit`, `week-1-smoke`). Session secrets / HAR cookies are **not** included.
 
+**Newest Open (2026-11-04):** [`gc-bike-new-user-pump-fail`](https://pi0099.github.io/gas-cash-qa-bug-board/bugs/gc-bike-new-user-pump-fail) — free-bike / new-user Pump on phone refuses with pump-check error + `sin1::` leak (`money` + `gps`). Evidence under `public/evidence/bike-pump-20261104/`.
+
 ### Latest retest (2026-10-26 Asia/Saigon)
 
 Live: https://pi0099.github.io/gas-cash-qa-bug-board/

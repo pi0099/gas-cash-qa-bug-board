@@ -359,7 +359,15 @@ export function OverviewPage() {
             <ul className="list-disc space-y-2 pl-5 marker:text-[var(--amber)]">
               <li>
                 <strong className="text-[var(--text)]">Must visit real stations</strong> — core loop is geo-gated; remote QA cannot fully claim
-                without field testers. <Tag tone="doc">[Documented]</Tag>
+                without field testers. Pump / Check-in are <strong className="text-[var(--text)]">mobile-only</strong> (phone). Open field bug:{' '}
+                <a
+                  className="text-[var(--amber)] hover:underline"
+                  href={`${LIVE}bugs/gc-bike-new-user-pump-fail`}
+                >
+                  gc-bike-new-user-pump-fail
+                </a>{' '}
+                — new-user free-bike HOLD TO PUMP refuse + <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--text)]">sin1::</code> leak on phone.{' '}
+                <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag>
               </li>
               <li>
                 <strong className="text-[var(--text)]">Geo anti-cheat</strong> — VPN/proxy likely refused; Fingerprint subdomain; photo challenge.
