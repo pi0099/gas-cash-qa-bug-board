@@ -370,6 +370,17 @@ export function OverviewPage() {
                 <Tag tone="doc">[Documented]</Tag> <Tag tone="obs">[Observed]</Tag>
               </li>
               <li>
+                <strong className="text-[var(--text)]">Edit lineup reorder UX</strong> — owner report that drag-to-reorder was removed; players
+                must X + ADD A CAR (top slot may need clear-all). Open:{' '}
+                <a
+                  className="text-[var(--amber)] hover:underline"
+                  href={`${LIVE}bugs/gc-garage-lineup-no-dnd`}
+                >
+                  gc-garage-lineup-no-dnd
+                </a>
+                . <Tag tone="obs">[Observed]</Tag>
+              </li>
+              <li>
                 <strong className="text-[var(--text)]">Geo anti-cheat</strong> — VPN/proxy likely refused; Fingerprint subdomain; photo challenge.
                 Support appeal path documented. <Tag tone="doc">[Documented]</Tag>
               </li>

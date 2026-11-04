@@ -78,7 +78,9 @@ If the Pages API rejects `source` when using Actions, set Source to **GitHub Act
 
 Seeded from the project audits (`api-network-audit`, `week-1-smoke`). Session secrets / HAR cookies are **not** included.
 
-**Newest Open (2026-11-04):** [`gc-bike-new-user-pump-fail`](https://pi0099.github.io/gas-cash-qa-bug-board/bugs/gc-bike-new-user-pump-fail) — free-bike / new-user Pump on phone refuses with pump-check error + `sin1::` leak (`money` + `gps`). Evidence under `public/evidence/bike-pump-20261104/`.
+**Newest Open (2026-11-05):** [`gc-garage-lineup-no-dnd`](https://pi0099.github.io/gas-cash-qa-bug-board/bugs/gc-garage-lineup-no-dnd) — Edit lineup lost drag reorder (X + ADD A CAR only; top slot needs clear-all). Kane owner report; QA session Blocked. Evidence under `public/evidence/garage-lineup-dnd-20261105/`.
+
+**Prior Open (2026-11-04):** [`gc-bike-new-user-pump-fail`](https://pi0099.github.io/gas-cash-qa-bug-board/bugs/gc-bike-new-user-pump-fail) — free-bike / new-user Pump on phone refuses with pump-check error + `sin1::` leak (`money` + `gps`). Evidence under `public/evidence/bike-pump-20261104/`.
 
 ### Latest retest (2026-10-26 Asia/Saigon)
 

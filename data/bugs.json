@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-04T13:30:00.000Z",
+  "updatedAt": "2026-11-05T00:30:00.000Z",
   "source": "Bike new-user Pump fail (phone) 2026-11-04 + prior",
   "bugs": [
     {
@@ -1740,6 +1740,77 @@
         "Team happy-path Pump Pass 2026-11-03 (Lam) — reconcile account / vehicle / cooldown / refuse code before calling product-wide outage.",
         "Tags axes: money + gps (HOLD finish / claim payout path + station geo). Mobile-only Pump per prefs."
       ]
+    },
+    {
+      "id": "gc-garage-lineup-no-dnd",
+      "title": "[BUG] Garage - Edit lineup - Drag reorder removed (remove/re-add only; top slot needs clear-all)",
+      "priority": "P2",
+      "status": "Open",
+      "tags": [
+        "non-money",
+        "non-gps",
+        "garage",
+        "lineup",
+        "starting-5",
+        "ux",
+        "regression",
+        "mobile",
+        "dnd"
+      ],
+      "createdAt": "2026-11-05",
+      "updatedAt": "2026-11-05",
+      "env": "https://app.gas.cash — Edit lineup / Starting 5 (owner Kane mobile screenshot; QA retest blocked — Privy session expired)",
+      "description": "Owner (Kane) reports Edit lineup UX regressed: drag-to-reorder was removed. Players must remove cars with X and re-add via + ADD A CAR. Changing the top (slot 1) car requires clearing later slots first so the first slot opens. Kane says he previously shipped an ideal simple drag flow that appears overwritten. Embedded Edit lineup chrome in his chat shows slots 1–3 filled (X only) and slots 4–5 as + ADD A CAR — no drag handles / reorder affordance. Money-safe filing (observe-only). QA agent retest on 2026-11-05: stored Privy session dead (LOG IN / Sign in to see your V2 cars; /garage?fleet=1 stuck Reading your lineup…) — Blocked until session recapture; primary evidence remains Kane chat + UI strip.",
+      "testData": [
+        "Env: Production https://app.gas.cash",
+        "Surface: Garage → Starting 5 / Edit lineup",
+        "Reporter: Kane (owner) chat 2026-11-05 ~00:06–00:09 local",
+        "Kane fixture in shot: slot1 WEN LAMBO (Legendary), slot2–3 SHATTERPROOF (Epic), slot4–5 empty + ADD A CAR",
+        "QA account/session: internal/sessions/gas-cash-privy-storageState.json — EXPIRED on retest (logged out)",
+        "QA client attempt: Playwright iPhone 13 / Pixel 7 mobile viewport headless Chromium",
+        "Money-safe: no car buy / sell / claim; observe chrome only",
+        "Severity: S2 (Major) UX regression — lineup reorder friction / top-slot clear-all",
+        "Tags axes: non-money + non-gps (edit chrome only)",
+        "Dedup: no prior board id for lineup DnD loss (garage Reading… bugs are separate)"
+      ],
+      "precondition": [
+        "Logged-in account with ≥2 cars (or bike+cars) so Edit lineup shows multiple filled slots",
+        "Open Garage → Starting 5 / Edit lineup",
+        "Prefer mobile viewport (Kane shot is wide mobile strip; Xiaomi/phone OK)"
+      ],
+      "steps": [
+        "Open https://app.gas.cash and sign in.",
+        "Go to Garage → Starting 5 (or /garage?fleet=1) and open Edit lineup.",
+        "Observe each filled slot controls (drag handle / long-press / X / other).",
+        "Try to reorder cars by dragging a lower slot into slot 1 without removing cars.",
+        "If drag fails: try to put a different owned car into slot 1 using only X and + ADD A CAR; note whether later slots must be cleared first.",
+        "Observe whether Save / Auto-best chrome still appears (secondary)."
+      ],
+      "actual": "No drag reorder. Edit lineup only exposes X on filled cards and + ADD A CAR on empty slots. Kane: must remove then re-pick from list; changing the top car requires removing the cars below first. QA logged-out retest could not open authenticated Edit lineup (session dead) — Blocked for live confirm.",
+      "expected": "Edit lineup supports drag-to-reorder (Kane prior ideal simple flow) so players can change slot order — including promoting a car to the top — without clearing the whole lineup and re-adding.",
+      "evidence": [
+        {
+          "src": "/evidence/garage-lineup-dnd-20261105/01-kane-chat-edit-lineup-no-dnd.png",
+          "alt": "Kane (owner) chat — edit lineup lost drag; embedded UI shows X + ADD A CAR only (slots 1–3 filled, 4–5 empty)"
+        },
+        {
+          "src": "/evidence/garage-lineup-dnd-20261105/02-qa-session-fleet1-logged-out.png",
+          "alt": "QA 2026-11-05 — /garage?fleet=1 with expired session: LOG IN + Reading your lineup… (Blocked retest)"
+        },
+        {
+          "src": "/evidence/garage-lineup-dnd-20261105/03-qa-session-garage-sign-in-gate.png",
+          "alt": "QA 2026-11-05 — /garage Sign in to see your V2 cars (session dead)"
+        }
+      ],
+      "apiNotes": [
+        "UX regression — product Edit lineup interaction; no money API asserted this filing.",
+        "Retest after Privy storageState recapture (see docs/privy-session-recapture-2026-11-04.md pattern).",
+        "Related chrome bugs: gc-garage-carousel-reading-forever (loading), not DnD.",
+        "Do not file to Linear unless Lam asks (prefs: JSON/Pages board)."
+      ],
+      "lastRetestAt": "2026-11-05",
+      "lastRetestResult": "Blocked",
+      "lastRetestNote": "Privy session expired — could not authenticate Edit lineup. Filed from Kane owner chat + embedded Edit lineup UI; live DnD confirm pending session refresh."
     }
   ]
 }
